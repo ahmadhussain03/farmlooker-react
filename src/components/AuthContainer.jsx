@@ -1,7 +1,7 @@
 const AuthContainer = () => {
     return (
         <div className="">
-
+            
         </div>
     );
 }
