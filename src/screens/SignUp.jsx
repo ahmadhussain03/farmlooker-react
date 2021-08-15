@@ -83,14 +83,13 @@ const SignUp = ({setLogin}) => {
         try {
             
             const response = await axios.post("register", {email, password, first_name: firstName, last_name: lastName, password_confirmation: confirmPassword, experience, device_name: browserName, device_token: "myToken", phone_no: phone})
-            console.log(response.data)
-            setIsLoading(false)
             setLogin(response.data.data.user)
             cookie.set("token", response.data.data.token)
 
             history.push('/dashboard')
         } catch(e) {
             setErrors(e.response.data)
+        } finally {
             setIsLoading(false)
         }
 
@@ -110,7 +109,7 @@ const SignUp = ({setLogin}) => {
                 <InputField labelText="Password" value={password} inputType="password" error={errors?.data?.password} placeholder="Password" onChange={(e) => handlePasswordChange(e)}></InputField>   
                 <InputField labelText="Confirm Password" value={confirmPassword} inputType="password" placeholder="Confirm Password" onChange={(e) => handleConfirmPasswordChange(e)}></InputField> 
                 <div className="pt-2">
-                    <Button type="submit">Sign Up</Button>  
+                    <Button type="submit" disabled={isLoading}>Sign Up {isLoading}</Button>  
                 </div>
                 <div className="text-sm text-center text-gray-800">
                     Already Have an account? <Link to="/login" className="text-primary">Sign In</Link>
