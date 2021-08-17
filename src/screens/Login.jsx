@@ -53,13 +53,13 @@ const Login = ({setLogin}) => {
             
             const response = await axios.post("login", {email, password, device_name: browserName, device_token: "browser_token "})
 
-            setIsLoading(false)
             setLogin(response.data.data.user)
             cookie.set("token", response.data.data.token)
 
             history.push('/dashboard')
         } catch(e) {
             setErrors(e.response.data)
+        } finally {
             setIsLoading(false)
         }
 

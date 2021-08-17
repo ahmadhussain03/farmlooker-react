@@ -1,5 +1,4 @@
 import {
-  BrowserRouter as Router,
   Switch,
 } from "react-router-dom";
 
@@ -11,14 +10,13 @@ import Login from "./screens/Login";
 import Dashboard from "./screens/Dashboard";
 
 const App = () => {
-  return (
-    <Router>
+
+  return (    
       <Switch>
         <GuestRoute exact path="/" component={SignUp}></GuestRoute>
         <GuestRoute exact path="/login" component={Login}></GuestRoute>
         <AuthRoute exact path="/dashboard" component={Dashboard}></AuthRoute>
       </Switch>
-    </Router>
   );
 }
 
