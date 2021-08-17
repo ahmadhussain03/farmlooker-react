@@ -1,14 +1,16 @@
 import axios from "axios";
 import cookie from 'js-cookie';
 
+// const baseUrl = "http://farmlooker.test/api";
+const baseUrl = "http://34.243.6.252/api"
+
 const instance = axios.create({
-    baseURL: 'http://farmlooker.test/api/admin',
-    // headers: {'Authorization': `Bearer ${cookie.get("token")}`}
+    baseURL: `${baseUrl}/admin`,
 });
 
 
 instance.interceptors.request.use(config => {
-    config.headers.common['AUthorization'] = `Bearer ${cookie.get("token")}`;
+    config.headers.common['Authorization'] = `Bearer ${cookie.get("token")}`;
     return config;
 });
 
