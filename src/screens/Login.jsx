@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { browserName } from "react-device-detect";
 
-import Button from "../components/Button";
-import AuthForm from "../components/AuthForm";
-import InputField from "../components/InputField";
-import AuthContainer from "../components/AuthContainer";
-import Error from '../components/Error'
+import Button from "../components/auth/form/Button";
+import AuthForm from "../components/auth/form/AuthForm";
+import InputField from "../components/auth/form/InputField";
+import AuthContainer from "../components/auth/form/AuthContainer";
+import Error from '../components/auth/form/Error'
 
 import logo from '../assets/images/logo.jpeg'
 import backgroundImage from '../assets/images/background.png'

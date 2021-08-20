@@ -2,8 +2,8 @@ import {
   Switch,
 } from "react-router-dom";
 
-import AuthRoute from "./components/AuthRoute";
-import GuestRoute from "./components/GuestRoute";
+import AuthRoute from "./components/routes/AuthRoute";
+import GuestRoute from "./components/routes/GuestRoute";
 
 import SignUp from './screens/SignUp';
 import Login from "./screens/Login";

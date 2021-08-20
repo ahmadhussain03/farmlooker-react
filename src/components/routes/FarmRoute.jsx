@@ -1,6 +1,9 @@
 import { Route, Redirect } from "react-router-dom";
 import React from "react";
 import { connect } from "react-redux";
+
+import AnimatedRoute from './AnimatedRoute'
+
 const FarmRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
@@ -8,7 +11,9 @@ const FarmRoute = ({ component: Component, ...rest }) => {
       render={props =>
         rest.loggedIn ? (
           rest.user?.farms?.length > 0 ? (
-              <Component {...props} />
+              <AnimatedRoute>
+                  <Component {...props} />
+              </AnimatedRoute>
           ) : (
             <Redirect
                 to={{

@@ -2,8 +2,11 @@ import { useState } from 'react'
 import {useHistory} from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import Button from '../../components/Button'
-import Error from '../../components/Error'
+import Button from '../../components/auth/form/Button'
+import Form from '../../components/main/form/Form'
+import Input from '../../components/main/form/Input'
+import { FormGroup } from '../../components/main/form/Form'
+
 import axios from '../../utils/axios'
 
 const CreateFarm = ({ setFarm }) => {
@@ -56,27 +59,17 @@ const CreateFarm = ({ setFarm }) => {
     }
 
     return (
-        <form onSubmit={e => handleCreateFarm(e)} className="flex items-center flex-col px-5 mx-auto">
-            <div className="mb-8 w-1/2 text-center">
-                <h1 className="pb-3 text-primary text-2xl font-semibold border-b-2 border-primary">Add Farm</h1>
-            </div>
-            {errors && errors.message && 
-                (
-                    <div className="h-16 flex items-center justify-center w-1/2">
-                        <Error message={errors.message}></Error>
-                    </div>
-                )
-            }
-            <div className=" h-16 flex items-center justify-center w-1/2">
-                <input value={location} onChange={(e) => handleLocationChange(e)} type="text" placeholder="Farm Location" className="py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none" />
-            </div>
-            <div className=" h-16 flex items-center justify-center w-1/2">
-                <input value={area} onChange={(e) => handleAreaChange(e)} type="text" placeholder="Area of Hector" className="py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none" />
-            </div>
-            <div className="h-16 flex items-center justify-center w-1/2">
+        <Form onSubmit={handleCreateFarm} formHeading="Add Farm" errors={errors}>
+            <FormGroup>
+                <Input error={errors?.data?.location} value={location} onChange={handleLocationChange} type="text" placeholder="Farm Location"  />
+            </FormGroup>
+            <FormGroup>
+                <Input error={errors?.data?.area_of_hector} value={area} onChange={handleAreaChange} type="text" placeholder="Area of Hector" className="py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none" />
+            </FormGroup>
+            <FormGroup>
                 <Button disabled={isLoading}  type="submit">Create Farm</Button>  
-            </div>
-        </form>
+            </FormGroup>
+        </Form>
     )
 }
 

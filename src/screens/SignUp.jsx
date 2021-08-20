@@ -4,13 +4,13 @@ import { browserName } from "react-device-detect";
 import cookie from "js-cookie";
 import { useHistory } from "react-router-dom";
 
-import AuthContainer from "../components/AuthContainer";
-import AuthForm from "../components/AuthForm";
+import AuthContainer from "../components/auth/form/AuthContainer";
+import AuthForm from "../components/auth/form/AuthForm";
 import logo from '../assets/images/logo.jpeg'
 import backgroundImage from '../assets/images/background.png'
-import InputField from "../components/InputField";
-import Button from "../components/Button";
-import Error from "../components/Error";
+import InputField from "../components/auth/form/InputField";
+import Button from "../components/auth/form/Button";
+import Error from "../components/auth/form/Error";
 
 import axios from "../utils/axios";
 import { connect } from "react-redux";
@@ -107,7 +107,7 @@ const SignUp = ({setLogin}) => {
                 <InputField labelText="Password" value={password} inputType="password" error={errors?.data?.password} placeholder="Password" onChange={(e) => handlePasswordChange(e)}></InputField>   
                 <InputField labelText="Confirm Password" value={confirmPassword} inputType="password" placeholder="Confirm Password" onChange={(e) => handleConfirmPasswordChange(e)}></InputField> 
                 <div className="pt-2">
-                    <Button type="submit" disabled={isLoading}>Sign Up {isLoading}</Button>  
+                    <Button type="submit" disabled={isLoading}>Sign Up</Button>  
                 </div>
                 <div className="text-sm text-center text-gray-800">
                     Already Have an account? <Link to="/login" className="text-primary">Sign In</Link>

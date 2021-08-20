@@ -20,6 +20,7 @@ module.exports = {
   },
   variants: {
     extend: {
+      border: ['focus']
     },
     opacity: ({ after }) => after(['disabled'])
   },
