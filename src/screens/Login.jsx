@@ -59,7 +59,6 @@ const Login = ({setLogin}) => {
             history.push('/dashboard')
         } catch(e) {
             setErrors(e.response.data)
-        } finally {
             setIsLoading(false)
         }
 

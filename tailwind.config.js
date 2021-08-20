@@ -9,7 +9,8 @@ module.exports = {
       colors: {
         primary: {
           DEFAULT: '#61BC5B',
-          dark: '#008C97'
+          dark: '#008C97',
+          light: '#DEF2F2'
         }
       },
       backgroundImage: theme => ({

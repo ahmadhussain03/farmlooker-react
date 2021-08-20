@@ -15,7 +15,7 @@ const App = () => {
       <Switch>
         <GuestRoute exact path="/" component={SignUp}></GuestRoute>
         <GuestRoute exact path="/login" component={Login}></GuestRoute>
-        <AuthRoute exact path="/dashboard" component={Dashboard}></AuthRoute>
+        <AuthRoute path="/dashboard" component={Dashboard}></AuthRoute>
       </Switch>
   );
 }

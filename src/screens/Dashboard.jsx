@@ -1,42 +1,47 @@
-import { useHistory } from 'react-router-dom'
-import cookie from 'js-cookie'
+import {
+    Switch,
+    useRouteMatch
+  } from "react-router-dom";
 
-import axiox from '../utils/axios'
 import { connect } from 'react-redux'
+import AuthRoute from '../components/AuthRoute'
+import FarmRoute from '../components/Auth/FarmRoute'
+import Header from '../components/Header'
+import SideBar from '../components/SideBar'
+import CreateFarm from './Farm/CreateFarm'
+import Main from './Dashboard/Main'
 
 
-const Dashboard = ({setLogout}) => {
+const Dashboard = ({ user }) => {
 
-    const history = useHistory()
-
-    const handleLogout = async e => {
-        e.preventDefault()
-
-        try {
-            await axiox.post("/logout")
-            cookie.remove("token")
-            setLogout()
-            history.push('/login')
-        } catch(e){
-            console.error(e)
-        }
-
-    }
+    let { path } = useRouteMatch();
 
     return (
-        <div className="bg-gray-100 w-full min-h-screen p-5">
-            <div className="mx-auto bg-white max-w-2xl rounded-lg p-5 shadow-lg">
-                Welcome to Dashboard
-                <button onClick={(e) => handleLogout(e)} className="bg-indigo-500 px-3 block w-min py-2 rounded-md text-gray-100">Logout</button>
+        <div className="bg-primary-light w-full min-h-screen">
+            <Header></Header>
+            <div className="flex flex-row pt-10">
+                <div className="w-1/5" style={{minHeight: "calc(100vh - 6.5rem)"}}>
+                    <SideBar></SideBar>
+                </div>
+                <div className="flex-1">
+                    <Switch>
+                        <FarmRoute exact path={`${path}`} component={Main}></FarmRoute>
+                        <AuthRoute exact path={`${path}/create-farm`} component={CreateFarm}></AuthRoute>
+                        
+                        { user?.farms?.length > 0 &&
+                            <FarmRoute path={`${path}/animal`} component={CreateFarm}></FarmRoute>
+                        }
+                    </Switch>
+                </div>
             </div>
         </div>
     )
 }
 
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
     return {
-      setLogout: (user) => dispatch({ type: "SET_LOGOUT" })
+      user: state.auth.user
     };
 };
 
-export default connect(null, mapDispatchToProps)(Dashboard)
+export default connect(mapStateToProps, null)(Dashboard)
