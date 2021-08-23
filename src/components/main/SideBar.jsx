@@ -42,7 +42,10 @@ const SideBar = ({ setLogout, user }) => {
                 <SideBarItem text="Farm" to={`${url}/create-farm`} ></SideBarItem>
             
                 { user?.farms?.length > 0 &&
-                    <SideBarItem text="Animal" to={`${url}/animal`} ></SideBarItem>
+                    <>
+                        <SideBarItem text="Animal" to={`${url}/animal`} ></SideBarItem>
+                        <SideBarItem text="Vaccine Record" to={`${url}/vaccine-record`} ></SideBarItem>
+                    </>
 
                 }
                 <SideBarItem danger>

@@ -10,7 +10,9 @@ module.exports = {
         primary: {
           DEFAULT: '#61BC5B',
           dark: '#008C97',
-          light: '#DEF2F2'
+          light: '#DEF2F2',
+          900: '#2E5E12',
+          100: '#AEF6C9'
         }
       },
       backgroundImage: theme => ({
