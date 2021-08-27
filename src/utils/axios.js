@@ -16,4 +16,12 @@ instance.interceptors.request.use(config => {
     return config;
 });
 
+export function createUrl(base){
+    return `${baseUrl}/admin/${base}`
+}
+
+export function getAuthorizationHeader(){
+    return { Authorization:  `Bearer ${cookie.get("token")}`}
+}
+
 export default instance

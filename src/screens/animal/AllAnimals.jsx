@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import axios from '../../utils/axios'
 import { prepareDataForListing } from '../../utils/helper'
@@ -8,15 +9,7 @@ import Container from '../../components/main/Container'
 import ListItem from '../../components/main/list/ListItem'
 import ListContainer from '../../components/main/list/ListContainer'
 import SimpleInput from '../../components/main/form/SimpleInput'
-import { useHistory } from 'react-router-dom'
-
-const dataTransformer = {
-    farm: (value) => {
-        return value.location
-    }
-}
-
-const ignoreFields = ['female_breeder_id', 'male_breeder_id', 'farm_id']
+import Datatable from '../../components/main/Datatable'
 
 function AllAnimals() {
 
@@ -42,13 +35,7 @@ function AllAnimals() {
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-animal')}>Create Animal</Button>
             </SimpleInput>
-            {(animals && animals?.length > 0) &&
-               ( <ListContainer >
-                    {animals.map(animal => (
-                        <ListItem deleteEndpoint='animal' itemDeleted={handleItemDeleted} key={animal.id} data={animal} title="animal_id" renderItem={(field, value) => prepareDataForListing(field, value, ignoreFields, true, dataTransformer)}></ListItem>
-                    ))}
-                </ListContainer>)
-            }
+            <Datatable />
         </Container>
     )
 }
