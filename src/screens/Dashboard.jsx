@@ -3,7 +3,7 @@ import {
     useRouteMatch,
     useLocation
   } from "react-router-dom";
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { connect } from 'react-redux'
 import AuthRoute from '../components/routes/AuthRoute'
@@ -18,8 +18,7 @@ import Main from './Dashboard/Main'
 import AllVaccineRecord from './vaccine_record/AllVaccineRecord'
 import CreateVaccineRecord from './vaccine_record/CreateVaccineRecord'
 
-
-const Dashboard = ({ user }) => {
+const Dashboard = ({ user, isOpen }) => {
 
     let { path } = useRouteMatch();
     const location = useLocation();
@@ -28,9 +27,20 @@ const Dashboard = ({ user }) => {
         <div className="bg-primary-light w-full min-h-screen overflow-hidden">
             <Header></Header>
             <div className="flex md:flex-row flex-col">
-                <div className="md:w-1/5 bg-gradient-to-r from-primary to-primary-200 pt-10 border-none" style={{minHeight: "calc(100vh - 4rem)"}}>
-                    <SideBar></SideBar>
-                </div>
+                <AnimatePresence exitBeforeEnter>
+                {isOpen &&
+                        <motion.div 
+                    
+                        initial={{x: -500, opacity: 0}}
+                        animate={{x: 0, opacity: 1}}
+                        exit={{x: -500, opacity: 0}}
+                        transition={{duration: 0.3}}
+                        
+                        className="md:w-1/6 bg-gradient-to-r from-primary to-primary-200 pt-10 border-none" style={{minHeight: "calc(100vh - 4rem)"}}>
+                            <SideBar></SideBar>
+                        </motion.div>
+                }
+                </AnimatePresence>
                 <div className="flex-1 pt-10">
                     <AnimatePresence exitBeforeEnter initial={false}>
                         <Switch location={location} key={location.key}>
@@ -55,7 +65,8 @@ const Dashboard = ({ user }) => {
 
 const mapStateToProps = state => {
     return {
-      user: state.auth.user
+      user: state.auth.user,
+      isOpen: state.menu.isOpen
     };
 };
 

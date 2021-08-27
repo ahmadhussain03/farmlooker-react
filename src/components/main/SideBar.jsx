@@ -4,11 +4,17 @@ import { connect } from 'react-redux'
 
 import axiox from '../../utils/axios'
 
-const SideBarItem = ({ text, to, danger, children }) => {
+import HomeIcon from "../icons/HomeIcon"
+import FarmIcon from "../icons/FarmIcon"
+import AnimalIcon from "../icons/AnimalIcon"
+import HelpIcon from "../icons/HelpIcon"
+import CartIcon from "../icons/CartIcon"
+
+const SideBarItem = ({ text, to, danger, children, icon = null }) => {
     return (
-        <li className={`hover:bg-gray-100 ${danger ? 'hover:text-red-600 border-red-600 bg-red-600' : 'hover:text-primary-dark border-primary-dark bg-primary-dark'} border transition p-0 rounded-md text-gray-100 cursor-pointer flex`}>
+        <li className={`border-b transition p-0 text-gray-100 cursor-pointer flex pb-2`}>
             { children ? children :
-                <Link to={to} className="flex-1 p-2">{text}</Link>
+              <Link to={to} className="flex flex-row space-x-5 items-center justify-left flex-1 p-2">{icon ? <span>{icon}</span> : null}<span>{text}</span></Link>
             }
         </li>
     )
@@ -38,18 +44,18 @@ const SideBar = ({ setLogout, user }) => {
     return (
         <nav className="px-2 text-md font-semibold mx-auto text-center">
             <ul className="flex flex-col space-y-2">
-                <SideBarItem text="Dashboard" to={url} ></SideBarItem>
-                <SideBarItem text="Farm" to={`${url}/create-farm`} ></SideBarItem>
+                <SideBarItem icon={<HomeIcon className="h-8 w-8" />} text="Dashboard" to={url} ></SideBarItem>
+                <SideBarItem icon={<FarmIcon className="h-8 w-8" />} text="Farm" to={`${url}/create-farm`} ></SideBarItem>
             
                 { user?.farms?.length > 0 &&
                     <>
-                        <SideBarItem text="Animal" to={`${url}/animal`} ></SideBarItem>
-                        <SideBarItem text="Vaccine Record" to={`${url}/vaccine-record`} ></SideBarItem>
+                        <SideBarItem icon={<AnimalIcon className="h-8 w-8" />} text="Animal" to={`${url}/animal`} ></SideBarItem>
+                        <SideBarItem icon={<CartIcon className="h-8 w-8" />} text="Vaccine Record" to={`${url}/vaccine-record`} ></SideBarItem>
                     </>
 
                 }
-                <SideBarItem danger>
-                    <a onClick={(e) => handleLogout(e)} href="/login" className="flex-1 p-2">Logout</a>
+                <SideBarItem>
+                    <a onClick={(e) => handleLogout(e)} href="/login" className="flex flex-row space-x-5 items-center justify-left flex-1 p-2"><span><HelpIcon className="h-8 w-8" /></span> <span>Logout</span></a>
                 </SideBarItem>
             </ul>
         </nav>

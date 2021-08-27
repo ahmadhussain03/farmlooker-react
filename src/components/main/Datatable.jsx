@@ -16,6 +16,7 @@ const Datatable = ({ url, columns }) => {
           responsive: true,
           processing: true,
           serverSide: true,
+          autoWidth: false,
           ajax: {
               url: createUrl('animal?client=datatable'),
               headers: {
@@ -32,29 +33,34 @@ const Datatable = ({ url, columns }) => {
               {data: 'sex', name: 'sex'},
               {data: 'dob', name: 'dob'},
               {data: 'add_as', name: 'add_as'},
+              {data: 'farm.location', name: 'farm.location'},
           ],
-          initComplete: function () {
-            this.api().columns().every( function () {
-                var column = this;
-                var select = $('<input type="text" style="border: 1px solid black" />')
-                    .appendTo( $(column.footer()).empty() )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
+        //   initComplete: function () {
+        //     this.api().columns().every( function () {
+        //         var column = this;
+        //         var select = $('<input type="text" style="border: 1px solid black" />')
+        //             .appendTo( $(column.footer()).empty() )
+        //             .on( 'change', function () {
+        //                 var val = $.fn.dataTable.util.escapeRegex(
+        //                     $(this).val()
+        //                 );
 
-                        console.log(val)
+        //                 console.log(val)
 
-                        val = $(this).val()
+        //                 val = $(this).val()
  
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
+        //                 column
+        //                     .search( val ? '^'+val+'$' : '', true, false )
+        //                     .draw();
+        //             } );
  
-            } );
-        }
-      })       
+        //     } );
+        // }
+      })      
+      
+      setInterval(() => {
+        // datatable.current.responsive.recalc();
+      }, 3000)
 
       return () => {
           datatable.current.destroy(true)
@@ -63,7 +69,7 @@ const Datatable = ({ url, columns }) => {
     }, [])
 
     return (
-        <div className="bg-gray-100 shadow-lg py-2 px-3 w-full rounded-md">
+        <div className="bg-gray-100 shadow-lg py-2 px-3 w-full rounded-md max-w-full" style={{width: '100%'}}>
             <table ref={table} className="max-w-full">
                 <thead>
                     <tr>
@@ -73,6 +79,7 @@ const Datatable = ({ url, columns }) => {
                         <th>Sex</th>
                         <th>DOB</th>
                         <th>Add As</th>
+                        <th>Farm</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,6 +93,7 @@ const Datatable = ({ url, columns }) => {
                         <th>Sex</th>
                         <th>DOB</th>
                         <th>Add As</th>
+                        <th>Farm</th>
                     </tr>
                 </tfoot>
             </table>
