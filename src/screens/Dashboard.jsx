@@ -27,11 +27,11 @@ const Dashboard = ({ user }) => {
     return (
         <div className="bg-primary-light w-full min-h-screen overflow-hidden">
             <Header></Header>
-            <div className="flex md:flex-row flex-col pt-10">
-                <div className="md:w-1/5 " style={{minHeight: "calc(100vh - 6.5rem)"}}>
+            <div className="flex md:flex-row flex-col">
+                <div className="md:w-1/5 bg-gradient-to-r from-primary to-primary-200 pt-10 border-none" style={{minHeight: "calc(100vh - 4rem)"}}>
                     <SideBar></SideBar>
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 pt-10">
                     <AnimatePresence exitBeforeEnter initial={false}>
                         <Switch location={location} key={location.key}>
                             <FarmRoute exact path={`${path}`} component={Main}></FarmRoute>

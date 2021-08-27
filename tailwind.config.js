@@ -12,7 +12,8 @@ module.exports = {
           dark: '#008C97',
           light: '#DEF2F2',
           900: '#2E5E12',
-          100: '#AEF6C9'
+          100: '#AEF6C9',
+          200: '#01C1C3'
         }
       },
       backgroundImage: theme => ({
