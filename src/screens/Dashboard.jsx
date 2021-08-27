@@ -31,9 +31,9 @@ const Dashboard = ({ user, isOpen }) => {
                 {isOpen &&
                         <motion.div 
                     
-                        initial={{x: -500, opacity: 0}}
-                        animate={{x: 0, opacity: 1}}
-                        exit={{x: -500, opacity: 0}}
+                        initial={{x: -500, opacity: 0, width: '0'}}
+                        animate={{x: 0, opacity: 1, width: '16.666%'}}
+                        exit={{x: -500, opacity: 0, width: '0'}}
                         transition={{duration: 0.3}}
                         
                         className="md:w-1/6 bg-gradient-to-r from-primary to-primary-200 pt-10 border-none" style={{minHeight: "calc(100vh - 4rem)"}}>
