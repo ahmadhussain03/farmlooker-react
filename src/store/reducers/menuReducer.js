@@ -10,7 +10,7 @@ const menuReducer = (state = {}, actions) => {
   };
 
 export const intialState = {
-    isOpen: false
+    isOpen: true
 }
   
 export default menuReducer;

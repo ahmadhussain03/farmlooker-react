@@ -9,6 +9,9 @@ import FarmIcon from "../icons/FarmIcon"
 import AnimalIcon from "../icons/AnimalIcon"
 import HelpIcon from "../icons/HelpIcon"
 import CartIcon from "../icons/CartIcon"
+import WorkerIcon from '../icons/WorkerIcon'
+import AlertIcon from '../icons/AlertIcon'
+import AssetIcon from '../icons/AssetIcon'
 
 const SideBarItem = ({ text, to, danger, children, icon = null }) => {
     return (
@@ -51,6 +54,9 @@ const SideBar = ({ setLogout, user }) => {
                     <>
                         <SideBarItem icon={<AnimalIcon className="h-8 w-8" />} text="Animal" to={`${url}/animal`} ></SideBarItem>
                         <SideBarItem icon={<CartIcon className="h-8 w-8" />} text="Vaccine Record" to={`${url}/vaccine-record`} ></SideBarItem>
+                        <SideBarItem icon={<AlertIcon className="h-8 w-8" />} text="Disease Alert" to={`${url}/disease-alert`} ></SideBarItem>
+                        <SideBarItem icon={<WorkerIcon className="h-8 w-8" />} text="Worker" to={`${url}/worker`} ></SideBarItem>
+                        <SideBarItem icon={<AssetIcon className="h-8 w-8" />} text="Asset" to={`${url}/asset`} ></SideBarItem>
                     </>
 
                 }

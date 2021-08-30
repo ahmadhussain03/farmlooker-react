@@ -17,6 +17,12 @@ import AllAnimals from './animal/AllAnimals'
 import Main from './Dashboard/Main'
 import AllVaccineRecord from './vaccine_record/AllVaccineRecord'
 import CreateVaccineRecord from './vaccine_record/CreateVaccineRecord'
+import CreateDiseaseAlert from "./DiseaseAlert/CreateDiseaseAlert";
+import AllDiseaseAlert from "./DiseaseAlert/AllDiseaseAlert";
+import AllWorkers from "./Workers/AllWorkers";
+import CreateWorker from "./Workers/CreateWorker";
+import CreateAsset from "./Asset/CreateAsset";
+import AllAsset from "./Asset/AllAsset";
 
 const Dashboard = ({ user, isOpen }) => {
 
@@ -51,8 +57,14 @@ const Dashboard = ({ user, isOpen }) => {
                                 <>
                                     <FarmRoute path={`${path}/animal`} component={AllAnimals}></FarmRoute>
                                     <FarmRoute path={`${path}/vaccine-record`} component={AllVaccineRecord}></FarmRoute>
+                                    <FarmRoute path={`${path}/disease-alert`} component={AllDiseaseAlert}></FarmRoute>
+                                    <FarmRoute path={`${path}/worker`} component={AllWorkers}></FarmRoute>
+                                    <FarmRoute path={`${path}/asset`} component={AllAsset}></FarmRoute>
                                     <FarmRoute path={`${path}/create-animal`} component={CreateAnimal}></FarmRoute>
                                     <FarmRoute path={`${path}/create-vaccine-record`} component={CreateVaccineRecord}></FarmRoute>
+                                    <FarmRoute path={`${path}/create-disease-alert`} component={CreateDiseaseAlert}></FarmRoute>
+                                    <FarmRoute path={`${path}/create-worker`} component={CreateWorker}></FarmRoute>
+                                    <FarmRoute path={`${path}/create-asset`} component={CreateAsset}></FarmRoute>
                                 </>
                             }
                         </Switch>
