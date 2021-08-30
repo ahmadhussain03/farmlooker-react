@@ -1,10 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 import { createUrl, getAuthorizationHeader } from '../../utils/axios'
 
 const $ = require('jquery')
 $.DataTable = require('datatables.net-dt')
 require('datatables.net-responsive-dt')
+
+$.fn.dataTable.ext.errMode = 'none';
 
 const Datatable = ({ url, columns, columnNames }) => {
 
@@ -24,6 +26,8 @@ const Datatable = ({ url, columns, columnNames }) => {
             thFoot.innerHTML = columnName;
             tr.appendChild(th);
             trFoot.appendChild(thFoot);
+
+            return columnName
         })
         
         datatable.current = $(table.current).DataTable({
@@ -42,7 +46,7 @@ const Datatable = ({ url, columns, columnNames }) => {
             },
             columns: columns,
             columnDefs: [
-                { className: 'text-center', targets: '_all' }
+                { className: 'text-center items-center justify-center', targets: '_all' }
             ]
         })      
 
@@ -50,7 +54,7 @@ const Datatable = ({ url, columns, columnNames }) => {
             datatable.current.destroy(true)
         }
 
-    }, [])
+    }, [columnNames, columns, url])
 
     return (
         <div className="bg-gray-100 shadow-lg py-2 px-3 w-full rounded-md max-w-full" style={{width: '100%'}}>

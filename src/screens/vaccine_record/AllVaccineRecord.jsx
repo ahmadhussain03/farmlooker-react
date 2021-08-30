@@ -1,7 +1,5 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
-
-import axios from '../../utils/axios'
 
 import Button from '../../components/auth/form/Button'
 import Container from '../../components/main/Container'
@@ -23,21 +21,7 @@ const columns = [
 ]
 
 function AllVaccineRecord() {
-    const [vaccineRecords, setVaccineRecords] = useState([])
     const history = useHistory()
-
-    const getVaccineRecords = useCallback(async () => {
-        let response = await axios.get('vaccine_record')
-        setVaccineRecords(response.data.data.data)
-    }, [])
-
-    useEffect(() => {
-        getVaccineRecords()
-    }, [getVaccineRecords])
-
-    const handleItemDeleted = (item) => {
-        getVaccineRecords()
-    }
 
     return (
         <Container title="Vaccine Records">

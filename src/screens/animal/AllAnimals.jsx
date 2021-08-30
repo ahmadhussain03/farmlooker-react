@@ -1,7 +1,5 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React from 'react'
 import { useHistory } from 'react-router-dom'
-
-import axios from '../../utils/axios'
 
 import Button from '../../components/auth/form/Button'
 import Container from '../../components/main/Container'
@@ -32,22 +30,7 @@ const columns = [
 
 function AllAnimals() {
 
-    const [animals, setAnimals] = useState([])
     const history = useHistory()
-
-    const getAnimals = useCallback(async () => {
-        let response = await axios.get('animal')
-        setAnimals(response.data.data.data)
-      }, [])
-
-    useEffect(() => {
-        getAnimals()
-    }, [getAnimals])
-
-    const handleItemDeleted = (item) => {
-        console.log(item)
-        getAnimals()
-    }
 
     return (
         <Container title="Animals">

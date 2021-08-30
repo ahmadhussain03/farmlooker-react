@@ -57,11 +57,13 @@ const SideBar = ({ setLogout, user }) => {
                         <SideBarItem icon={<AlertIcon className="h-8 w-8" />} text="Disease Alert" to={`${url}/disease-alert`} ></SideBarItem>
                         <SideBarItem icon={<WorkerIcon className="h-8 w-8" />} text="Worker" to={`${url}/worker`} ></SideBarItem>
                         <SideBarItem icon={<AssetIcon className="h-8 w-8" />} text="Asset" to={`${url}/asset`} ></SideBarItem>
+                        <SideBarItem icon={<AnimalIcon className="h-8 w-8" />} text="Trading Animal" to={`${url}/trading-animal`} ></SideBarItem>
+                        <SideBarItem icon={<CartIcon className="h-8 w-8" />} text="Rental Equipment" to={`${url}/rental-equipment`} ></SideBarItem>
                     </>
 
                 }
                 <SideBarItem>
-                    <a onClick={(e) => handleLogout(e)} href="/login" className="flex flex-row space-x-5 items-center justify-left flex-1 p-2"><span><HelpIcon className="h-8 w-8" /></span> <span>Logout</span></a>
+                    <a onClick={(e) => handleLogout(e)} href="/logout" className="flex flex-row space-x-5 items-center justify-left flex-1 p-2"><span><HelpIcon className="h-8 w-8" /></span> <span>Logout</span></a>
                 </SideBarItem>
             </ul>
         </nav>

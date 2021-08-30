@@ -13,9 +13,9 @@ const Input = ({ type, value, onChange, placeholder, error, onFocus, onBlur }) =
             e.currentTarget.type = "text";
             e.currentTarget.placeholder = placeholder;
         }
-    }
 
-    InputType = 'text'
+        InputType = 'text'
+    }
 
     return (
         <div className="flex flex-col w-full">

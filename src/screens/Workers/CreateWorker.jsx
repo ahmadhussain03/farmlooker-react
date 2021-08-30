@@ -84,7 +84,7 @@ const CreateWorker = ({ user }) => {
         setIsLoading(true)
         try {
             
-            const response = await axios.post("worker", {
+            await axios.post("worker", {
                 name,
                 phone_no: phoneNo,
                 address,

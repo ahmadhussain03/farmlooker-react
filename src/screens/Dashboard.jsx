@@ -23,6 +23,11 @@ import AllWorkers from "./Workers/AllWorkers";
 import CreateWorker from "./Workers/CreateWorker";
 import CreateAsset from "./Asset/CreateAsset";
 import AllAsset from "./Asset/AllAsset";
+import AllTradingAnimal from './TradingAnimal/AllTradingAnimal'
+import CreateTradingAnimal from './TradingAnimal/CreateTradingAnimal'
+import AllRentalEquipment from "./RentalEquipment/AllRentalEquipment";
+import CreateRentalEquipment from "./RentalEquipment/CreateRentalEquipment";
+
 
 const Dashboard = ({ user, isOpen }) => {
 
@@ -30,7 +35,7 @@ const Dashboard = ({ user, isOpen }) => {
     const location = useLocation();
 
     return (
-        <div className="bg-primary-light w-full min-h-screen overflow-hidden">
+        <div className="bg-primary-light w-full h-screen overflow-x-hidden">
             <Header></Header>
             <div className="flex md:flex-row flex-col">
                 <AnimatePresence exitBeforeEnter>
@@ -60,11 +65,15 @@ const Dashboard = ({ user, isOpen }) => {
                                     <FarmRoute path={`${path}/disease-alert`} component={AllDiseaseAlert}></FarmRoute>
                                     <FarmRoute path={`${path}/worker`} component={AllWorkers}></FarmRoute>
                                     <FarmRoute path={`${path}/asset`} component={AllAsset}></FarmRoute>
+                                    <FarmRoute path={`${path}/trading-animal`} component={AllTradingAnimal}></FarmRoute>
+                                    <FarmRoute path={`${path}/rental-equipment`} component={AllRentalEquipment}></FarmRoute>
                                     <FarmRoute path={`${path}/create-animal`} component={CreateAnimal}></FarmRoute>
                                     <FarmRoute path={`${path}/create-vaccine-record`} component={CreateVaccineRecord}></FarmRoute>
                                     <FarmRoute path={`${path}/create-disease-alert`} component={CreateDiseaseAlert}></FarmRoute>
                                     <FarmRoute path={`${path}/create-worker`} component={CreateWorker}></FarmRoute>
                                     <FarmRoute path={`${path}/create-asset`} component={CreateAsset}></FarmRoute>
+                                    <FarmRoute path={`${path}/create-trading-animal`} component={CreateTradingAnimal}></FarmRoute>
+                                    <FarmRoute path={`${path}/create-rental-equipment`} component={CreateRentalEquipment}></FarmRoute>
                                 </>
                             }
                         </Switch>

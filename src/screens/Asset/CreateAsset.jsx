@@ -67,7 +67,7 @@ const CreateAsset = ({ user }) => {
         setIsLoading(true)
         try {
             
-            const response = await axios.post("asset", {
+            await axios.post("asset", {
               type,
               price,
               location,
