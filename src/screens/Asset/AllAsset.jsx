@@ -11,7 +11,8 @@ const columnNames = [
     "Price",
     "Purchase Date",
     "Location",
-    "Farm"
+    "Farm",
+    "Action"
 ]
 
 const columns = [
@@ -19,7 +20,11 @@ const columns = [
     {data: 'price', name: 'price'},
     {data: 'purchase_date', name: 'purchase_date'},
     {data: 'location', name: 'location'},
-    {data: 'farm.location', name: 'farm.location'}
+    {data: 'farm.location', name: 'farm.location'},
+    {data: 'action', name: 'action', render: () => {
+            return "<a href='' class='border rounded shadow border-red-600 p-1 text-red-600'>Delete</a>"
+        }
+    }
 ]
 
 function AllAsset() {

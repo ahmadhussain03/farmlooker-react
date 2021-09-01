@@ -47,6 +47,15 @@ const Datatable = ({ url, columns, columnNames }) => {
             columns: columns,
             columnDefs: [
                 { className: 'text-center items-center justify-center', targets: '_all' }
+            ],
+            "aoColumnDefs": [
+                {
+                     "aTargets": [-1],
+                     "mData": null,
+                     "mRender": function (data, type, full) {
+                         return '<a href="#" onclick="alert(\''+ full[0] +'\');">Process</a>';
+                     }
+                 }
             ]
         })      
 
