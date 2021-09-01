@@ -58,5 +58,13 @@ table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before, table.dataT
     color: #fff !important;
 }
 
+.odd {
+    background-color: white !important;
+}
+
+.even {
+    background-color: lightgray !important;
+}
+
 
 @tailwind utilities;

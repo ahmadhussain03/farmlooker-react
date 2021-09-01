@@ -8,9 +8,7 @@ require('datatables.net-responsive-dt')
 
 $.fn.dataTable.ext.errMode = 'none';
 
-const Datatable = ({ url, columns, columnNames }) => {
-
-    console.log(columnNames)
+const Datatable = ({ url, columns, columnNames, listeners = [] }) => {
 
     const table = useRef(null)
     const datatable = useRef(null)
@@ -47,26 +45,33 @@ const Datatable = ({ url, columns, columnNames }) => {
             columns: columns,
             columnDefs: [
                 { className: 'text-center items-center justify-center', targets: '_all' }
-            ],
-            "aoColumnDefs": [
-                {
-                     "aTargets": [-1],
-                     "mData": null,
-                     "mRender": function (data, type, full) {
-                         return '<a href="#" onclick="alert(\''+ full[0] +'\');">Process</a>';
-                     }
-                 }
             ]
-        })      
+        })
+
+        listeners.forEach(listener => {
+
+            $( "#datatable" ).on( "click", listener.key, async (e) => {
+                e.preventDefault()
+                const id = $(e.target.parentNode.parentNode).attr("id")    
+                if(id){
+                    try {
+                        await listener.listener(id)
+                    } catch(e){
+                        console.error(e)
+                    }
+                    datatable.current.ajax.reload()
+                }
+            });
+        })
 
         return () => {
             datatable.current.destroy(true)
         }
 
-    }, [columnNames, columns, url])
+    }, [columnNames, columns, url, listeners])
 
     return (
-        <div className="bg-gray-100 shadow-lg py-2 px-3 w-full rounded-md max-w-full" style={{width: '100%'}}>
+        <div className="bg-gray-100 shadow-lg py-2 px-3 w-full rounded-md max-w-full" id="datatable" style={{width: '100%'}}>
             <table ref={table} className="max-w-full">
                 <thead>
                     <tr>

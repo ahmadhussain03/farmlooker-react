@@ -5,6 +5,7 @@ import Button from '../../components/auth/form/Button'
 import Container from '../../components/main/Container'
 import SimpleInput from '../../components/main/form/SimpleInput'
 import Datatable from '../../components/main/Datatable'
+import axios from '../../utils/axios'
 
 const columnNames = [
     "Name",
@@ -14,7 +15,8 @@ const columnNames = [
     "Location",
     "Joining Date",
     "Duty",
-    "Farm"
+    "Farm",
+    "Action"
 ]
 
 const columns = [
@@ -25,7 +27,26 @@ const columns = [
     {data: 'location', name: 'location'},
     {data: 'joining_date', name: 'joining_date'},
     {data: 'duty', name: 'duty'},
-    {data: 'farm.location', name: 'farm.location'}
+    {data: 'farm.location', name: 'farm.location'},
+    {   name: 'action', 
+        render: () => {
+            return "<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>"
+        }, 
+        searchable: false,
+        orderable: false
+    }
+]
+const listeners = [
+    { 
+        key: '.delete',
+        listener: async (id) => {
+           try {
+            await axios.delete(`worker/${id}`)
+           } catch(e){
+            throw new Error(e)
+           }
+        }
+    }
 ]
 
 function AllWorkers() {
@@ -37,7 +58,7 @@ function AllWorkers() {
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-worker')}>Create Worker</Button>
             </SimpleInput>
-            <Datatable url="worker?client=datatable" columns={columns} columnNames={columnNames} />
+            <Datatable listeners={listeners} url="worker?client=datatable" columns={columns} columnNames={columnNames} />
         </Container>
     )
 }

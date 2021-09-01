@@ -6,6 +6,8 @@ import Container from '../../components/main/Container'
 import SimpleInput from '../../components/main/form/SimpleInput'
 import Datatable from '../../components/main/Datatable'
 
+import axios from '../../utils/axios'
+
 const columnNames = [
     "Animal ID",
     "Animal Type",
@@ -14,7 +16,8 @@ const columnNames = [
     "Sex",
     "DOB",
     "Add As",
-    "Farm"
+    "Farm",
+    "Action"
 ]
 
 const columns = [
@@ -25,7 +28,27 @@ const columns = [
     {data: 'sex', name: 'sex'},
     {data: 'dob', name: 'dob'},
     {data: 'add_as', name: 'add_as'},
-    {data: 'farm.location', name: 'farm.location'}
+    {data: 'farm.location', name: 'farm.location'},
+    {   name: 'action', 
+        render: () => {
+            return "<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>"
+        }, 
+        searchable: false,
+        orderable: false
+    }
+]
+
+const listeners = [
+    { 
+        key: '.delete',
+        listener: async (id) => {
+           try {
+            await axios.delete(`animal/${id}`)
+           } catch(e){
+            throw new Error(e)
+           }
+        }
+    }
 ]
 
 function AllAnimals() {
@@ -37,7 +60,7 @@ function AllAnimals() {
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-animal')}>Create Animal</Button>
             </SimpleInput>
-            <Datatable url="animal?client=datatable" columns={columns} columnNames={columnNames} />
+            <Datatable listeners={listeners} url="animal?client=datatable" columns={columns} columnNames={columnNames} />
         </Container>
     )
 }

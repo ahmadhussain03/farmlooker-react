@@ -138,7 +138,6 @@ const CreateAnimal = ({ user }) => {
                 previous_owner: previousOwner,
                 farm_id: farm
             })
-            console.log(response)
             setFarm(response.data.data)
             setIsLoading(false);
 
