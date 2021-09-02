@@ -1,9 +1,15 @@
 import {
     Switch,
     useRouteMatch,
-    useLocation
+    useLocation,
+    useHistory
   } from "react-router-dom";
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { useEffect } from 'react'
+import {
+    isMobile
+  } from "react-device-detect";
 
 import { connect } from 'react-redux'
 import AuthRoute from '../components/routes/AuthRoute'
@@ -29,10 +35,24 @@ import AllRentalEquipment from "./RentalEquipment/AllRentalEquipment";
 import CreateRentalEquipment from "./RentalEquipment/CreateRentalEquipment";
 
 
-const Dashboard = ({ user, isOpen }) => {
+const Dashboard = ({ user, isOpen, setClose }) => {
 
     let { path } = useRouteMatch();
     const location = useLocation();
+    const history = useHistory()
+
+    useEffect(() => {
+        
+        const unlisten = history.listen((loc, action) => {
+            if(isMobile){
+                setClose()
+            }
+        })
+
+        return () => {
+            unlisten()
+        }
+    }, [history, setClose])
 
     return (
         <div className="bg-primary-light w-full h-screen overflow-x-hidden">
@@ -42,12 +62,12 @@ const Dashboard = ({ user, isOpen }) => {
                 {isOpen &&
                         <motion.div 
                     
-                        initial={{x: -500, opacity: 0, width: '0'}}
-                        animate={{x: 0, opacity: 1, width: '16.666%'}}
-                        exit={{x: -500, opacity: 0, width: '0'}}
+                        initial={{x: -500, opacity: 0}}
+                        animate={{x: 0, opacity: 1}}
+                        exit={{x: -500, opacity: 0}}
                         transition={{duration: 0.3}}
                         
-                        className="md:w-1/6 bg-gradient-to-r from-primary to-primary-200 pt-10 border-none" style={{minHeight: "calc(100vh - 4rem)"}}>
+                        className="md:w-1/6 bg-gradient-to-r from-primary to-primary-200 pt-8 border-none overflow-y-auto" style={{height: "calc(100vh - 4rem)"}}>
                             <SideBar></SideBar>
                         </motion.div>
                 }
@@ -84,6 +104,12 @@ const Dashboard = ({ user, isOpen }) => {
     )
 }
 
+const mapDispatchToProps = dispatch => {
+    return {
+      setClose: () => dispatch({ type: "SET_CLOSE" })
+    };
+};
+
 const mapStateToProps = state => {
     return {
       user: state.auth.user,
@@ -91,4 +117,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, null)(Dashboard)
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)
