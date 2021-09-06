@@ -61,7 +61,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                 <AnimatePresence exitBeforeEnter>
                 {isOpen &&
                         <motion.div 
-                    
+                        
                         initial={{x: -500, opacity: 0}}
                         animate={{x: 0, opacity: 1}}
                         exit={{x: -500, opacity: 0}}
