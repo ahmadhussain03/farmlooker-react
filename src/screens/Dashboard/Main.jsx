@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState } from 'react'
+import { Link } from 'react-router-dom';
 import axios from '../../utils/axios'
 
 const SummaryMainCount = ({ mainText = '', subText = '', isFirst = false }) => {
@@ -9,16 +10,23 @@ const SummaryMainCount = ({ mainText = '', subText = '', isFirst = false }) => {
     );
 }
 
+const SummarySubCount = ({ mainText = '', subText = '', isFirst = false }) => {
+   return (
+    <Link to={`/dashboard/summary/` + subText} className="flex-1 w-full cursor-pointer hover:bg-gray-200 rounded-lg">
+        <h2 className={`text-center text-xl text-primary-200 font-semibold ${ isFirst ? 'border-r-2 border-primary' : '' }`}>{mainText} <span className="text-sm block text-gray-700 font-normal">{subText}</span></h2>
+    </Link>
+   )
+}
+
 const Main = () => {
 
-    const [data, setData] = useState({})
+    const [data, setData] = useState([])
     const [animalCount, setAnimalCount] = useState(0)
     const [farmCount, setFarmCount] = useState(0)
 
     const getSummaryData = useCallback(async () => {
         let response = await axios.get("summary")
-        console.log(response.data)
-        setData(response.data)
+        setData(response.data.data)
     }, [])
 
     const getAnimalCount = useCallback(async () => {
@@ -36,21 +44,25 @@ const Main = () => {
         getAnimalCount()
         getFarmCount()
         getSummaryData()
-      }, []);
+      }, [getAnimalCount, getFarmCount, getSummaryData]);
 
     return (
-            <div className="max-w-full mx-auto">
-                <div className="max-w-2xl flex flex-col justify-center items-center mx-auto">
+            <div className="max-w-full mx-auto ">
+                <div className="max-w-full flex flex-col justify-center items-center mx-5 bg-gray-100 rounded-lg shadow-lg p-5 space-y-5">
                     <div className="flex-1 w-full text-center">
-                        <h1 className="text-5xl text-primary font-semibold border-b-2 border-primary pb-3 w-full">Summary</h1>
+                        <h1 className="text-5xl text-primary font-semibold border-b-2 border-primary pb-5 w-full">Summary</h1>
                     </div>
                     <div className="flex flex-row justify-center items-center w-full pt-5">
                         <SummaryMainCount mainText={animalCount} subText="Total Animals" isFirst={true} />
                         <SummaryMainCount mainText={farmCount} subText="Total Farms" />
                     </div>
-                    <div className="pt-3">
-
-                    </div>
+                    { data && data.length &&
+                        <div className="flex flex-row justify-center items-center w-full pt-10">
+                            {data.length && data.map((d, index) => (
+                                <SummarySubCount mainText={d.count} subText={d.type} key={d.type} isFirst={index === data.length - 1 ? false : true} />
+                            ))}
+                        </div>
+                    }
                 </div>
             </div>
     )
