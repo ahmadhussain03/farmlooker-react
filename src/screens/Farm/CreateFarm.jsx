@@ -47,7 +47,6 @@ const CreateFarm = ({ setFarm }) => {
         try {
             
             const response = await axios.post("farm", {location: location, area_of_hector: area})
-            console.log(response)
             setFarm(response.data.data)
             setIsLoading(false);
 
@@ -64,7 +63,7 @@ const CreateFarm = ({ setFarm }) => {
                 <Input error={errors?.data?.location} value={location} onChange={handleLocationChange} type="text" placeholder="Farm Location"  />
             </FormGroup>
             <FormGroup>
-                <Input error={errors?.data?.area_of_hector} value={area} onChange={handleAreaChange} type="text" placeholder="Area of Hector" className="py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none" />
+                <Input error={errors?.data?.area_of_hector} value={area} onChange={handleAreaChange} type="text" placeholder="Area In Hector" className="py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none" />
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading}  type="submit">Create Farm</Button>  

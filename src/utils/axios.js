@@ -1,8 +1,11 @@
 import axios from "axios";
 import cookie from 'js-cookie';
 
-const baseUrl = "http://farmlooker.test/api";
-// const baseUrl = "http://3.250.158.121/api"
+let baseUrl = "http://3.250.158.121/api";
+
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    baseUrl = "http://farmlooker.test/api";
+}
 
 const instance = axios.create({
     baseURL: `${baseUrl}/admin`,

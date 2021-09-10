@@ -9,6 +9,7 @@ import axios from '../../utils/axios'
 
 
 const columnNames = [
+    "Certificate",
     "Animal ID",
     "Name",
     "Reason",
@@ -17,34 +18,44 @@ const columnNames = [
 ]
 
 const columns = [
+    {data: 'certificate_image', name: 'certificate_image'},
     {data: 'animal_id', name: 'animals.animal_id'},
     {data: 'name', name: 'name'},
     {data: 'reason', name: 'reason'},
     {data: 'date', name: 'date'},
     {   name: 'action', 
         render: () => {
-            return "<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>"
+            return ` 
+                <a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
+                <a href='#' class='border rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
+            `
         }, 
         searchable: false,
         orderable: false
     }
 ]
 
-const listeners = [
-    { 
-        key: '.delete',
-        listener: async (id) => {
-           try {
-            await axios.delete(`vaccine_record/${id}`)
-           } catch(e){
-            throw new Error(e)
-           }
-        }
-    }
-]
-
 function AllVaccineRecord() {
     const history = useHistory()
+
+    const listeners = [
+        { 
+            key: '.delete',
+            listener: async (id) => {
+               try {
+                await axios.delete(`vaccine_record/${id}`)
+               } catch(e){
+                throw new Error(e)
+               }
+            }
+        },
+        {
+            key: '.edit',
+            listener: async (id) => {
+                return history.push(`edit-vaccine-record/${id}`)
+            }
+        }
+    ]
 
     return (
         <Container title="Vaccine Records">

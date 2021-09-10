@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
-import {useHistory} from 'react-router-dom'
+import { useState, useCallback, useEffect } from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Button from '../../components/auth/form/Button'
@@ -11,8 +11,8 @@ import { FormGroup } from '../../components/main/form/Form'
 
 import axios from '../../utils/axios'
 
-const CreateWorker = ({ user }) => {
 
+const EditWorker = ({ user }) => {
     const [name, setName] = useState("")
     const [phoneNo, setPhoneNo] = useState("")
     const [address, setAddress] = useState("")
@@ -84,13 +84,33 @@ const CreateWorker = ({ user }) => {
         setErrors(errors)
     }
 
-    const handleCreateWorker = async (e) => {
+    const { id } = useParams()
+
+    const getWorker = useCallback(async () => {
+        let response = await axios.get(`worker/${id}`)
+        let worker = response.data.data
+        setAddress(worker.address)
+        setDuty(worker.duty)
+        setName(worker.name)
+        setPhoneNo(worker.phone_no)
+        setPassport(worker.id_or_passport)
+        setPay(worker.pay)
+        setLocation(worker.location)
+        setJoiningDate(worker.joining_date)
+        setFarm(worker.farm_id)
+    }, [id])
+
+    useEffect(() => {
+        getWorker()
+    }, [getWorker])
+
+    const handleUpdateWorker = async (e) => {
         e.preventDefault()
         
         setIsLoading(true)
         try {
             
-            await axios.post("worker", {
+            await axios.put(`worker/${id}`, {
                 name,
                 phone_no: phoneNo,
                 address,
@@ -113,7 +133,7 @@ const CreateWorker = ({ user }) => {
     const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
 
     return (
-        <Form onSubmit={handleCreateWorker} formHeading="Add Worker" errors={errors}>
+        <Form onSubmit={handleUpdateWorker} formHeading="Edit Worker" errors={errors}>
             <FormGroup>
                 <Input error={errors?.data?.name} value={name} onChange={handleNameChange} type="text" placeholder="Name"  />
             </FormGroup>
@@ -142,7 +162,7 @@ const CreateWorker = ({ user }) => {
                 <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
             </FormGroup>
             <FormGroup>
-                <Button disabled={isLoading} type="submit">Create Worker</Button>  
+                <Button disabled={isLoading} type="submit">Update Worker</Button>  
             </FormGroup>
         </Form>
     )
@@ -154,4 +174,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(CreateWorker)
+export default connect(mapStateToProps)(EditWorker)

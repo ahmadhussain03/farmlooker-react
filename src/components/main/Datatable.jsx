@@ -49,7 +49,6 @@ const Datatable = ({ url, columns, columnNames, listeners = [] }) => {
         })
 
         listeners.forEach(listener => {
-
             $( "#datatable" ).on( "click", listener.key, async (e) => {
                 e.preventDefault()
                 const id = $(e.target.parentNode.parentNode).attr("id")    
@@ -65,6 +64,9 @@ const Datatable = ({ url, columns, columnNames, listeners = [] }) => {
         })
 
         return () => {
+            listeners.forEach(listener => {
+                $("#datatable").off("click", listener.key)
+            })
             datatable.current.destroy(true)
         }
 

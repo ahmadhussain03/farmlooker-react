@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
-import {useHistory} from 'react-router-dom'
+import { useState, useCallback, useEffect } from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Button from '../../components/auth/form/Button'
@@ -26,7 +26,7 @@ const diseaseOptions = [
     {value: 'healthy', text: 'Healthy'},
 ];
 
-const CreateAnimal = ({ user }) => {
+const EditAnimal = ({ user }) => {
 
     const [animalId, setAnimalId] = useState("")
     const [type, setType] = useState("")
@@ -41,7 +41,35 @@ const CreateAnimal = ({ user }) => {
     const [farm, setFarm] = useState("")
     const [errors, setErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
+    
+    const {id} = useParams();
     const history = useHistory()
+
+    const getAnimal = useCallback(async () => {
+        try {
+            
+            let response = await axios.get(`animal/${id}`)
+            const animal = response.data.data
+            setAnimalId(animal.animal_id)
+            setType(animal.type)
+            setBreed(animal.breed)
+            setAddAs(animal.add_as)
+            setSex(animal.sex)
+            setDob(animal.dob)
+            setDisease(animal.disease)
+            setFarm(animal.farm_id)
+            setPrice(animal.price ?? '')
+            setPreviousOwner(animal.previous_owner ?? '')
+            setPurchaseDate(animal.purchase_date ?? '')
+        } catch(e){
+            console.log(e)
+        }
+    }, [id])
+
+    useEffect(() => {
+        getAnimal()
+
+    }, [getAnimal])
 
     
     const handleAnimalIdChange = e => {
@@ -111,13 +139,13 @@ const CreateAnimal = ({ user }) => {
         setErrors(errors)
     }
 
-    const handleCreateAnimal = async (e) => {
+    const handleEditAnimal = async (e) => {
         e.preventDefault()
         
         setIsLoading(true)
         try {
             
-            const response = await axios.post("animal", {
+            const response = await axios.put(`animal/${id}`, {
                 animal_id: animalId,
                 type,
                 breed,
@@ -143,7 +171,7 @@ const CreateAnimal = ({ user }) => {
     const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
 
     return (
-        <Form onSubmit={handleCreateAnimal} formHeading="Add Animal" errors={errors}>
+        <Form onSubmit={handleEditAnimal} formHeading="Edit Animal" errors={errors}>
             <FormGroup>
                 <Input error={errors?.data?.animal_id} value={animalId} onChange={handleAnimalIdChange} type="text" placeholder="Animal ID"  />
             </FormGroup>
@@ -182,7 +210,7 @@ const CreateAnimal = ({ user }) => {
                 <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
             </FormGroup>
             <FormGroup>
-                <Button disabled={isLoading} type="submit">Create Animal</Button>  
+                <Button disabled={isLoading} type="submit">Update Animal</Button>  
             </FormGroup>
         </Form>
     )
@@ -194,4 +222,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(CreateAnimal)
+export default connect(mapStateToProps)(EditAnimal)

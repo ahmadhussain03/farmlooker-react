@@ -1,6 +1,9 @@
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback, useState, useRef } from 'react'
 import { Link } from 'react-router-dom';
+import axiosInstance from 'axios';
+
 import axios from '../../utils/axios'
+
 
 const SummaryMainCount = ({ mainText = '', subText = '', isFirst = false }) => {
     return (
@@ -24,17 +27,27 @@ const Main = () => {
     const [animalCount, setAnimalCount] = useState(0)
     const [farmCount, setFarmCount] = useState(0)
 
+    const summaryRequestSource = useRef(null)
+    const farmRequestSource = useRef(null)
+    const animalRequestSource = useRef(null)
+
     const getSummaryData = useCallback(async () => {
+        summaryRequestSource.current = axiosInstance.CancelToken.source()
+
         let response = await axios.get("summary")
         setData(response.data.data)
     }, [])
 
     const getAnimalCount = useCallback(async () => {
+        animalRequestSource.current = axiosInstance.CancelToken.source()
+
         let response = await axios.get("animal")
         setAnimalCount(response.data.data.total)
     }, [])
 
     const getFarmCount = useCallback(async () => {
+        farmRequestSource.current = axiosInstance.CancelToken.source()
+
         let response = await axios.get("farm")
         setFarmCount(response.data.data.total)
     }, [])
@@ -44,6 +57,12 @@ const Main = () => {
         getAnimalCount()
         getFarmCount()
         getSummaryData()
+
+        return () => {
+            summaryRequestSource.current.cancel("Cancelling request")
+            farmRequestSource.current.cancel("Cancelling request")
+            animalRequestSource.current.cancel("Cancelling request")
+        }
       }, [getAnimalCount, getFarmCount, getSummaryData]);
 
     return (

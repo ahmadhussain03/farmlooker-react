@@ -12,7 +12,7 @@ const columnNames = [
     "Phone No",
     "Address",
     "Pay",
-    "Location",
+    "ID/Passport",
     "Joining Date",
     "Duty",
     "Farm",
@@ -24,34 +24,42 @@ const columns = [
     {data: 'phone_no', name: 'phone_no'},
     {data: 'address', name: 'address'},
     {data: 'pay', name: 'pay'},
-    {data: 'location', name: 'location'},
+    {data: 'id_or_passport', name: 'id_or_passport'},
     {data: 'joining_date', name: 'joining_date'},
     {data: 'duty', name: 'duty'},
     {data: 'farm.location', name: 'farm.location'},
     {   name: 'action', 
         render: () => {
-            return "<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>"
+            return `<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
+            <a href='#' class='border rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>`
         }, 
         searchable: false,
         orderable: false
-    }
-]
-const listeners = [
-    { 
-        key: '.delete',
-        listener: async (id) => {
-           try {
-            await axios.delete(`worker/${id}`)
-           } catch(e){
-            throw new Error(e)
-           }
-        }
     }
 ]
 
 function AllWorkers() {
 
     const history = useHistory()
+
+    const listeners = [
+        { 
+            key: '.delete',
+            listener: async (id) => {
+               try {
+                await axios.delete(`worker/${id}`)
+               } catch(e){
+                throw new Error(e)
+               }
+            }
+        },
+        {
+            key: '.edit',
+            listener: async (id) => {
+                return history.push(`edit-worker/${id}`)
+            }
+        }
+    ]
 
     return (
         <Container title="Workers">

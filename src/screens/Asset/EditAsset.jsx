@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
-import {useHistory} from 'react-router-dom'
+import { useState, useCallback, useEffect } from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Button from '../../components/auth/form/Button'
@@ -11,7 +11,7 @@ import { FormGroup } from '../../components/main/form/Form'
 
 import axios from '../../utils/axios'
 
-const CreateAsset = ({ user }) => {
+const EditAsset = ({ user }) => {
 
     const [type, setType] = useState("")
     const [price, setPrice] = useState("")
@@ -70,12 +70,29 @@ const CreateAsset = ({ user }) => {
         setErrors(errors)
     }
 
-    const handleCreateAsset = async (e) => {
+    const { id } = useParams()
+
+    const getAsset = useCallback(async () => {
+        let response = await axios.get(`asset/${id}`)
+        let asset = response.data.data
+
+        setFarm(asset.farm_id)
+        setType(asset.type)
+        setPrice(asset.price)
+        setPurchaseDate(asset.purchase_date)
+        setLocation(asset.location)
+    }, [id])
+
+    useEffect(() => {
+        getAsset()
+    }, [getAsset])
+
+    const handleUpdateAsset = async (e) => {
         e.preventDefault()
 
         const formData = new FormData();
 
-        if(image){
+        if(image && image.pictureAsFile){
             formData.append("image", image.pictureAsFile)
         }
 
@@ -84,11 +101,12 @@ const CreateAsset = ({ user }) => {
         formData.append("location", location)
         formData.append("purchase_date", purchaseDate)
         formData.append("farm_id", farm)
+        formData.append("_method", "PUT")
         
         setIsLoading(true)
         try {
             
-            await axios.post("asset", formData, {
+            await axios.post(`asset/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -105,7 +123,7 @@ const CreateAsset = ({ user }) => {
     const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
 
     return (
-        <Form onSubmit={handleCreateAsset} formHeading="Add Asset" errors={errors}>
+        <Form onSubmit={handleUpdateAsset} formHeading="Edit Asset" errors={errors}>
             <FormGroup>
                 <Input error={errors?.data?.type} value={type} onChange={handleTypeChange} type="text" placeholder="Type"  />
             </FormGroup>
@@ -125,7 +143,7 @@ const CreateAsset = ({ user }) => {
                 <Input error={errors?.data?.image} onChange={handleImageChange} type="file" placeholder="Image"  />
             </FormGroup>
             <FormGroup>
-                <Button disabled={isLoading} type="submit">Create Asset</Button>  
+                <Button disabled={isLoading} type="submit">Update Asset</Button>  
             </FormGroup>
         </Form>
     )
@@ -137,4 +155,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(CreateAsset)
+export default connect(mapStateToProps)(EditAsset)

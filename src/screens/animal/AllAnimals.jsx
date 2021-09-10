@@ -31,29 +31,38 @@ const columns = [
     {data: 'farm.location', name: 'farm.location'},
     {   name: 'action', 
         render: () => {
-            return "<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>"
+            return `
+                <a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
+                <a href='#' class='border rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
+            `
         }, 
         searchable: false,
         orderable: false
     }
 ]
 
-const listeners = [
-    { 
-        key: '.delete',
-        listener: async (id) => {
-           try {
-            await axios.delete(`animal/${id}`)
-           } catch(e){
-            throw new Error(e)
-           }
-        }
-    }
-]
-
 function AllAnimals() {
 
     const history = useHistory()
+
+    const listeners = [
+        { 
+            key: '.delete',
+            listener: async (id) => {
+               try {
+                await axios.delete(`animal/${id}`)
+               } catch(e){
+                throw new Error(e)
+               }
+            }
+        },
+        {
+            key: '.edit',
+            listener: async (id) => {
+                history.push(`edit-animal/${id}`)
+            }
+        }
+    ]
 
     return (
         <Container title="Animals">

@@ -20,29 +20,28 @@ const columns = [
     {data: 'symptoms', name: 'symptoms'},
     {   name: 'action', 
         render: () => {
-            return "<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>"
+            return `<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>`
         }, 
         searchable: false,
         orderable: false
     }
 ]
 
-const listeners = [
-    { 
-        key: '.delete',
-        listener: async (id) => {
-           try {
-            await axios.delete(`disease_alert/${id}`)
-           } catch(e){
-            throw new Error(e)
-           }
-        }
-    }
-]
-
 function AllDiseaseAlert() {
 
     const history = useHistory()
+    const listeners = [
+        { 
+            key: '.delete',
+            listener: async (id) => {
+            try {
+                await axios.delete(`disease_alert/${id}`)
+            } catch(e){
+                throw new Error(e)
+            }
+            }
+        }
+    ]
 
     return (
         <Container title="Disease Alerts">
