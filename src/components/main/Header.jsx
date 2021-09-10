@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import logo from '../../assets/images/logo.jpeg'
+import logo from '../../assets/images/logo.png'
 
 import MenuIcon from '../icons/MenuIcon'
 import CrossIcon from '../icons/CrossIcon'

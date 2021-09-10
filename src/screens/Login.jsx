@@ -8,7 +8,7 @@ import InputField from "../components/auth/form/InputField";
 import AuthContainer from "../components/auth/form/AuthContainer";
 import Error from '../components/auth/form/Error'
 
-import logo from '../assets/images/logo.jpeg'
+import logo from '../assets/images/logo.png'
 import backgroundImage from '../assets/images/background.png'
 
 import axios from "./../utils/axios";

@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 
 import AuthContainer from "../components/auth/form/AuthContainer";
 import AuthForm from "../components/auth/form/AuthForm";
-import logo from '../assets/images/logo.jpeg'
+import logo from '../assets/images/logo.png'
 import backgroundImage from '../assets/images/background.png'
 import InputField from "../components/auth/form/InputField";
 import Button from "../components/auth/form/Button";
