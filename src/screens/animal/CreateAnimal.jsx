@@ -26,6 +26,33 @@ const diseaseOptions = [
     {value: 'healthy', text: 'Healthy'},
 ];
 
+const typeOptions = [
+    {value: 'pig', text: 'Pig'},
+    {value: 'cattle', text: 'Cattle'},
+    {value: 'goat', text: 'Goat'},
+];
+
+const breedOptions = {
+    pig: [
+        "Pig Breed","Red Wattle","Mukota","Mora Romagnola","Poland China", "Large White", "Ossabaw Island", "Spotted", "Lacombe",
+            "Thuoc Nhieu", "Norwegian Landrace","French Landrace","Swallow Belied Mangalitza","Cantonese Pig","Mulefoot","Krskopolje", "Minzhu", "Mangalitza",
+            "Gloucestershire Old Spots","British Landrace","Bantu","Philippine Native","Chester White","Welsh","Wuzhishan","Lithuanian Native","Saddleback",
+            "German Landrace","Tamworth","Belgian Landrace","Iberian","Hereford","Beijing Black","Large Black","Fengjing","Guinea Hog","Mong Cai","Meishan",
+            "Jinhua","American Landrace","Hezuo","Duroc","Danish Landrace","Turopolje","Neijiang","Oxford Sandy and Black","Swedish Landrace","Bulgarian White",
+            "Middle White", "Italian Landrace","Belarus Black Pied","Czech Improved White","American Yorkshire","Large Black-white","Ba Xuyen","Choctaw Hog",
+            "Hampshire","British Lop" ,"Vietnamese Potbelly","Berkshire","Kunekune","Pietrain","Dutch Landrace","Ningxiang","Kele","Tibetan","Arapawa Island",
+            "Yorkshire", "Finnish Landrace","Angeln saddleback", "Other"
+    ],
+    goat: [
+        "Goat Breed","Angora", "Boer","LaMancha","Nubian" ,"Oberhasli" ,"Saanen","Toggenburg","Other"
+    ],
+    cattle: [
+        "Cattle Breed","Afrikaner Cattle", "Angus Beef/Aberdeen Angus", "Ankole Cattle", "Beefmaster Cattle","Bonsmara Cattle",
+            "Boran Cattle","Brahman Cattle", "Braunvieh Cattle", "Charolais Cattle", "Drakensberger Cattle","Hereford Cattle","Limousin Cattle",
+            "Nguni Cattle","Santa Gertrudis Cattle","Shorthorn Cattle","Simbra Cattle","Simmentaler Cattle", "Sussex Cattle","Tuli Cattle","Wagyu Beef","Other"
+    ]
+};
+
 const CreateAnimal = ({ user }) => {
 
     const [animalId, setAnimalId] = useState("")
@@ -148,10 +175,10 @@ const CreateAnimal = ({ user }) => {
                 <Input error={errors?.data?.animal_id} value={animalId} onChange={handleAnimalIdChange} type="text" placeholder="Animal ID"  />
             </FormGroup>
             <FormGroup>
-                <Input error={errors?.data?.type} value={type} onChange={handleTypeChange} type="text" placeholder="Type"  />
+                <Select error={errors?.data?.type} value={type} onChange={handleTypeChange} placeholder="Type" options={typeOptions}></Select>
             </FormGroup>
             <FormGroup>
-                <Input error={errors?.data?.breed} value={breed} onChange={handleBreedChange} type="text" placeholder="Breed"  />
+                <Select error={errors?.data?.breed} value={breed} onChange={handleBreedChange} placeholder="Breed" options={type ? breedOptions[type].map(text => ({ value: text, text })) : []}></Select>
             </FormGroup>
             <FormGroup>
                 <Select error={errors?.data?.add_as} value={addAs} onChange={handleAddAsChange} placeholder="Add As" options={addAsOptions}></Select>

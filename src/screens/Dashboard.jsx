@@ -40,6 +40,8 @@ import EditWorker from './Workers/EditWorker';
 import EditAsset from './Asset/EditAsset';
 import EditTradingAnimal from './TradingAnimal/EditTradingAnimal';
 import EditRentalEquipment from './RentalEquipment/EditRentalEquipment';
+import HomeTradingAnimal from './TradingAnimal/HomeTradingAnimal';
+import HomeRentalEquipment from './RentalEquipment/HomeRentalEquipment';
 
 
 const Dashboard = ({ user, isOpen, setClose }) => {
@@ -99,9 +101,11 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                         <FarmRoute path={`${path}/edit-worker/:id`} component={EditWorker}></FarmRoute>
                                         <FarmRoute path={`${path}/asset`} component={AllAsset}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-asset/:id`} component={EditAsset}></FarmRoute>
-                                        <FarmRoute path={`${path}/trading-animal`} component={AllTradingAnimal}></FarmRoute>
+                                        <FarmRoute path={`${path}/trading-animal`} component={HomeTradingAnimal}></FarmRoute>
+                                        <FarmRoute path={`${path}/my-trading-animal`} component={AllTradingAnimal}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-trading-animal/:id`} component={EditTradingAnimal}></FarmRoute>
-                                        <FarmRoute path={`${path}/rental-equipment`} component={AllRentalEquipment}></FarmRoute>
+                                        <FarmRoute path={`${path}/my-rental-equipment`} component={AllRentalEquipment}></FarmRoute>
+                                        <FarmRoute path={`${path}/rental-equipment`} component={HomeRentalEquipment}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-rental-equipment/:id`} component={EditRentalEquipment}></FarmRoute>
                                         <FarmRoute path={`${path}/create-animal`} component={CreateAnimal}></FarmRoute>
                                         <FarmRoute path={`${path}/create-vaccine-record`} component={CreateVaccineRecord}></FarmRoute>

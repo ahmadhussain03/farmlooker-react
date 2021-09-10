@@ -62,7 +62,7 @@ function AllRentalEquipment() {
     ]
 
     return (
-        <Container title="Trading Animals">
+        <Container title="Rental Equipments">
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-rental-equipment')}>Create Rental Equipment</Button>
             </SimpleInput>

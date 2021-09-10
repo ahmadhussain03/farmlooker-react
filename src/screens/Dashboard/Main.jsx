@@ -15,8 +15,10 @@ const SummaryMainCount = ({ mainText = '', subText = '', isFirst = false }) => {
 
 const SummarySubCount = ({ mainText = '', subText = '', isFirst = false }) => {
    return (
-    <Link to={`/dashboard/summary/` + subText} className="flex-1 w-full cursor-pointer hover:bg-gray-200 rounded-lg">
-        <h2 className={`text-center text-xl text-primary-200 font-semibold ${ isFirst ? 'border-r-2 border-primary' : '' }`}>{mainText} <span className="text-sm block text-gray-700 font-normal">{subText}</span></h2>
+    <Link to={`/dashboard/summary/` + subText} className="flex-1 w-full cursor-pointer rounded-lg">
+        <span className="flex items-center justify-center">
+            <h2 className={`text-center text-3xl text-primary-200 font-semibold border-8 border-primary-200 rounded-full p-5 h-32 w-32 hover:shadow-xl transition-all duration-500`}>{mainText} <span className="text-lg block text-gray-700 font-normal">{subText}</span></h2>
+        </span>
     </Link>
    )
 }
@@ -75,7 +77,7 @@ const Main = () => {
                         <SummaryMainCount mainText={animalCount} subText="Total Animals" isFirst={true} />
                         <SummaryMainCount mainText={farmCount} subText="Total Farms" />
                     </div>
-                    { data && data.length &&
+                    { data && data.length > 0 &&
                         <div className="flex flex-row justify-center items-center w-full pt-10">
                             {data.length && data.map((d, index) => (
                                 <SummarySubCount mainText={d.count} subText={d.type} key={d.type} isFirst={index === data.length - 1 ? false : true} />

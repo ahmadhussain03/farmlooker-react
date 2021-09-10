@@ -98,7 +98,7 @@ const CreateTradingAnimal = ({ user }) => {
             })
 
             setIsLoading(false);
-            history.push('/dashboard/trading-animal')
+            history.push('/dashboard/my-trading-animal')
         } catch(e) {
             setIsLoading(false);
             setErrors(e.response.data)
