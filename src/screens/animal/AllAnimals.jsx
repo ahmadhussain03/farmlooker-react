@@ -34,6 +34,7 @@ const columns = [
             return `
                 <a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
                 <a href='#' class='border rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
+                <a href='#' class='border rounded shadow border-green-600 p-1 text-green-600 tree'>Tree</a>
             `
         }, 
         searchable: false,
@@ -60,6 +61,12 @@ function AllAnimals() {
             key: '.edit',
             listener: async (id) => {
                 history.push(`edit-animal/${id}`)
+            }
+        },
+        {
+            key: '.tree',
+            listener: async (id) => {
+                history.push(`tree-animal/${id}`)
             }
         }
     ]

@@ -20,7 +20,7 @@ import SideBar from '../components/main/SideBar'
 import CreateFarm from './Farm/CreateFarm'
 import CreateAnimal from './animal/CreateAnimal'
 import AllAnimals from './animal/AllAnimals'
-import Main from './Dashboard/Main'
+// import Main from './Dashboard/Main'
 import Summary from './Dashboard/Summary'
 import AllVaccineRecord from './vaccine_record/AllVaccineRecord'
 import CreateVaccineRecord from './vaccine_record/CreateVaccineRecord'
@@ -42,6 +42,8 @@ import EditTradingAnimal from './TradingAnimal/EditTradingAnimal';
 import EditRentalEquipment from './RentalEquipment/EditRentalEquipment';
 import HomeTradingAnimal from './TradingAnimal/HomeTradingAnimal';
 import HomeRentalEquipment from './RentalEquipment/HomeRentalEquipment';
+import NewMain from './Dashboard/NewMain';
+import AnimalTree from './animal/AnimalTree';
 
 
 const Dashboard = ({ user, isOpen, setClose }) => {
@@ -86,7 +88,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                     <div className="flex-1 py-10">
                         <AnimatePresence exitBeforeEnter initial={false}>
                             <Switch location={location} key={location.key}>
-                                <FarmRoute exact path={`${path}`} component={Main}></FarmRoute>
+                                <FarmRoute exact path={`${path}`} component={NewMain}></FarmRoute>
                                 <FarmRoute exact path={`${path}/summary/:type`} component={Summary}></FarmRoute>
                                 <AuthRoute exact path={`${path}/create-farm`} component={CreateFarm}></AuthRoute>
                                 
@@ -94,6 +96,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                     <>
                                         <FarmRoute path={`${path}/animal`} component={AllAnimals}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-animal/:id`} component={EditAnimal}></FarmRoute>
+                                        <FarmRoute path={`${path}/tree-animal/:id`} component={AnimalTree}></FarmRoute>
                                         <FarmRoute path={`${path}/vaccine-record`} component={AllVaccineRecord}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-vaccine-record/:id`} component={EditVaccineRecord}></FarmRoute>
                                         <FarmRoute path={`${path}/disease-alert`} component={AllDiseaseAlert}></FarmRoute>

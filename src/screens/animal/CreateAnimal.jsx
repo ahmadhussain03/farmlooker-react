@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import {useHistory} from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -55,10 +55,15 @@ const breedOptions = {
 
 const CreateAnimal = ({ user }) => {
 
+    const [males, setMales] = useState([])
+    const [females, setFemales] = useState([])
+
     const [animalId, setAnimalId] = useState("")
     const [type, setType] = useState("")
     const [breed, setBreed] = useState("")
     const [addAs, setAddAs] = useState("")
+    const [male, setMale] = useState("")
+    const [female, setFemale] = useState("")
     const [sex, setSex] = useState("")
     const [dob, setDob] = useState("")
     const [purchaseDate, setPurchaseDate] = useState("")
@@ -99,6 +104,16 @@ const CreateAnimal = ({ user }) => {
     const handleAddAsChange = e => {
         setAddAs(e.target.value)
         clearErrorMessage('add_as')
+    }
+
+    const handleMaleChange = e => {
+        setMale(e.target.value)
+        clearErrorMessage('male_breeder_id')
+    }
+    
+    const handleFemaleChange = e => {
+        setFemale(e.target.value)
+        clearErrorMessage('female_breeder_id')
     }
 
     const handlePurchaseDateChange = e => {
@@ -155,7 +170,9 @@ const CreateAnimal = ({ user }) => {
                 purchase_date: purchaseDate,
                 price,
                 previous_owner: previousOwner,
-                farm_id: farm
+                farm_id: farm,
+                male_breeder_id: male,
+                female_breeder_id: female
             })
             setFarm(response.data.data)
             setIsLoading(false);
@@ -166,6 +183,21 @@ const CreateAnimal = ({ user }) => {
             setErrors(e.response.data)
         }
     }
+
+    const getMaleAnimals = useCallback(async () => {
+        let response = await axios.get('animal?sex=male')
+        setMales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
+    }, [])
+
+    const getFemaleAnimals = useCallback(async () => {
+        let response = await axios.get('animal?sex=female')
+        setFemales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
+    }, [])
+
+    useEffect(() => {
+        getMaleAnimals()
+        getFemaleAnimals()
+    }, [getMaleAnimals, getFemaleAnimals])
 
     const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
 
@@ -202,6 +234,16 @@ const CreateAnimal = ({ user }) => {
                     </FormGroup>
                     <FormGroup>
                         <Input error={errors?.data?.previous_owner} value={previousOwner} onChange={handlePreviousOwnerChange} type="text" placeholder="Previous Owner"  />
+                    </FormGroup>
+                </>
+            )}
+            {addAs && addAs === 'calved' && (
+                <>
+                    <FormGroup>
+                        <Select error={errors?.data?.male_breeder_id} value={male} onChange={handleMaleChange} placeholder="Male Breeder" options={males}></Select>
+                    </FormGroup>
+                    <FormGroup>
+                        <Select error={errors?.data?.female_breeder_id} value={female} onChange={handleFemaleChange} placeholder="Female Breeder" options={females}></Select>
                     </FormGroup>
                 </>
             )}

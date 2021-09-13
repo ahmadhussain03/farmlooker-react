@@ -14,12 +14,36 @@ module.exports = {
           900: '#2E5E12',
           100: '#AEF6C9',
           200: '#01C1C3'
+        },
+        green: {
+          primary: '#26AA20'
+        },
+        yellow: {
+          primary: '#FF9C00'
+        },
+        black: {
+          primary: '#2A1F2A'
+        },
+        custom: {
+          primary: '#E8E0B6',
+          secondary: '#523F1D'
         }
       },
       backgroundImage: theme => ({
         'farm': "url('../images/background.png')",
        })
     },
+    borderWidth: {
+      DEFAULT: '1px',
+      '0': '0',
+      '2': '2px',
+      '3': '3px',
+      '4': '4px',
+      '6': '6px',
+      '8': '8px',
+      '10': '10px',
+      '12': '12px'
+    }
   },
   variants: {
     extend: {
