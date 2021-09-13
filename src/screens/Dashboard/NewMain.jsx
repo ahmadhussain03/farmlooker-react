@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import axiosInstance from 'axios';
 
 import axios from '../../utils/axios'
-
+import {capitalizeFirstLetter} from '../../utils/helper'
 import graph from '../../assets/images/graph.png'
 
 const NewMain = () => {
 
     
     const [data, setData] = useState([])
+    const [vaccinated, setVaccinated] = useState(0)
+    const [nonVaccinated, setNonVaccinated] = useState(0)
+    const [sick, setSick] = useState(0)
+    const [sexData, setSexData] = useState([])
     const [animalCount, setAnimalCount] = useState(0)
     const [farmCount, setFarmCount] = useState(0)
 
@@ -21,8 +25,11 @@ const NewMain = () => {
         summaryRequestSource.current = axiosInstance.CancelToken.source()
 
         let response = await axios.get("summary")
-        console.log("summary", response.data.data)
-        setData(response.data.data)
+        console.log("summary", response.data.data.health_summary)
+        setData(response.data.data.summary)
+        setSexData(response.data.data.health_summary.sex)
+        setVaccinated(response.data.data.health_summary.vaccinated)
+        setSick(response.data.data.health_summary.sick?.count ?? 0)
     }, [])
 
     const getAnimalCount = useCallback(async () => {
@@ -30,15 +37,12 @@ const NewMain = () => {
 
         let response = await axios.get("animal")
         setAnimalCount(response.data.data.total)
-
-        console.log("animal", response.data.data.total)
     }, [])
 
     const getFarmCount = useCallback(async () => {
         farmRequestSource.current = axiosInstance.CancelToken.source()
 
         let response = await axios.get("farm")
-        console.log("farm", response.data.data.total)
         setFarmCount(response.data.data.total)
     }, [])
 
@@ -54,6 +58,10 @@ const NewMain = () => {
             animalRequestSource.current.cancel("Cancelling request")
         }
       }, [getAnimalCount, getFarmCount, getSummaryData]);
+
+      useEffect(() => {
+        setNonVaccinated(animalCount - vaccinated)
+      }, [vaccinated, animalCount])
 
     return (
         <div className="max-w-full mx-auto px-5">
@@ -115,24 +123,23 @@ const NewMain = () => {
                     <div className="flex-1 p-4 rounded-2xl bg-gray-800 shadow-md text-gray-100">
                         <h2 className="text-xl">Farm Health Summary</h2>
                         <div className="flex flex-row flex-wrap px-4 pt-5">
+                            {sexData.map(d => (
+                                <div key={d.sex} className="flex flex-1 flex-col p-3 text-center justify-center items-center">
+                                    <span className="text-3xl font-bold">{d.count}</span>
+                                    <span className="text-green-primary">Total {capitalizeFirstLetter(d.sex)}</span>
+                                </div>
+                            ))}
+                
                             <div className="flex flex-1 flex-col p-3 text-center justify-center items-center">
-                                <span className="text-3xl font-bold">4</span>
-                                <span className="text-green-primary">Total Males</span>
-                            </div>
-                            <div className="flex flex-1 flex-col p-3 text-center justify-center items-center">
-                                <span className="text-3xl font-bold">12</span>
-                                <span className="text-green-primary">Total Females</span>
-                            </div>
-                            <div className="flex flex-1 flex-col p-3 text-center justify-center items-center">
-                                <span className="text-3xl font-bold">10</span>
+                                <span className="text-3xl font-bold">{vaccinated}</span>
                                 <span className="text-green-primary">Vaccinated</span>
                             </div>
                             <div className="flex flex-1 flex-col p-3 text-center justify-center items-center">
-                                <span className="text-3xl font-bold">2</span>
+                                <span className="text-3xl font-bold">{nonVaccinated}</span>
                                 <span className="text-green-primary">Non Vaccinated</span>
                             </div>
                             <div className="flex flex-1 flex-col p-3 text-center justify-center items-center">
-                                <span className="text-3xl font-bold">{farmCount}</span>
+                                <span className="text-3xl font-bold">{sick}</span>
                                 <span className="text-green-primary">Sick</span>
                             </div>
                         </div>
