@@ -132,7 +132,7 @@ const NewMain = () => {
                                 <span className="text-green-primary">Non Vaccinated</span>
                             </div>
                             <div className="flex flex-1 flex-col p-3 text-center justify-center items-center">
-                                <span className="text-3xl font-bold">1</span>
+                                <span className="text-3xl font-bold">{farmCount}</span>
                                 <span className="text-green-primary">Sick</span>
                             </div>
                         </div>
