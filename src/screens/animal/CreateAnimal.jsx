@@ -30,6 +30,7 @@ const typeOptions = [
     {value: 'pig', text: 'Pig'},
     {value: 'cattle', text: 'Cattle'},
     {value: 'goat', text: 'Goat'},
+    {value: 'sheep', text: 'Sheep'},
 ];
 
 const breedOptions = {
@@ -50,6 +51,9 @@ const breedOptions = {
         "Cattle Breed","Afrikaner Cattle", "Angus Beef/Aberdeen Angus", "Ankole Cattle", "Beefmaster Cattle","Bonsmara Cattle",
             "Boran Cattle","Brahman Cattle", "Braunvieh Cattle", "Charolais Cattle", "Drakensberger Cattle","Hereford Cattle","Limousin Cattle",
             "Nguni Cattle","Santa Gertrudis Cattle","Shorthorn Cattle","Simbra Cattle","Simmentaler Cattle", "Sussex Cattle","Tuli Cattle","Wagyu Beef","Other"
+    ],
+    sheep: [
+        "Other"
     ]
 };
 
@@ -167,12 +171,12 @@ const CreateAnimal = ({ user }) => {
                 sex,
                 dob,
                 disease,
-                purchase_date: purchaseDate,
-                price,
-                previous_owner: previousOwner,
+                purchase_date: purchaseDate ?? null,
+                price: price ?? null,
+                previous_owner: previousOwner ?? null,
                 farm_id: farm,
-                male_breeder_id: male,
-                female_breeder_id: female
+                male_breeder_id: male ?? null,
+                female_breeder_id: female ?? null
             })
             setFarm(response.data.data)
             setIsLoading(false);

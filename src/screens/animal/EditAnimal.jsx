@@ -180,9 +180,9 @@ const EditAnimal = ({ user }) => {
                 sex,
                 dob,
                 disease,
-                purchase_date: purchaseDate,
-                price,
-                previous_owner: previousOwner,
+                purchase_date: purchaseDate ?? null,
+                price: price ?? null,
+                previous_owner: previousOwner ?? null,
                 farm_id: farm
             })
             setFarm(response.data.data)
