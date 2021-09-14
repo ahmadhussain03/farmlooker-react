@@ -5,6 +5,7 @@ import axiosInstance from 'axios';
 import axios from '../../utils/axios'
 import {capitalizeFirstLetter} from '../../utils/helper'
 import graph from '../../assets/images/graph.png'
+import LocationIcon from '../../components/icons/LocationIcon';
 
 const NewMain = () => {
 
@@ -16,6 +17,9 @@ const NewMain = () => {
     const [sexData, setSexData] = useState([])
     const [animalCount, setAnimalCount] = useState(0)
     const [farmCount, setFarmCount] = useState(0)
+    const [expense, setExpense] = useState(0)
+    const [currentDate, setCurrentDate] = useState("")
+    const [weather, setWeather] = useState({})
 
     const summaryRequestSource = useRef(null)
     const farmRequestSource = useRef(null)
@@ -25,7 +29,6 @@ const NewMain = () => {
         summaryRequestSource.current = axiosInstance.CancelToken.source()
 
         let response = await axios.get("summary")
-        console.log("summary", response.data.data.health_summary)
         setData(response.data.data.summary)
         setSexData(response.data.data.health_summary.sex)
         setVaccinated(response.data.data.health_summary.vaccinated)
@@ -46,22 +49,49 @@ const NewMain = () => {
         setFarmCount(response.data.data.total)
     }, [])
 
+    const getExpenseTotal = useCallback(async () => {
+        
+        let response = await axios.get("home/expense/total")
+        setExpense(response.data.data)
+    }, [])
+
+    const getWeather = useCallback(async () => {
+        let response = await axios.get("weather")
+        if(response.data?.cod === 200){
+            const data = {
+                location: response.data.name + ", " + response.data.sys.country,
+                temperature: response.data.main.temp,
+                icon: `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+            }
+            console.log(data)
+            setWeather(data)
+        }
+    }, [])
+
 
       useEffect(() => {
         getAnimalCount()
         getFarmCount()
         getSummaryData()
+        getExpenseTotal()
+        getWeather()
 
         return () => {
             summaryRequestSource.current.cancel("Cancelling request")
             farmRequestSource.current.cancel("Cancelling request")
             animalRequestSource.current.cancel("Cancelling request")
         }
-      }, [getAnimalCount, getFarmCount, getSummaryData]);
+      }, [getAnimalCount, getFarmCount, getSummaryData, getExpenseTotal, getWeather]);
 
       useEffect(() => {
         setNonVaccinated(animalCount - vaccinated)
       }, [vaccinated, animalCount])
+
+      useEffect(() => {
+        const date = new Date()
+
+        setCurrentDate(date.toDateString())
+      }, [])
 
     return (
         <div className="max-w-full mx-auto px-5">
@@ -96,7 +126,7 @@ const NewMain = () => {
                                 <div className="flex flex-row space-x-2 justify-center items-center">
                                     <div className="flex flex-col justify-center text-gray-100">
                                         <h2 className="flex-1 font-semibold text-left">Total Selling</h2>
-                                        <h1 className="text-2xl font-bold pt-6">9.2</h1>
+                                        <h1 className="text-2xl font-bold pt-6">{expense}</h1>
                                         <small className="pt-1">Per/Month</small>
                                     </div>
                                     <div className="self-center flex-1">
@@ -154,7 +184,7 @@ const NewMain = () => {
                             </div>
                             <div className="flex-1 flex flex-col space-y-1 text-custom-primary">
                                 <div className="flex justify-between px-2">
-                                    Animal Purchase <span>30000</span>
+                                    Animal Purchase <span>{expense}</span>
                                 </div>
                                 <div className="flex justify-between px-2">
                                     Feed Purchase <span>30000</span>
@@ -174,11 +204,23 @@ const NewMain = () => {
                 </div>
                 <div className="lg:w-4/12 py-2 lg:py-0 w-full px-1 flex flex-col space-y-3">
                     <div className="rounded-2xl p-4 shadow-md bg-purple-600 flex justify-center items-center text-gray-100">
-                        <div>November - July, 2018</div>
+                        <div>{currentDate}</div>
                     </div>
-                    <div className="h-32 bg-blue-600 shadow-md rounded-xl flex justify-center items-center text-gray-100 text-xl font-semibold">
-                        Weather
+                   {weather?.location &&
+                     <div className="flex p-3 overflow-hidden relative flex-col shadow-md rounded-xl bg-blue-400 text-gray-100 text-xl font-semibold">
+                         <div className="h-4 text-xs flex flex-row space-x-1">
+                            <LocationIcon className="h-4 w-4" /> <span>{weather.location}</span>
+                         </div>
+                         <div className="flex-1 pt-2">
+                            <div className="text-4xl">
+                                {weather.temperature} &#176;C
+                            </div>
+                         </div>
+                         <div className="absolute right-0 -bottom-2">
+                             <img src={weather.icon} alt="weather icon" />
+                         </div>
                     </div>
+                   }
                     <div className="flex flex-col rounded-2xl border-gray-800 border-2 p-5 shadow-lg justify-center items-center">
                         <div className="text-2xl font-bold">
                             <h1>Summary</h1>
