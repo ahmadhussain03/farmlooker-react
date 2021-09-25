@@ -44,6 +44,7 @@ import HomeTradingAnimal from './TradingAnimal/HomeTradingAnimal';
 import HomeRentalEquipment from './RentalEquipment/HomeRentalEquipment';
 import NewMain from './Dashboard/NewMain';
 import AnimalTree from './animal/AnimalTree';
+import AllFarms from "./Farm/AllFarms";
 
 
 const Dashboard = ({ user, isOpen, setClose }) => {
@@ -94,6 +95,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                 
                                 { user?.farms?.length > 0 &&
                                     <>
+                                        <FarmRoute exact path={`${path}/farm`} component={AllFarms}></FarmRoute>
                                         <FarmRoute path={`${path}/animal`} component={AllAnimals}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-animal/:id`} component={EditAnimal}></FarmRoute>
                                         <FarmRoute path={`${path}/tree-animal/:id`} component={AnimalTree}></FarmRoute>

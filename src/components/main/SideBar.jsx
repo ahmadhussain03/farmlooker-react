@@ -48,10 +48,15 @@ const SideBar = ({ setLogout, user }) => {
         <nav className="px-2 text-md font-semibold mx-auto text-center">
             <ul className="flex flex-col space-y-2">
                 <SideBarItem icon={<HomeIcon className="h-8 w-8" />} text="Dashboard" to={url} ></SideBarItem>
-                <SideBarItem icon={<FarmIcon className="h-8 w-8" />} text="Farm" to={`${url}/create-farm`} ></SideBarItem>
+                {user?.farms?.length === 0 &&
+                    <>
+                        <SideBarItem icon={<FarmIcon className="h-8 w-8" />} text="Farm" to={`${url}/create-farm`} ></SideBarItem>
+                    </>
+                }
             
                 { user?.farms?.length > 0 &&
                     <>
+                        <SideBarItem icon={<FarmIcon className="h-8 w-8" />} text="Farm" to={`${url}/farm`} ></SideBarItem>
                         <SideBarItem icon={<AnimalIcon className="h-8 w-8" />} text="Animal" to={`${url}/animal`} ></SideBarItem>
                         <SideBarItem icon={<CartIcon className="h-8 w-8" />} text="Vaccine Record" to={`${url}/vaccine-record`} ></SideBarItem>
                         <SideBarItem icon={<AlertIcon className="h-8 w-8" />} text="Disease Alert" to={`${url}/disease-alert`} ></SideBarItem>

@@ -4,8 +4,10 @@ import axiosInstance from 'axios';
 
 import axios from '../../utils/axios'
 import {capitalizeFirstLetter} from '../../utils/helper'
-import graph from '../../assets/images/graph.png'
+// import graph from '../../assets/images/graph.png'
 import LocationIcon from '../../components/icons/LocationIcon';
+import ExpenseChart from '../../components/charts/ExpenseChart';
+
 
 const NewMain = () => {
 
@@ -17,6 +19,10 @@ const NewMain = () => {
     const [sexData, setSexData] = useState([])
     const [animalCount, setAnimalCount] = useState(0)
     const [farmCount, setFarmCount] = useState(0)
+    const [assetsCount, setAssetsCount] = useState(0)
+    const [workerCount, setWorkerCount] = useState(0)
+    const [rentalEquipmentCount, setRentalEquipmentCount] = useState(0)
+    const [liveAdsCount, setLiveAdsCount] = useState(0)
     const [expense, setExpense] = useState(0)
     const [currentDate, setCurrentDate] = useState("")
     const [weather, setWeather] = useState({})
@@ -29,6 +35,11 @@ const NewMain = () => {
         summaryRequestSource.current = axiosInstance.CancelToken.source()
 
         let response = await axios.get("summary")
+        console.log(response.data.data)
+        setAssetsCount(response.data.data.assets)
+        setRentalEquipmentCount(response.data.data.rental_equipment)
+        setWorkerCount(response.data.data.worker)
+        setLiveAdsCount(response.data.data.live_ads)
         setData(response.data.data.summary)
         setSexData(response.data.data.health_summary.sex)
         setVaccinated(response.data.data.health_summary.vaccinated)
@@ -63,7 +74,6 @@ const NewMain = () => {
                 temperature: response.data.main.temp,
                 icon: `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
             }
-            console.log(data)
             setWeather(data)
         }
     }, [])
@@ -81,7 +91,7 @@ const NewMain = () => {
             farmRequestSource.current.cancel("Cancelling request")
             animalRequestSource.current.cancel("Cancelling request")
         }
-      }, [getAnimalCount, getFarmCount, getSummaryData, getExpenseTotal, getWeather]);
+      }, []);
 
       useEffect(() => {
         setNonVaccinated(animalCount - vaccinated)
@@ -117,7 +127,7 @@ const NewMain = () => {
                                         <small className="pt-1">Per/Month</small>
                                     </div>
                                     <div className="self-center flex-1">
-                                        <img src={graph} alt="graph" className="w-full" />
+                                        <ExpenseChart />
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +140,7 @@ const NewMain = () => {
                                         <small className="pt-1">Per/Month</small>
                                     </div>
                                     <div className="self-center flex-1">
-                                        <img src={graph} alt="graph" className="w-full" />
+                                        <ExpenseChart />
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +185,7 @@ const NewMain = () => {
                         </div>
                     </div>
                     <div className="flex-1 p-4 rounded-2xl bg-black-primary shadow-md text-gray-100">
-                        <div className="flex flex-row space-x-5">
+                        <div className="flex flex-row space-x-5 space-y-3">
                             <div className="flex-1 border-r border-gray-100 flex items-center">
                                 <h1 className="text-2xl font-bold flex-1 text-center flex flex-col space-y-2">
                                     <span className="font-normal">120,000</span>
@@ -198,7 +208,8 @@ const NewMain = () => {
                             </div>
                         </div>
                         <div className="flex">
-                            <img src={graph} className="flex-1" alt="graph" />
+                            {/* <img src={graph} className="flex-1" alt="graph" /> */}
+                            <ExpenseChart />
                         </div>
                     </div>
                 </div>
@@ -227,31 +238,41 @@ const NewMain = () => {
                         </div>
                         <div className="pt-5 flex flex-col items-start space-y-3">
                             <div className="flex-1 flex flex-row justify-center items-center space-x-2">
-                                <div className="h-10 w-12 rounded-md bg-blue-600"></div>
+                                <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
+                                    { workerCount }
+                                </div>
                                 <div className="font-semibold">
                                     Total Workers
                                 </div>
                             </div>
                             <div className="flex-1 flex flex-row justify-center items-center space-x-2">
-                                <div className="h-10 w-12 rounded-md bg-blue-600"></div>
+                                <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
+                                    { liveAdsCount }
+                                </div>
                                 <div className="font-semibold">
                                     Live Ads
                                 </div>
                             </div>
                             <div className="flex-1 flex flex-row justify-center items-center space-x-2">
-                                <div className="h-10 w-12 rounded-md bg-blue-600"></div>
+                                <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
+                                    { assetsCount }
+                                </div>
                                 <div className="font-semibold">
                                     Total Assets
                                 </div>
                             </div>
                             <div className="flex-1 flex flex-row justify-center items-center space-x-2">
-                                <div className="h-10 w-12 rounded-md bg-blue-600"></div>
+                                <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
+                                    { rentalEquipmentCount }
+                                </div>
                                 <div className="font-semibold">
                                     Total Rental Equipment
                                 </div>
                             </div>
                             <div className="flex-1 flex flex-row justify-center items-center space-x-2">
-                                <div className="h-10 w-12 rounded-md bg-blue-600"></div>
+                                <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
+                                    { farmCount }
+                                </div>
                                 <div className="font-semibold">
                                     Total Farms
                                 </div>
