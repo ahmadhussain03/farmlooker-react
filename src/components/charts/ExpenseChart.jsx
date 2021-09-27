@@ -1,79 +1,94 @@
-import React from 'react'
-import { Line } from 'react-chartjs-2' 
+import React, { useEffect, useCallback } from 'react'
+import { Line, Bar } from 'react-chartjs-2' 
+
+import axios from '../../utils/axios';
+import { useState } from 'react';
 
 const PrimaryColor = "rgb(255, 156, 0)"						 
 
-let width, height, gradient;
-const getGradient = (ctx, chartArea) => {
-  const chartWidth = chartArea.right - chartArea.left;
-  const chartHeight = chartArea.bottom - chartArea.top;
-  if (gradient === null || width !== chartWidth || height !== chartHeight) {
-    // Create the gradient because this is either the first render
-    // or the size of the chart has changed
-    width = chartWidth;
-    height = chartHeight;
-    gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-    gradient.addColorStop(0, 'transparent');
-    gradient.addColorStop(0.3, 'rgba(255, 156, 0, 0.1)');
-    gradient.addColorStop(0.7, 'rgba(255, 156, 0, 0.3)');
-    gradient.addColorStop(1, 'rgba(255, 156, 0, 0.5)');
-  }
+// let width, height, gradient;
+// const getGradient = (ctx, chartArea) => {
+//   const chartWidth = chartArea.right - chartArea.left;
+//   const chartHeight = chartArea.bottom - chartArea.top;
+//   if (gradient === null || width !== chartWidth || height !== chartHeight) {
+//     // Create the gradient because this is either the first render
+//     // or the size of the chart has changed
+//     width = chartWidth;
+//     height = chartHeight;
+//     gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+//     gradient.addColorStop(0, 'transparent');
+//     gradient.addColorStop(0.3, 'rgba(255, 156, 0, 0.1)');
+//     gradient.addColorStop(0.7, 'rgba(255, 156, 0, 0.3)');
+//     gradient.addColorStop(1, 'rgba(255, 156, 0, 0.5)');
+//   }
 
-  return gradient;
-}
+//   return gradient;
+// }
 
-const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-const data = {
-  labels: labels,
-  datasets: [{
-    data: Array.from({ length: 7 }, () => Math.floor(Math.random() * 100)),
-    fill: true,
-    borderColor: PrimaryColor,
-    tension: 0.1,
-  }]
-};
+const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', "Dec"];
 
 const options = { 
     responsive: true,
+    barThickness: 3,
     scales: {
         y: {
-            display: false,
+            display: false
         },
         x: {
-            display: false,
+            grid: {
+                display: false,
+                drawBorder: false
+            },
         }
     },
     plugins: {
         legend: {
             display: false
         },
-        filler: {
-            propagate: true
-        }
     },
     elements: {
-        line: {
-            backgroundColor: function(context) {
-                const chart = context.chart;
-                const {ctx, chartArea} = chart;
-
-                if (!chartArea) {
-                // This case happens on initial chart load
-                    return null;
-                }
-                return getGradient(ctx, chartArea);
-            },
+        bar: {
+            backgroundColor: PrimaryColor,
             // backgroundColor: 'blue'
-        },
-        point: {
-            radius: 0
         }
-    }
+    },
 }
 
 const ExpenseChart = () => {
+
+    const [data, setData] = useState([])
+
+    const getExpenseChartData = useCallback(async () => {
+        
+        let response = await axios.get("home/expense_chart")
+        let monthData = [];
+        labels.map((mon, index) => {
+            let monthIndex = response.data.data.findIndex(d => d.month === index)
+
+            if(monthIndex != -1){
+                monthData.push(response.data.data[monthIndex].price)
+            } else {
+                monthData.push(0)
+            }
+        })
+
+        setData(monthData)
+    }, [])
+
+    useEffect(() => {
+        getExpenseChartData()
+    }, [])
+
     return (
-        <Line data={data} options={options} 
+        <Bar data={{
+            labels: labels,
+            datasets: [{
+              data: data,
+              fill: true,
+              borderColor: PrimaryColor,
+              tension: 0.1,
+            }]
+          }} options={options} 
         className="w-full"
         />
     )

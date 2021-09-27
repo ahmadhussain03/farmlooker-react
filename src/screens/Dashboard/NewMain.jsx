@@ -107,7 +107,7 @@ const NewMain = () => {
         <div className="max-w-full mx-auto px-5">
             <div className="flex flex-wrap flex-row">
                 <div className="lg:w-8/12 w-full px-1 flex flex-col space-y-3">
-                    <div className="flex flex-row space-x-3">
+                    <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3">
                         <div className="flex-1 relative bg-gray-800 p-6 rounded-2xl shadow-md">
                             <div className="absolute h-20 rounded-full w-1 border-yellow-primary border bg-yellow-primary left-0 top-8"></div>
                             <div className="flex flex-col justify-center">

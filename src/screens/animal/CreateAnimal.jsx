@@ -189,19 +189,27 @@ const CreateAnimal = ({ user }) => {
     }
 
     const getMaleAnimals = useCallback(async () => {
-        let response = await axios.get('animal?sex=male')
-        setMales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
-    }, [])
+        if(type){
+            let response = await axios.get(`animal?sex=male&type=${type}`)
+            setMales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
+        } else {
+            setMales([])
+        }
+    }, [type])
 
     const getFemaleAnimals = useCallback(async () => {
-        let response = await axios.get('animal?sex=female')
-        setFemales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
-    }, [])
+        if(type){
+            let response = await axios.get(`animal?sex=female&type=${type}`)
+            setFemales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
+        } else {
+            setFemales([])
+        }
+    }, [type])
 
     useEffect(() => {
         getMaleAnimals()
         getFemaleAnimals()
-    }, [getMaleAnimals, getFemaleAnimals])
+    }, [type])
 
     const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
 
