@@ -49,9 +49,13 @@ const Datatable = ({ url, columns, columnNames, listeners = [] }) => {
         })
 
         listeners.forEach(listener => {
-            $( "#datatable" ).on( "click", listener.key, async (e) => {
+            $( "#datatable" ).on( "click", 'a' + listener.key, async (e) => {
                 e.preventDefault()
-                const id = $(e.target.parentNode.parentNode).attr("id")    
+
+                let id = $(e.target.parentNode.parentNode).attr("id")   
+                if(!id){
+                    id = $(e.target.parentNode.parentNode.parentNode.parentNode.parentNode).prev().attr('id')  
+                } 
                 if(id){
                     try {
                         await listener.listener(id)

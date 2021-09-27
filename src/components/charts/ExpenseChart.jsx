@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react'
-import { Line, Bar } from 'react-chartjs-2' 
+import { Bar } from 'react-chartjs-2' 
 
 import axios from '../../utils/axios';
 import { useState } from 'react';
@@ -61,14 +61,13 @@ const ExpenseChart = () => {
     const getExpenseChartData = useCallback(async () => {
         
         let response = await axios.get("home/expense_chart")
-        let monthData = [];
-        labels.map((mon, index) => {
+        let monthData = labels.map((mon, index) => {
             let monthIndex = response.data.data.findIndex(d => d.month === index)
 
-            if(monthIndex != -1){
-                monthData.push(response.data.data[monthIndex].price)
+            if(monthIndex !== -1){
+                return response.data.data[monthIndex].price
             } else {
-                monthData.push(0)
+                return 0;
             }
         })
 
