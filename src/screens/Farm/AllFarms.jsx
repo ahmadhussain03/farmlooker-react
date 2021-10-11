@@ -7,12 +7,14 @@ import Datatable from '../../components/main/Datatable'
 import { useHistory } from 'react-router-dom';
 
 const columnNames = [
-    "Location",
+    "Name",
+    "City",
     "Area In Hector"
 ]
 
 const columns = [
-    {data: 'location', name: 'location'},
+    {data: 'name', name: 'name'},
+    {data: 'city.name', name: 'city.name'},
     {data: 'area_of_hector', name: 'area_of_hector'},
 ]
 

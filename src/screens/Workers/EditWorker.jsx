@@ -17,7 +17,6 @@ const EditWorker = ({ user }) => {
     const [phoneNo, setPhoneNo] = useState("")
     const [address, setAddress] = useState("")
     const [pay, setPay] = useState("")
-    const [location, setLocation] = useState("")
     const [joiningDate, setJoiningDate] = useState("")
     const [duty, setDuty] = useState("")
     const [passport, setPassport] = useState("")
@@ -25,12 +24,6 @@ const EditWorker = ({ user }) => {
     const [errors, setErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const history = useHistory()
-
-    
-    const handleLocationChange = e => {
-        setLocation(e.target.value)
-        clearErrorMessage('location')
-    }
 
     const handleNameChange = e => {
         setName(e.target.value)
@@ -95,7 +88,6 @@ const EditWorker = ({ user }) => {
         setPhoneNo(worker.phone_no)
         setPassport(worker.id_or_passport)
         setPay(worker.pay)
-        setLocation(worker.location)
         setJoiningDate(worker.joining_date)
         setFarm(worker.farm_id)
     }, [id])
@@ -115,7 +107,6 @@ const EditWorker = ({ user }) => {
                 phone_no: phoneNo,
                 address,
                 pay,
-                location,
                 joining_date: joiningDate,
                 duty,
                 farm_id: farm,
@@ -145,9 +136,6 @@ const EditWorker = ({ user }) => {
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.pay} value={pay} onChange={handlePayChange} type="number" placeholder="Pay"  />
-            </FormGroup>
-            <FormGroup>
-                <Input error={errors?.data?.location} value={location} onChange={handleLocationChange} type="text" placeholder="Location"  />
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.joining_date} value={joiningDate} onChange={handleJoiningDateChange} type="date" placeholder="Joining Date"  />

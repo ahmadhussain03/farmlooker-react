@@ -29,7 +29,7 @@ const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 const options = { 
     responsive: true,
-    barThickness: 3,
+    barThickness: 6,
     scales: {
         y: {
             display: false

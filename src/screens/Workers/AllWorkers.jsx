@@ -20,7 +20,7 @@ const columnNames = [
 ]
 
 const columns = [
-    {data: 'name', name: 'name'},
+    {data: 'workerName', name: 'workerName', orderable: false},
     {data: 'phone_no', name: 'phone_no'},
     {data: 'address', name: 'address'},
     {data: 'pay', name: 'pay'},

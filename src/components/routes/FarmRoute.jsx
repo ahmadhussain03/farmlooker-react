@@ -5,22 +5,32 @@ import { connect } from "react-redux";
 import AnimatedRoute from './AnimatedRoute'
 
 const FarmRoute = ({ component: Component, ...rest }) => {
+
   return (
     <Route
       {...rest}
       render={props =>
         rest.loggedIn ? (
-          rest.user?.farms?.length > 0 ? (
-              <AnimatedRoute>
-                  <Component {...props} />
-              </AnimatedRoute>
+          rest.user?.email_verified_at !== null ? (
+              rest.user?.farms?.length > 0 ? (
+                  <AnimatedRoute>
+                      <Component {...props} />
+                  </AnimatedRoute>
+              ) : (
+                <Redirect
+                    to={{
+                        pathname: "/dashboard/create-farm",
+                        state: { from: props.location }
+                    }}
+                />
+              )
           ) : (
-            <Redirect
+              <Redirect
                 to={{
-                    pathname: "/dashboard/create-farm",
-                    state: { from: props.location }
+                  pathname: "/verify-email",
+                  state: { from: props.location }
                 }}
-            />
+              />  
           )
         ) : (
           <Redirect

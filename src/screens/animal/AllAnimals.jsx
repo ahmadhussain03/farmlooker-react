@@ -22,8 +22,8 @@ const columnNames = [
 
 const columns = [
     {data: 'animal_id', name: 'animal_id'},
-    {data: 'type', name: 'type'},
-    {data: 'breed', name: 'breed'},
+    {data: 'type.type', name: 'type.type'},
+    {data: 'breed.breed', name: 'breed.breed'},
     {data: 'disease', name: 'disease'},
     {data: 'sex', name: 'sex'},
     {data: 'dob', name: 'dob'},

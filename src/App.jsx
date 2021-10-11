@@ -8,6 +8,8 @@ import GuestRoute from "./components/routes/GuestRoute";
 import SignUp from './screens/SignUp';
 import Login from "./screens/Login";
 import Dashboard from "./screens/Dashboard";
+import VerifyEmail from './screens/VerifyEmail';
+import VerifiedRoute from './components/routes/VerifiedRoute';
 
 const App = () => {
 
@@ -15,7 +17,8 @@ const App = () => {
       <Switch>
         <GuestRoute exact path="/" component={SignUp}></GuestRoute>
         <GuestRoute exact path="/login" component={Login}></GuestRoute>
-        <AuthRoute path="/dashboard" component={Dashboard}></AuthRoute>
+        <AuthRoute exact path="/verify-email" component={VerifyEmail}></AuthRoute>
+        <VerifiedRoute path="/dashboard" component={Dashboard}></VerifiedRoute>
       </Switch>
   );
 }

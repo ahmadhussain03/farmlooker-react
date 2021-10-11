@@ -9,7 +9,7 @@ import Input from '../../components/main/form/Input'
 import Select from '../../components/main/form/Select'
 import { FormGroup } from '../../components/main/form/Form'
 
-import axios from '../../utils/axios'
+import axios, { apiUrl } from '../../utils/axios'
 
 const sexOptions = [
     {value: 'male', text: 'Male'},
@@ -61,6 +61,9 @@ const CreateAnimal = ({ user }) => {
 
     const [males, setMales] = useState([])
     const [females, setFemales] = useState([])
+
+    const [types, setTypes] = useState([])
+    const [breeds, setBreeds] = useState([])
 
     const [animalId, setAnimalId] = useState("")
     const [type, setType] = useState("")
@@ -165,8 +168,8 @@ const CreateAnimal = ({ user }) => {
             
             const response = await axios.post("animal", {
                 animal_id: animalId,
-                type,
-                breed,
+                type_id: type,
+                breed_id: breed,
                 add_as: addAs,
                 sex,
                 dob,
@@ -211,7 +214,30 @@ const CreateAnimal = ({ user }) => {
         getFemaleAnimals()
     }, [type])
 
-    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
+    const getTypes = useCallback(async () => {
+        let response = await axios.get(`${apiUrl}/types`)
+        setTypes(response.data.data.map(t => ({value: t.id, text: t.type})))
+    }, [])
+
+    
+    const getBreeds = useCallback(async () => {
+        if(type) {
+            let response = await axios.get(`${apiUrl}/breeds/${type}`)
+            setBreeds(response.data.data.map(b => ({value: b.id, text: b.breed})))
+        } else {
+            setBreeds([])
+        }
+    }, [type])
+
+    useEffect(() => {
+        getTypes()
+    }, [])
+
+    useEffect(() => {
+        getBreeds()
+    }, [type])
+
+    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.name})) : []
 
     return (
         <Form onSubmit={handleCreateAnimal} formHeading="Add Animal" errors={errors}>
@@ -219,10 +245,10 @@ const CreateAnimal = ({ user }) => {
                 <Input error={errors?.data?.animal_id} value={animalId} onChange={handleAnimalIdChange} type="text" placeholder="Animal ID"  />
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.type} value={type} onChange={handleTypeChange} placeholder="Type" options={typeOptions}></Select>
+                <Select error={errors?.data?.type} value={type} onChange={handleTypeChange} placeholder="Type" options={types}></Select>
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.breed} value={breed} onChange={handleBreedChange} placeholder="Breed" options={type ? breedOptions[type].map(text => ({ value: text, text })) : []}></Select>
+                <Select error={errors?.data?.breed} value={breed} onChange={handleBreedChange} placeholder="Breed" options={breeds}></Select>
             </FormGroup>
             <FormGroup>
                 <Select error={errors?.data?.add_as} value={addAs} onChange={handleAddAsChange} placeholder="Add As" options={addAsOptions}></Select>

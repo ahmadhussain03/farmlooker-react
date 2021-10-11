@@ -69,8 +69,9 @@ const Datatable = ({ url, columns, columnNames, listeners = [] }) => {
 
         return () => {
             listeners.forEach(listener => {
-                $("#datatable").off("click", listener.key)
+                $("#datatable").off("click", 'a' + listener.key)
             })
+
             datatable.current.destroy(true)
         }
 

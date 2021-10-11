@@ -85,7 +85,7 @@ const SignUp = ({setLogin}) => {
             const response = await axios.post("register", {email, password, first_name: firstName, last_name: lastName, password_confirmation: confirmPassword, experience, device_name: browserName, device_token: "myToken", phone_no: phone})
             setLogin(response.data.data.user)
             cookie.set("token", response.data.data.token)
-
+            
             history.push('/dashboard')
         } catch(e) {
             setErrors(e.response.data)
@@ -103,7 +103,7 @@ const SignUp = ({setLogin}) => {
                 <InputField labelText="Last Name" value={lastName} inputType="text" error={errors?.data?.last_name} placeholder="Last Name" onChange={(e) => handleLastNameChange(e)}></InputField>   
                 <InputField labelText="Email" value={email} inputType="email" error={errors?.data?.email} placeholder="Email" onChange={(e) => handleEmailChange(e)}></InputField>   
                 <InputField labelText="Phone Number" value={phone} inputType="text" error={errors?.data?.phone_no} placeholder="Phone Number" onChange={(e) => handlePhoneChange(e)}></InputField>   
-                <InputField labelText="Experience" value={experience} inputType="text" error={errors?.data?.experience} placeholder="Experience In Farming" onChange={(e) => handleExperienceChange(e)}></InputField>   
+                <InputField labelText="Experience" value={experience} inputType="number" error={errors?.data?.experience} placeholder="Experience In Farming" onChange={(e) => handleExperienceChange(e)}></InputField>   
                 <InputField labelText="Password" value={password} inputType="password" error={errors?.data?.password} placeholder="Password" onChange={(e) => handlePasswordChange(e)}></InputField>   
                 <InputField labelText="Confirm Password" value={confirmPassword} inputType="password" placeholder="Confirm Password" onChange={(e) => handleConfirmPasswordChange(e)}></InputField> 
                 <div className="pt-2">

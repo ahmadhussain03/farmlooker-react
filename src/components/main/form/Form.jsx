@@ -16,9 +16,9 @@ export const FormGroup = ({children}) => {
     )
 }
 
-const Form = ({ children, onSubmit, formHeading, errors }) => {
+const Form = ({ children, onSubmit, formHeading, errors, isPadded = true }) => {
     return (
-        <form onSubmit={onSubmit} className="flex items-center flex-col px-5 mx-auto max-w-3xl">
+        <form onSubmit={onSubmit} className={`flex items-center flex-col ${isPadded ? 'px-5' : 'px-0'} ${isPadded ? 'max-w-3xl' : 'w-full'} mx-auto`}>
             {formHeading && <FormHeading>{formHeading}</FormHeading>}
             {errors && errors.message && 
                 (

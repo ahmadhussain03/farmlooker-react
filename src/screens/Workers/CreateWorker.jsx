@@ -17,7 +17,6 @@ const CreateWorker = ({ user }) => {
     const [phoneNo, setPhoneNo] = useState("")
     const [address, setAddress] = useState("")
     const [pay, setPay] = useState("")
-    const [location, setLocation] = useState("")
     const [joiningDate, setJoiningDate] = useState("")
     const [duty, setDuty] = useState("")
     const [passport, setPassport] = useState("")
@@ -25,12 +24,6 @@ const CreateWorker = ({ user }) => {
     const [errors, setErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
     const history = useHistory()
-
-    
-    const handleLocationChange = e => {
-        setLocation(e.target.value)
-        clearErrorMessage('location')
-    }
 
     const handleNameChange = e => {
         setName(e.target.value)
@@ -95,7 +88,6 @@ const CreateWorker = ({ user }) => {
                 phone_no: phoneNo,
                 address,
                 pay,
-                location,
                 joining_date: joiningDate,
                 duty,
                 farm_id: farm,
@@ -110,7 +102,7 @@ const CreateWorker = ({ user }) => {
         }
     }
 
-    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
+    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.name})) : []
 
     return (
         <Form onSubmit={handleCreateWorker} formHeading="Add Worker" errors={errors}>
@@ -125,9 +117,6 @@ const CreateWorker = ({ user }) => {
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.pay} value={pay} onChange={handlePayChange} type="number" placeholder="Pay"  />
-            </FormGroup>
-            <FormGroup>
-                <Input error={errors?.data?.location} value={location} onChange={handleLocationChange} type="text" placeholder="Location"  />
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.joining_date} value={joiningDate} onChange={handleJoiningDateChange} type="date" placeholder="Joining Date"  />

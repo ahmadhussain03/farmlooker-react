@@ -3,7 +3,7 @@ import React from 'react'
 const TradingCardItem = ({ image, location, username, dated, price, dob, type, phone }) => {
 
     return (
-        <div className="lg:w-1/2 w-full p-2 flex">
+        <div className="lg:w-1/3 w-full p-2 flex">
             <div className="flex flex-1 bg-gray-100 rounded-xl p-0 shadow-lg overflow-hidden">
                 <img className="w-1/3 h-auto rounded-none object-cover object-center" src={image} alt="" width="384" height="512" />
                 <div className="flex flex-col md:flex-row pt-6 p-8 text-left md:space-y-0 space-y-2 flex-1 md:flex-wrap flex-nowrap">

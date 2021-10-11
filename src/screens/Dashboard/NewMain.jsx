@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState, useRef } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import axiosInstance from 'axios';
 
 import axios from '../../utils/axios'
@@ -24,6 +24,10 @@ const NewMain = () => {
     const [rentalEquipmentCount, setRentalEquipmentCount] = useState(0)
     const [liveAdsCount, setLiveAdsCount] = useState(0)
     const [expense, setExpense] = useState(0)
+    const [animalExpense, setAnimalExpense] = useState(0)
+    const [orderFeedExpense, setOrderFeedExpense] = useState(0)
+    const [miscelleneous, setMiscelleneous] = useState(0)
+    const [salaries, setSalaries] = useState(0)
     const [currentDate, setCurrentDate] = useState("")
     const [weather, setWeather] = useState({})
 
@@ -31,11 +35,12 @@ const NewMain = () => {
     const farmRequestSource = useRef(null)
     const animalRequestSource = useRef(null)
 
+    const history = useHistory()
+
     const getSummaryData = useCallback(async () => {
         summaryRequestSource.current = axiosInstance.CancelToken.source()
 
         let response = await axios.get("summary")
-        console.log(response.data.data)
         setAssetsCount(response.data.data.assets)
         setRentalEquipmentCount(response.data.data.rental_equipment)
         setWorkerCount(response.data.data.worker)
@@ -62,8 +67,13 @@ const NewMain = () => {
 
     const getExpenseTotal = useCallback(async () => {
         
-        let response = await axios.get("home/expense/total")
-        setExpense(response.data.data)
+        let response = await axios.get("home/expense/summary")
+        console.log(response.data.data)
+        setExpense(response.data.data.total_expense)
+        setAnimalExpense(response.data.data.animal_expense)
+        setSalaries(response.data.data.salaries)
+        setMiscelleneous(response.data.data.miscelleneous)
+        setOrderFeedExpense(response.data.data.order_feed_expense)
     }, [])
 
     const getWeather = useCallback(async () => {
@@ -108,7 +118,7 @@ const NewMain = () => {
             <div className="flex flex-wrap flex-row">
                 <div className="lg:w-8/12 w-full px-1 flex flex-col space-y-3">
                     <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3">
-                        <div className="flex-1 relative bg-gray-800 p-6 rounded-2xl shadow-md">
+                        <div className="flex-1 relative bg-gray-800 p-6 rounded-2xl shadow-md cursor-pointer" onClick={e => history.push('dashboard/animal')}>
                             <div className="absolute h-20 rounded-full w-1 border-yellow-primary border bg-yellow-primary left-0 top-8"></div>
                             <div className="flex flex-col justify-center">
                                 <h2 className="flex-1 font-semibold text-left text-gray-100">Total Animals</h2>
@@ -150,11 +160,11 @@ const NewMain = () => {
                         <div className="flex-1 p-4">
                             <div className="flex flex-row flex-wrap justify-center items-center">
                                 {data.map(d => (
-                                    <Link to={`/dashboard/summary/` + d.type} className="flex flex-col px-4 py-2 justify-center items-center" key={d.type}>
+                                    <Link to={`/dashboard/summary/` + d.type.id} className="flex flex-col px-4 py-2 justify-center items-center" key={d.type.id}>
                                         <div className="h-28 w-28 font-semibold rounded-full flex items-center justify-center bg-green-primary text-gray-50 text-4xl shadow-lg">
                                             <h3>{d.count}</h3>
                                         </div>
-                                        <p className="pt-2 font-semibold">{d.type}</p>
+                                        <p className="pt-2 font-semibold">{d.type.type}</p>
                                     </Link>
                                 ))}
                             </div>
@@ -170,7 +180,7 @@ const NewMain = () => {
                                 </div>
                             ))}
                 
-                            <div className="flex flex-1 flex-col p-3 text-center justify-center items-center">
+                            <div className="flex flex-1 flex-col p-3 text-center justify-center items-center cursor-pointer" onClick={() => history.push('/dashboard/vaccine-record')}>
                                 <span className="text-3xl font-bold">{vaccinated}</span>
                                 <span className="text-green-primary">Vaccinated</span>
                             </div>
@@ -188,22 +198,22 @@ const NewMain = () => {
                         <div className="flex flex-row space-x-5 space-y-3">
                             <div className="flex-1 border-r border-gray-100 flex items-center">
                                 <h1 className="text-2xl font-bold flex-1 text-center flex flex-col space-y-2">
-                                    <span className="font-normal">120,000</span>
+                                    <span className="font-normal">{expense}</span>
                                     Expense Summary
                                 </h1>
                             </div>
                             <div className="flex-1 flex flex-col space-y-1 text-custom-primary">
                                 <div className="flex justify-between px-2">
-                                    Animal Purchase <span>{expense}</span>
+                                    Animal Purchase <span>{animalExpense}</span>
                                 </div>
                                 <div className="flex justify-between px-2">
-                                    Feed Purchase <span>30000</span>
+                                    Feed Purchase <span>{orderFeedExpense}</span>
                                 </div>
                                 <div className="flex justify-between px-2">
-                                    Salaries <span>30000</span>
+                                    Salaries <span>{salaries}</span>
                                 </div>
                                 <div className="flex justify-between px-2">
-                                    Miscelleneous <span>30000</span>
+                                    Miscelleneous <span>{miscelleneous}</span>
                                 </div>
                             </div>
                         </div>
@@ -237,7 +247,7 @@ const NewMain = () => {
                             <h1>Summary</h1>
                         </div>
                         <div className="pt-5 flex flex-col items-start space-y-3">
-                            <div className="flex-1 flex flex-row justify-center items-center space-x-2">
+                            <div className="flex-1 flex flex-row justify-center items-center space-x-2 cursor-pointer" onClick={e => history.push('/dashboard/worker')}>
                                 <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
                                     { workerCount }
                                 </div>
@@ -245,7 +255,7 @@ const NewMain = () => {
                                     Total Workers
                                 </div>
                             </div>
-                            <div className="flex-1 flex flex-row justify-center items-center space-x-2">
+                            <div className="flex-1 flex flex-row justify-center items-center space-x-2 cursor-pointer" onClick={e => history.push('/dashboard/my-trading-animal')}>
                                 <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
                                     { liveAdsCount }
                                 </div>
@@ -253,7 +263,7 @@ const NewMain = () => {
                                     Live Ads
                                 </div>
                             </div>
-                            <div className="flex-1 flex flex-row justify-center items-center space-x-2">
+                            <div className="flex-1 flex flex-row justify-center items-center space-x-2 cursor-pointer" onClick={e => history.push('/dashboard/asset')}>
                                 <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
                                     { assetsCount }
                                 </div>
@@ -261,7 +271,7 @@ const NewMain = () => {
                                     Total Assets
                                 </div>
                             </div>
-                            <div className="flex-1 flex flex-row justify-center items-center space-x-2">
+                            <div className="flex-1 flex flex-row justify-center items-center space-x-2 cursor-pointer" onClick={e => history.push('/dashboard/my-rental-equipment')}>
                                 <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
                                     { rentalEquipmentCount }
                                 </div>
@@ -269,7 +279,7 @@ const NewMain = () => {
                                     Total Rental Equipment
                                 </div>
                             </div>
-                            <div className="flex-1 flex flex-row justify-center items-center space-x-2">
+                            <div className="flex-1 flex flex-row justify-center items-center space-x-2 cursor-pointer" onClick={e => history.push('/dashboard/farm')}>
                                 <div className="h-10 w-12 rounded-md bg-blue-600 text-gray-50 text-center text-xl font-semibold flex justify-center items-center">
                                     { farmCount }
                                 </div>

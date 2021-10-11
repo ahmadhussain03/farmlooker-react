@@ -45,6 +45,7 @@ import HomeRentalEquipment from './RentalEquipment/HomeRentalEquipment';
 import NewMain from './Dashboard/NewMain';
 import AnimalTree from './animal/AnimalTree';
 import AllFarms from "./Farm/AllFarms";
+import CreateExpense from "./Finance/CreateExpense";
 
 
 const Dashboard = ({ user, isOpen, setClose }) => {
@@ -119,6 +120,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                         <FarmRoute path={`${path}/create-asset`} component={CreateAsset}></FarmRoute>
                                         <FarmRoute path={`${path}/create-trading-animal`} component={CreateTradingAnimal}></FarmRoute>
                                         <FarmRoute path={`${path}/create-rental-equipment`} component={CreateRentalEquipment}></FarmRoute>
+                                        <FarmRoute path={`${path}/create-expense`} component={CreateExpense}></FarmRoute>
                                     </>
                                 }
                             </Switch>
