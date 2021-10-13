@@ -9,10 +9,10 @@ import Datatable from '../../components/main/Datatable'
 import axios from '../../utils/axios'
 
 const columnNames = [
-    "AUID",
     "Animal ID",
     "Animal Type",
     "Animal Breed",
+    "AUID",
     "Disease",
     "Sex",
     "DOB",
@@ -22,10 +22,10 @@ const columnNames = [
 ]
 
 const columns = [
-    {data: 'auid', name: 'auid'},
     {data: 'animal_id', name: 'animal_id'},
     {data: 'type.type', name: 'type.type'},
     {data: 'breed.breed', name: 'breed.breed'},
+    {data: 'auid', name: 'auid'},
     {data: 'disease', name: 'disease'},
     {data: 'sex', name: 'sex'},
     {data: 'dob', name: 'dob'},
