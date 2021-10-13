@@ -195,19 +195,19 @@ const EditAnimal = ({ user }) => {
         }
     }
 
-    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
+    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.name})) : []
 
     return (
         <Form onSubmit={handleEditAnimal} formHeading="Edit Animal" errors={errors}>
             <FormGroup>
                 <Input error={errors?.data?.animal_id} value={animalId} onChange={handleAnimalIdChange} type="text" placeholder="Animal ID"  />
             </FormGroup>
-            <FormGroup>
+            {/* <FormGroup>
                 <Select error={errors?.data?.type} value={type} onChange={handleTypeChange} placeholder="Type" options={typeOptions}></Select>
             </FormGroup>
             <FormGroup>
                 <Select error={errors?.data?.breed} value={breed} onChange={handleBreedChange} placeholder="Breed" options={type ? breedOptions[type].map(text => ({ value: text, text })) : []}></Select>
-            </FormGroup>
+            </FormGroup> */}
             <FormGroup>
                 <Select error={errors?.data?.add_as} value={addAs} onChange={handleAddAsChange} placeholder="Add As" options={addAsOptions}></Select>
             </FormGroup>

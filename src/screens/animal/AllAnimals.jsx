@@ -9,6 +9,7 @@ import Datatable from '../../components/main/Datatable'
 import axios from '../../utils/axios'
 
 const columnNames = [
+    "AUID",
     "Animal ID",
     "Animal Type",
     "Animal Breed",
@@ -21,6 +22,7 @@ const columnNames = [
 ]
 
 const columns = [
+    {data: 'auid', name: 'auid'},
     {data: 'animal_id', name: 'animal_id'},
     {data: 'type.type', name: 'type.type'},
     {data: 'breed.breed', name: 'breed.breed'},
@@ -28,7 +30,7 @@ const columns = [
     {data: 'sex', name: 'sex'},
     {data: 'dob', name: 'dob'},
     {data: 'add_as', name: 'add_as'},
-    {data: 'farm.location', name: 'farm.location'},
+    {data: 'farm.name', name: 'farm.name'},
     {   name: 'action', 
         render: () => {
             return `
