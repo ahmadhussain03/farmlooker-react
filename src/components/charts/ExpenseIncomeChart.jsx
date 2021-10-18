@@ -45,22 +45,18 @@ const options = {
         legend: {
             display: false
         },
-    },
-    elements: {
-        bar: {
-            backgroundColor: PrimaryColor,
-            // backgroundColor: 'blue'
-        }
-    },
+    }
 }
 
-const ExpenseChart = () => {
+const ExpenseIncomeChart = () => {
 
-    const [data, setData] = useState([])
+    const [incomeData, setIncomeData] = useState([])
+    const [expenseData, setExpenseData] = useState([])
 
-    const getExpenseChartData = useCallback(async () => {
+    const getExpenseIncomeChartData = useCallback(async () => {
         
-        let response = await axios.get("home/expense_chart")
+        let response = await axios.get("home/income_chart")
+
         let monthData = labels.map((mon, index) => {
             let monthIndex = response.data.data.findIndex(d => d.month === index + 1)
 
@@ -71,26 +67,58 @@ const ExpenseChart = () => {
             }
         })
 
-        setData(monthData)
+        setIncomeData(monthData)
+
+        console.log(monthData)
+
+        
+        response = await axios.get("home/expense_chart")
+
+        let expenseMonthData = labels.map((mon, index) => {
+            let monthIndex = response.data.data.findIndex(d => d.month === index + 1)
+
+            if(monthIndex !== -1){
+                return response.data.data[monthIndex].price
+            } else {
+                return 0;
+            }
+        })
+
+        setExpenseData(expenseMonthData)
+
+        console.log(expenseMonthData)
+
     }, [])
 
     useEffect(() => {
-        getExpenseChartData()
+        getExpenseIncomeChartData()
     }, [])
 
     return (
         <Bar data={{
             labels: labels,
-            datasets: [{
-              data: data,
-              fill: true,
-              borderColor: PrimaryColor,
-              tension: 0.1,
-            }]
+            datasets: [
+                {
+                    label: 'Expense',
+                    data: expenseData,
+                    fill: true,
+                    borderColor: PrimaryColor,
+                    backgroundColor: PrimaryColor,
+                    tension: 0.1,
+                },
+                {
+                    label: 'Income',
+                    data: incomeData,
+                    fill: true,
+                    borderColor: PrimaryColor,
+                    backgroundColor: 'green',
+                    tension: 0.1,
+                },
+            ]
           }} options={options} 
         className="w-full"
         />
     )
 }
 
-export default ExpenseChart
+export default ExpenseIncomeChart

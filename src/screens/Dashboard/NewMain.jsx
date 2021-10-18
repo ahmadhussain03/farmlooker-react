@@ -7,6 +7,8 @@ import {capitalizeFirstLetter} from '../../utils/helper'
 // import graph from '../../assets/images/graph.png'
 import LocationIcon from '../../components/icons/LocationIcon';
 import ExpenseChart from '../../components/charts/ExpenseChart';
+import IncomeChart from './../../components/charts/IncomeChart';
+import ExpenseIncomeChart from '../../components/charts/ExpenseIncomeChart';
 
 
 const NewMain = () => {
@@ -24,6 +26,7 @@ const NewMain = () => {
     const [rentalEquipmentCount, setRentalEquipmentCount] = useState(0)
     const [liveAdsCount, setLiveAdsCount] = useState(0)
     const [expense, setExpense] = useState(0)
+    const [income, setIncome] = useState(0)
     const [animalExpense, setAnimalExpense] = useState(0)
     const [orderFeedExpense, setOrderFeedExpense] = useState(0)
     const [miscelleneous, setMiscelleneous] = useState(0)
@@ -68,8 +71,8 @@ const NewMain = () => {
     const getExpenseTotal = useCallback(async () => {
         
         let response = await axios.get("home/expense/summary")
-        console.log(response.data.data)
         setExpense(response.data.data.total_expense)
+        setIncome(response.data.data.total_income)
         setAnimalExpense(response.data.data.animal_expense)
         setSalaries(response.data.data.salaries)
         setMiscelleneous(response.data.data.miscelleneous)
@@ -132,12 +135,12 @@ const NewMain = () => {
                                 <div className="absolute h-12 w-1 border-yellow-primary border bg-yellow-primary left-0 top-4 rounded-full"></div>
                                 <div className="flex flex-row space-x-2 justify-center items-center">
                                     <div className="flex flex-col justify-center text-gray-100">
-                                        <h2 className="flex-1 font-semibold text-left">Total Earning</h2>
-                                        <h1 className="text-2xl font-bold pt-6">9.2</h1>
+                                        <h2 className="flex-1 font-semibold text-left">Income</h2>
+                                        <h1 className="text-2xl font-bold pt-6">{income}</h1>
                                         <small className="pt-1">Per/Month</small>
                                     </div>
                                     <div className="self-center flex-1">
-                                        <ExpenseChart />
+                                        <IncomeChart />
                                     </div>
                                 </div>
                             </div>
@@ -145,7 +148,7 @@ const NewMain = () => {
                                 <div className="absolute h-12 w-1 border-yellow-primary border bg-yellow-primary left-0 top-4 rounded-full"></div>
                                 <div className="flex flex-row space-x-2 justify-center items-center">
                                     <div className="flex flex-col justify-center text-gray-100">
-                                        <h2 className="flex-1 font-semibold text-left">Total Selling</h2>
+                                        <h2 className="flex-1 font-semibold text-left">Expense</h2>
                                         <h1 className="text-2xl font-bold pt-6">{expense}</h1>
                                         <small className="pt-1">Per/Month</small>
                                     </div>
@@ -218,8 +221,7 @@ const NewMain = () => {
                             </div>
                         </div>
                         <div className="flex">
-                            {/* <img src={graph} className="flex-1" alt="graph" /> */}
-                            <ExpenseChart />
+                            <ExpenseIncomeChart />
                         </div>
                     </div>
                 </div>

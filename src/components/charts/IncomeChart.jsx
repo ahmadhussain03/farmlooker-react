@@ -54,13 +54,13 @@ const options = {
     },
 }
 
-const ExpenseChart = () => {
+const IncomeChart = () => {
 
     const [data, setData] = useState([])
 
-    const getExpenseChartData = useCallback(async () => {
+    const getIncomeChartData = useCallback(async () => {
         
-        let response = await axios.get("home/expense_chart")
+        let response = await axios.get("home/income_chart")
         let monthData = labels.map((mon, index) => {
             let monthIndex = response.data.data.findIndex(d => d.month === index + 1)
 
@@ -75,7 +75,7 @@ const ExpenseChart = () => {
     }, [])
 
     useEffect(() => {
-        getExpenseChartData()
+        getIncomeChartData()
     }, [])
 
     return (
@@ -93,4 +93,4 @@ const ExpenseChart = () => {
     )
 }
 
-export default ExpenseChart
+export default IncomeChart

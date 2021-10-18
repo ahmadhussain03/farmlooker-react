@@ -9,7 +9,7 @@ import axios from '../../utils/axios'
 import ArrowUp from './../../components/icons/ArrowUp';
 import { connect } from 'react-redux'
 
-const Accordion = ({ title = '', children }) => {
+export const Accordion = ({ title = '', children }) => {
 
     const [open, setOpen] = useState(false)
 
