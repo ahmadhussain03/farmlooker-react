@@ -46,7 +46,7 @@ const CreateAsset = ({ user }) => {
     }
 
     const handleFarmIdChange = e => {
-        setFarm(e.target.value)
+        setFarm(e)
         clearErrorMessage('farm_id')
     }
 
@@ -83,7 +83,7 @@ const CreateAsset = ({ user }) => {
         formData.append("price", price)
         formData.append("location", location)
         formData.append("purchase_date", purchaseDate)
-        formData.append("farm_id", farm)
+        formData.append("farm_id", farm?.value)
         
         setIsLoading(true)
         try {
@@ -119,7 +119,7 @@ const CreateAsset = ({ user }) => {
                 <Input error={errors?.data?.location} value={location} onChange={handleLocationChange} type="text" placeholder="Location"  />
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
+                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.image} onChange={handleImageChange} type="file" placeholder="Image"  />

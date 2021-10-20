@@ -13,7 +13,6 @@ import axios from '../../utils/axios'
 
 const CreateDiseaseAlert = ({ user }) => {
 
-    const [animals, setAnimals] = useState([])
     const [animal, setAnimal] = useState("")
 
     const [description, setDescription] = useState("")
@@ -37,7 +36,7 @@ const CreateDiseaseAlert = ({ user }) => {
     }
 
     const handleAnimalChange = e => {
-        setAnimal(e.target.value)
+        setAnimal(e)
         clearErrorMessage('animal_id')
     }
 
@@ -60,7 +59,7 @@ const CreateDiseaseAlert = ({ user }) => {
         try {
             
             const response = await axios.post("disease_alert", {
-                animal_id: animal,
+                animal_id: animal?.value,
                 description: description,
                 symptoms: [symptoms]
             })
@@ -74,20 +73,10 @@ const CreateDiseaseAlert = ({ user }) => {
         }
     }
 
-    const getAnimals = useCallback(async () => {
-        let response = await axios.get('animal')
-        const animals = response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id}))
-        setAnimals(animals)
-    }, [])
-
-    useEffect(() => {
-        getAnimals()
-    }, [getAnimals])
-
     return (
         <Form onSubmit={handleCreateAnimal} formHeading="Add Disease Alert" errors={errors}>
             <FormGroup>
-                <Select error={errors?.data?.animal_id} value={animal} onChange={handleAnimalChange} placeholder="Animal" options={animals}></Select>
+                <Select error={errors?.data?.animal_id} value={animal} onChange={handleAnimalChange} placeholder="Animal" url='animal' mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.description} value={description} onChange={handleDescriptionChange} type="text" placeholder="Description"  />

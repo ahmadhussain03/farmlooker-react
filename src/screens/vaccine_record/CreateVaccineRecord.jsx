@@ -22,8 +22,6 @@ function CreateVaccineRecord() {
     const [isLoading, setIsLoading] = useState(false)
     const history = useHistory()
 
-    const [animals, setAnimals] = useState([])
-
     const handleNameChange = e => {
         setName(e.target.value)
         clearErrorMessage('name')
@@ -40,7 +38,7 @@ function CreateVaccineRecord() {
     }
 
     const handleAnimalChange = e => {
-        setAnimal(e.target.value)
+        setAnimal(e)
         clearErrorMessage('animal_id')
     }
 
@@ -71,7 +69,7 @@ function CreateVaccineRecord() {
         const formData = new FormData();
 
         formData.append("certificate_image", image.pictureAsFile)
-        formData.append("animal_id", animal)
+        formData.append("animal_id", animal?.value)
         formData.append("date", date)
         formData.append("reason", reason)
         formData.append("name", name)
@@ -94,20 +92,10 @@ function CreateVaccineRecord() {
         }
     }
 
-    const getAnimals = useCallback(async () => {
-        let response = await axios.get('animal')
-        const animals = response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id}))
-        setAnimals(animals)
-    }, [])
-
-    useEffect(() => {
-        getAnimals()
-    }, [getAnimals])
-
     return (
         <Form onSubmit={handleCreateVaccineRecord} formHeading="Add Vaccine Record" errors={errors}>
             <FormGroup>
-                <Select error={errors?.data?.animal_id} value={animal} onChange={handleAnimalChange} placeholder="Animal" options={animals}></Select>
+                <Select error={errors?.data?.animal_id} value={animal} onChange={handleAnimalChange} placeholder="Animal" url='animal' mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.name} value={name} onChange={handleNameChange} type="text" placeholder="Name"  />

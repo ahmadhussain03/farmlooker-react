@@ -59,12 +59,6 @@ const breedOptions = {
 
 const CreateAnimal = ({ user }) => {
 
-    const [males, setMales] = useState([])
-    const [females, setFemales] = useState([])
-
-    const [types, setTypes] = useState([])
-    const [breeds, setBreeds] = useState([])
-
     const [animalId, setAnimalId] = useState("")
     const [type, setType] = useState("")
     const [breed, setBreed] = useState("")
@@ -89,7 +83,10 @@ const CreateAnimal = ({ user }) => {
     }
 
     const handleTypeChange = e => {
-        setType(e.target.value)
+        setType(e)
+        setBreed(null)
+        setMale(null)
+        setFemale(null)
         clearErrorMessage('type')
     }
 
@@ -99,27 +96,27 @@ const CreateAnimal = ({ user }) => {
     }
 
     const handleSexChange = e => {
-        setSex(e.target.value)
+        setSex(e.value)
         clearErrorMessage('sex')
     }
 
     const handleBreedChange = e => {
-        setBreed(e.target.value)
+        setBreed(e)
         clearErrorMessage('breed')
     }
 
     const handleAddAsChange = e => {
-        setAddAs(e.target.value)
+        setAddAs(e.value)
         clearErrorMessage('add_as')
     }
 
     const handleMaleChange = e => {
-        setMale(e.target.value)
+        setMale(e)
         clearErrorMessage('male_breeder_id')
     }
     
     const handleFemaleChange = e => {
-        setFemale(e.target.value)
+        setFemale(e)
         clearErrorMessage('female_breeder_id')
     }
 
@@ -129,7 +126,7 @@ const CreateAnimal = ({ user }) => {
     }
 
     const handleDiseaseChange = e => {
-        setDisease(e.target.value)
+        setDisease(e.value)
         clearErrorMessage('disease')
     }
 
@@ -144,7 +141,7 @@ const CreateAnimal = ({ user }) => {
     }
 
     const handleFarmIdChange = e => {
-        setFarm(e.target.value)
+        setFarm(e)
         clearErrorMessage('farm_id')
     }
 
@@ -165,11 +162,11 @@ const CreateAnimal = ({ user }) => {
         
         setIsLoading(true)
         try {
-            
+
             const response = await axios.post("animal", {
                 animal_id: animalId,
-                type_id: type,
-                breed_id: breed,
+                type_id: type?.value,
+                breed_id: breed?.value,
                 add_as: addAs,
                 sex,
                 dob,
@@ -177,67 +174,20 @@ const CreateAnimal = ({ user }) => {
                 purchase_date: purchaseDate ?? null,
                 price: price ?? null,
                 previous_owner: previousOwner ?? null,
-                farm_id: farm,
-                male_breeder_id: male ?? null,
-                female_breeder_id: female ?? null
+                farm_id: farm?.value,
+                male_breeder_id: male?.value ?? null,
+                female_breeder_id: female?.value ?? null
             })
-            setFarm(response.data.data)
-            setIsLoading(false);
 
+            setIsLoading(false);
             history.push('/dashboard/animal')
         } catch(e) {
             setIsLoading(false);
+            console.log(e)
             setErrors(e.response.data)
         }
     }
 
-    const getMaleAnimals = useCallback(async () => {
-        if(type){
-            let response = await axios.get(`animal?sex=male&type=${type}`)
-            setMales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
-        } else {
-            setMales([])
-        }
-    }, [type])
-
-    const getFemaleAnimals = useCallback(async () => {
-        if(type){
-            let response = await axios.get(`animal?sex=female&type=${type}`)
-            setFemales(response.data.data.data.map(animal => ({value: animal.id, text: animal.animal_id})))
-        } else {
-            setFemales([])
-        }
-    }, [type])
-
-    useEffect(() => {
-        getMaleAnimals()
-        getFemaleAnimals()
-    }, [type])
-
-    const getTypes = useCallback(async () => {
-        let response = await axios.get(`${apiUrl}/types`)
-        setTypes(response.data.data.map(t => ({value: t.id, text: t.type})))
-    }, [])
-
-    
-    const getBreeds = useCallback(async () => {
-        if(type) {
-            let response = await axios.get(`${apiUrl}/breeds/${type}`)
-            setBreeds(response.data.data.map(b => ({value: b.id, text: b.breed})))
-        } else {
-            setBreeds([])
-        }
-    }, [type])
-
-    useEffect(() => {
-        getTypes()
-    }, [])
-
-    useEffect(() => {
-        getBreeds()
-    }, [type])
-
-    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.name})) : []
 
     return (
         <Form onSubmit={handleCreateAnimal} formHeading="Add Animal" errors={errors}>
@@ -245,10 +195,10 @@ const CreateAnimal = ({ user }) => {
                 <Input error={errors?.data?.animal_id} value={animalId} onChange={handleAnimalIdChange} type="text" placeholder="Animal ID"  />
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.type} value={type} onChange={handleTypeChange} placeholder="Type" options={types}></Select>
+                <Select error={errors?.data?.type_id} value={type} onChange={handleTypeChange} placeholder="Type" url={`${apiUrl}/types`} mapOptions={options => options.map(option => ({ value: option.id, label: option.type }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.breed} value={breed} onChange={handleBreedChange} placeholder="Breed" options={breeds}></Select>
+                <Select error={errors?.data?.breed_id} value={breed} onChange={handleBreedChange} placeholder="Breed" url={`${apiUrl}/breeds/${type.value}`} mapOptions={options => options.map(option => ({ value: option.id, label: option.breed }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Select error={errors?.data?.add_as} value={addAs} onChange={handleAddAsChange} placeholder="Add As" options={addAsOptions}></Select>
@@ -278,15 +228,15 @@ const CreateAnimal = ({ user }) => {
             {addAs && addAs === 'calved' && (
                 <>
                     <FormGroup>
-                        <Select error={errors?.data?.male_breeder_id} value={male} onChange={handleMaleChange} placeholder="Male Breeder" options={males}></Select>
+                        <Select error={errors?.data?.male_breeder_id} value={male} onChange={handleMaleChange} placeholder="Male Breeder" url="animal" params={{ sex: 'male', type: type.value }} mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
                     </FormGroup>
                     <FormGroup>
-                        <Select error={errors?.data?.female_breeder_id} value={female} onChange={handleFemaleChange} placeholder="Female Breeder" options={females}></Select>
+                        <Select error={errors?.data?.female_breeder_id} value={female} onChange={handleFemaleChange} placeholder="Female Breeder" url="animal" params={{ sex: 'female', type: type.value }} mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
                     </FormGroup>
                 </>
             )}
             <FormGroup>
-                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
+                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Create Animal</Button>  

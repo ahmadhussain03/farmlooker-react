@@ -10,14 +10,13 @@ import axios from '../../utils/axios';
 
 const AnimalSold = () => {
 
-    const [animals, setAnimals] = useState([])
     const [animal, setAnimal] = useState("")
     const [amount, setAmount] = useState("")
     const [errors, setErrors] = useState({})
     const [loading, setLoading] = useState(false)
 
     const handleAnimalChange = e => {
-        setAnimal(e.target.value)
+        setAnimal(e)
         clearErrorMessage('animal')
     }
 
@@ -37,15 +36,6 @@ const AnimalSold = () => {
 
         setErrors(errors)
     }
-
-    const getAnimals = useCallback(async () => {
-        let response = await axios.get('animal')
-        setAnimals(response.data.data.data.map(t => ({value: t.id, text: t.animal_id})))
-    }, [])
-
-    useEffect(() => {   
-        getAnimals()
-    }, [])
     
     const handleAnimalSold = async (e) => {
         e.preventDefault()
@@ -54,7 +44,7 @@ const AnimalSold = () => {
         try {
             
             const response = await axios.post("animal_sold", {
-                animal,
+                animal: animal?.value,
                 amount
             })
 
@@ -72,7 +62,7 @@ const AnimalSold = () => {
         <div className="flex w-1/2 items-center justify-around">
             <Form errors={errors} isPadded={false} onSubmit={handleAnimalSold}>
                 <FormGroup>
-                    <Select error={errors?.data?.animal} value={animal} onChange={handleAnimalChange} placeholder="Animal" options={animals}></Select>
+                    <Select error={errors?.data?.animal} value={animal} onChange={handleAnimalChange} placeholder="Animal" url='animal' mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
                 </FormGroup>
                 <FormGroup>
                     <Input type="number" error={errors?.data?.amount} value={amount} onChange={handleAmountChange} placeholder="Amount"></Input>
@@ -103,7 +93,7 @@ const Others = ({ farms }) => {
     }
 
     const handleFarmChange = e => {
-        setFarm(e.target.value)
+        setFarm(e)
         clearErrorMessage('farm')
     }
 
@@ -128,7 +118,7 @@ const Others = ({ farms }) => {
             const response = await axios.post("other_income", {
                 reason,
                 amount,
-                farm
+                farm: farm?.value
             })
             setReason("")
             setAmount("")
@@ -151,7 +141,7 @@ const Others = ({ farms }) => {
                     <Input type="number" error={errors?.data?.amount} value={amount} onChange={handleAmountChange} placeholder="Amount"></Input>
                 </FormGroup>
                 <FormGroup>
-                    <Select error={errors?.data?.farm} value={farm} onChange={handleFarmChange} placeholder="Farm" options={farms}></Select>
+                    <Select error={errors?.data?.farm} value={farm} onChange={handleFarmChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
                 </FormGroup>
                 <FormGroup>
                     <Button disabled={loading} type="submit"><span className="font-semibold">Add</span></Button>  

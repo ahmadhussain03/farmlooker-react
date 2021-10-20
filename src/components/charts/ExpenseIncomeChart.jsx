@@ -29,11 +29,11 @@ const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 const options = { 
     responsive: true,
-    barThickness: 6,
+    // barThickness: 6,
     scales: {
-        y: {
-            display: false
-        },
+        // y: {
+        //     display: false
+        // },
         x: {
             grid: {
                 display: false,
@@ -68,9 +68,6 @@ const ExpenseIncomeChart = () => {
         })
 
         setIncomeData(monthData)
-
-        console.log(monthData)
-
         
         response = await axios.get("home/expense_chart")
 
@@ -85,9 +82,6 @@ const ExpenseIncomeChart = () => {
         })
 
         setExpenseData(expenseMonthData)
-
-        console.log(expenseMonthData)
-
     }, [])
 
     useEffect(() => {

@@ -1,16 +1,68 @@
 import { motion } from 'framer-motion'
+import Select from 'react-select';
+import { AsyncPaginate } from 'react-select-async-paginate';
+import axios from '../../../utils/axios';
 
-const Select = ({ value, onChange, placeholder, error, onFocus, options = [] }) => {
+const styles = {
+    container: (styles) => ({...styles, width: '100%', shadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'}),
+    control: (base, state) => ({
+        ...base,
+        border: 'none',
+        padding: '0.5rem 0.25rem',
+        boxShadow: 'none',
+        ':focus-within': {
+            border: '1px solid #61BC5B',
+        },
+        color: '#61BC5B'
+    }),
+
+}
+
+const Select2 = ({ value, onChange, placeholder, error, onFocus, options = [], async = false, url = '', params = {}, mapOptions = (val) => val  }) => {
+
+    const loadOptions =  async (search, loadedOptions, { page }) => {
+
+        console.log(url)
+
+        const response = await axios.get(url, {
+            params: { search: search, page: page, ...params }
+        });
+      
+        return {
+          options: mapOptions(response.data.data.data),
+          hasMore: response.data.data.data.next_page_url ? true : false,
+          additional: {
+            page: page + 1,
+          },
+        };
+    }
+
     return (
         <div className="flex flex-col w-full">
-            <select value={value} onFocus={onFocus} onChange={onChange} className={`py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none shadow border bg-white border-transparent focus:border-primary ${error && error.length > 0 ? 'border-red-500' : ''}`}>
-                {placeholder &&
-                    <option>{placeholder}</option>
-                }
-                {options.map(opt => (
-                    <option value={opt.value} key={opt.value}>{opt.text}</option>
-                ))}
-            </select>
+            {async ? 
+                    <AsyncPaginate
+                        value={value}
+                        loadOptions={loadOptions}
+                        onChange={onChange}
+                        additional={{
+                            page: 1,
+                        }}
+                        debounceTimeout={300}
+                        placeholder={placeholder}
+                        noOptionsMessage={() => "No Record Found!"}
+                        styles={styles}
+                        cacheUniqs={[url, params]}
+                    />
+                :
+                <Select 
+                    defaultValue={value}
+                    options={options.map(opt => ({ value: opt.value, label: opt.text }))}
+                    onChange={onChange}
+                    onFocus={onFocus}
+                    placeholder={placeholder}
+                    styles={styles}
+                />
+            }
             {error && error.length > 0 && 
                 <motion.span
                 initial={{ scale: 0, originX: 0 }}
@@ -23,4 +75,4 @@ const Select = ({ value, onChange, placeholder, error, onFocus, options = [] }) 
     )
 }
 
-export default Select
+export default Select2

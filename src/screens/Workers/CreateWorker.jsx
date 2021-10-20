@@ -61,7 +61,7 @@ const CreateWorker = ({ user }) => {
     }
 
     const handleFarmIdChange = e => {
-        setFarm(e.target.value)
+        setFarm(e)
         clearErrorMessage('farm_id')
     }
 
@@ -90,7 +90,7 @@ const CreateWorker = ({ user }) => {
                 pay,
                 joining_date: joiningDate,
                 duty,
-                farm_id: farm,
+                farm_id: farm?.value,
                 id_or_passport: passport
             })
 
@@ -101,8 +101,6 @@ const CreateWorker = ({ user }) => {
             setErrors(e.response.data)
         }
     }
-
-    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.name})) : []
 
     return (
         <Form onSubmit={handleCreateWorker} formHeading="Add Worker" errors={errors}>
@@ -128,7 +126,7 @@ const CreateWorker = ({ user }) => {
                 <Input error={errors?.data?.id_or_passport} value={passport} onChange={handlePassportChange} type="text" placeholder="ID/Passport"  />
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
+                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Create Worker</Button>  
