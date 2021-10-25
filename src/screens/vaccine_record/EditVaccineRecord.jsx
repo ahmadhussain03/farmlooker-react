@@ -114,10 +114,13 @@ const EditVaccineRecord = () => {
     const getVaccineRecord = useCallback(async () => {
         let response = await axios.get(`vaccine_record/${id}`)
         let record = response.data.data
+
+        console.log(record)
+
         setName(name => record.name)
         setDate(date => record.date)
         setReason(reason => record.reason)
-        setAnimal(animalId => record.animal_id)
+        setAnimal({value: record.animal.id, label: record.animal.animal_id})
     }, [id])
 
     useEffect(() => {
@@ -128,7 +131,7 @@ const EditVaccineRecord = () => {
     return (
         <Form onSubmit={handleUpdateVaccineRecord} formHeading="Edit Vaccine Record" errors={errors}>
             <FormGroup>
-                <Select error={errors?.data?.animal_id} value={animal} onChange={handleAnimalChange} placeholder="Animal" options={animals}></Select>
+                <Select error={errors?.data?.animal_id} value={animal} onChange={handleAnimalChange} placeholder="Animal" url='animal' mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.name} value={name} onChange={handleNameChange} type="text" placeholder="Name"  />

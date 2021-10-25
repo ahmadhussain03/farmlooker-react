@@ -9,7 +9,7 @@ import Input from '../../components/main/form/Input'
 import Select from '../../components/main/form/Select'
 import { FormGroup } from '../../components/main/form/Form'
 
-import axios from '../../utils/axios'
+import axios, { apiUrl } from '../../utils/axios'
 
 const sexOptions = [
     {value: 'male', text: 'Male'},
@@ -26,33 +26,6 @@ const diseaseOptions = [
     {value: 'healthy', text: 'Healthy'},
 ];
 
-const typeOptions = [
-    {value: 'pig', text: 'Pig'},
-    {value: 'cattle', text: 'Cattle'},
-    {value: 'goat', text: 'Goat'},
-];
-
-const breedOptions = {
-    pig: [
-        "Pig Breed","Red Wattle","Mukota","Mora Romagnola","Poland China", "Large White", "Ossabaw Island", "Spotted", "Lacombe",
-            "Thuoc Nhieu", "Norwegian Landrace","French Landrace","Swallow Belied Mangalitza","Cantonese Pig","Mulefoot","Krskopolje", "Minzhu", "Mangalitza",
-            "Gloucestershire Old Spots","British Landrace","Bantu","Philippine Native","Chester White","Welsh","Wuzhishan","Lithuanian Native","Saddleback",
-            "German Landrace","Tamworth","Belgian Landrace","Iberian","Hereford","Beijing Black","Large Black","Fengjing","Guinea Hog","Mong Cai","Meishan",
-            "Jinhua","American Landrace","Hezuo","Duroc","Danish Landrace","Turopolje","Neijiang","Oxford Sandy and Black","Swedish Landrace","Bulgarian White",
-            "Middle White", "Italian Landrace","Belarus Black Pied","Czech Improved White","American Yorkshire","Large Black-white","Ba Xuyen","Choctaw Hog",
-            "Hampshire","British Lop" ,"Vietnamese Potbelly","Berkshire","Kunekune","Pietrain","Dutch Landrace","Ningxiang","Kele","Tibetan","Arapawa Island",
-            "Yorkshire", "Finnish Landrace","Angeln saddleback", "Other"
-    ],
-    goat: [
-        "Goat Breed","Angora", "Boer","LaMancha","Nubian" ,"Oberhasli" ,"Saanen","Toggenburg","Other"
-    ],
-    cattle: [
-        "Cattle Breed","Afrikaner Cattle", "Angus Beef/Aberdeen Angus", "Ankole Cattle", "Beefmaster Cattle","Bonsmara Cattle",
-            "Boran Cattle","Brahman Cattle", "Braunvieh Cattle", "Charolais Cattle", "Drakensberger Cattle","Hereford Cattle","Limousin Cattle",
-            "Nguni Cattle","Santa Gertrudis Cattle","Shorthorn Cattle","Simbra Cattle","Simmentaler Cattle", "Sussex Cattle","Tuli Cattle","Wagyu Beef","Other"
-    ]
-};
-
 const EditAnimal = ({ user }) => {
 
     const [animalId, setAnimalId] = useState("")
@@ -61,6 +34,8 @@ const EditAnimal = ({ user }) => {
     const [addAs, setAddAs] = useState("")
     const [sex, setSex] = useState("")
     const [dob, setDob] = useState("")
+    const [male, setMale] = useState("")
+    const [female, setFemale] = useState("")
     const [purchaseDate, setPurchaseDate] = useState("")
     const [disease, setDisease] = useState("")
     const [price, setPrice] = useState("")
@@ -77,16 +52,17 @@ const EditAnimal = ({ user }) => {
             
             let response = await axios.get(`animal/${id}`)
             const animal = response.data.data
+
             setAnimalId(animal.animal_id)
-            setType(animal.type)
-            setBreed(animal.breed)
-            setAddAs(animal.add_as)
-            setSex(animal.sex)
+            setType({ value: animal.type.id, label: animal.type.type })
+            setBreed({ value: animal.breed.id, label: animal.breed.breed })
+            setAddAs({value: animal.add_as, label: addAsOptions.filter(opt => opt.value === animal.add_as)[0].text})
+            setSex({value: animal.sex, label: sexOptions.filter(opt => opt.value === animal.sex)[0].text})
             setDob(animal.dob)
-            setDisease(animal.disease)
-            setFarm(animal.farm_id)
-            setPrice(animal.price ?? '')
-            setPreviousOwner(animal.previous_owner ?? '')
+            setDisease({value: animal.disease, label: diseaseOptions.filter(opt => opt.value === animal.disease)[0].text})
+            setFarm({ value: animal.farm.id, label: animal.farm.name })
+            setPrice(animal.price)
+            setPreviousOwner(animal.previous_owner)
             setPurchaseDate(animal.purchase_date ?? '')
         } catch(e){
             console.log(e)
@@ -105,7 +81,10 @@ const EditAnimal = ({ user }) => {
     }
 
     const handleTypeChange = e => {
-        setType(e.target.value)
+        setType(e)
+        setBreed(null)
+        setMale(null)
+        setFemale(null)
         clearErrorMessage('type')
     }
 
@@ -115,18 +94,28 @@ const EditAnimal = ({ user }) => {
     }
 
     const handleSexChange = e => {
-        setSex(e.target.value)
+        setSex(e)
         clearErrorMessage('sex')
     }
 
     const handleBreedChange = e => {
-        setBreed(e.target.value)
+        setBreed(e)
         clearErrorMessage('breed')
     }
 
     const handleAddAsChange = e => {
-        setAddAs(e.target.value)
+        setAddAs(e)
         clearErrorMessage('add_as')
+    }
+
+    const handleMaleChange = e => {
+        setMale(e)
+        clearErrorMessage('male_breeder_id')
+    }
+    
+    const handleFemaleChange = e => {
+        setFemale(e)
+        clearErrorMessage('female_breeder_id')
     }
 
     const handlePurchaseDateChange = e => {
@@ -135,7 +124,7 @@ const EditAnimal = ({ user }) => {
     }
 
     const handleDiseaseChange = e => {
-        setDisease(e.target.value)
+        setDisease(e)
         clearErrorMessage('disease')
     }
 
@@ -150,7 +139,7 @@ const EditAnimal = ({ user }) => {
     }
 
     const handleFarmIdChange = e => {
-        setFarm(e.target.value)
+        setFarm(e)
         clearErrorMessage('farm_id')
     }
 
@@ -171,19 +160,21 @@ const EditAnimal = ({ user }) => {
         
         setIsLoading(true)
         try {
-            
+            console.log(animalId)
             const response = await axios.put(`animal/${id}`, {
                 animal_id: animalId,
-                type,
-                breed,
-                add_as: addAs,
-                sex,
+                type_id: type.value,
+                breed_id: breed.value,
+                add_as: addAs.value,
+                sex: sex.value,
                 dob,
-                disease,
+                disease: disease.value,
                 purchase_date: purchaseDate ?? null,
                 price: price ?? null,
                 previous_owner: previousOwner ?? null,
-                farm_id: farm
+                farm_id: farm.value,
+                male_breeder_id: male?.value ?? null,
+                female_breeder_id: female?.value ?? null
             })
             setFarm(response.data.data)
             setIsLoading(false);
@@ -202,14 +193,14 @@ const EditAnimal = ({ user }) => {
             <FormGroup>
                 <Input error={errors?.data?.animal_id} value={animalId} onChange={handleAnimalIdChange} type="text" placeholder="Animal ID"  />
             </FormGroup>
-            {/* <FormGroup>
-                <Select error={errors?.data?.type} value={type} onChange={handleTypeChange} placeholder="Type" options={typeOptions}></Select>
+            <FormGroup>
+                <Select error={errors?.data?.type} value={type} onChange={handleTypeChange} placeholder="Type" url={`${apiUrl}/types`} mapOptions={options => options.map(option => ({ value: option.id, label: option.type }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.breed} value={breed} onChange={handleBreedChange} placeholder="Breed" options={type ? breedOptions[type].map(text => ({ value: text, text })) : []}></Select>
-            </FormGroup> */}
+                <Select error={errors?.data?.breed} value={breed} onChange={handleBreedChange} placeholder="Breed" url={`${apiUrl}/breeds/${type.value}`} mapOptions={options => options.map(option => ({ value: option.id, label: option.breed }))} async={true}></Select>
+            </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.add_as} value={addAs} onChange={handleAddAsChange} placeholder="Add As" options={addAsOptions}></Select>
+                <Select error={errors?.data?.add_as} value={addAs} onChange={handleAddAsChange} defaultInputValue={addAs} placeholder="Add As" options={addAsOptions}></Select>
             </FormGroup>
             <FormGroup>
                 <Select error={errors?.data?.sex} value={sex} onChange={handleSexChange} placeholder="Sex" options={sexOptions}></Select>
@@ -220,7 +211,7 @@ const EditAnimal = ({ user }) => {
             <FormGroup>
                 <Select error={errors?.data?.disease} value={disease} onChange={handleDiseaseChange} placeholder="Disease" options={diseaseOptions}></Select>
             </FormGroup>
-            {addAs && addAs === 'purchased' && (
+            {addAs && addAs.value === 'purchased' && (
                 <>
                     <FormGroup>
                         <Input error={errors?.data?.purchase_date} value={purchaseDate} onChange={handlePurchaseDateChange} type="date" placeholder="Purchase Date"  />
@@ -233,8 +224,18 @@ const EditAnimal = ({ user }) => {
                     </FormGroup>
                 </>
             )}
+             {addAs && addAs.value === 'calved' && (
+                <>
+                    <FormGroup>
+                        <Select error={errors?.data?.male_breeder_id} value={male} onChange={handleMaleChange} placeholder="Male Breeder" url="animal" params={{ sex: 'male', type: type.value }} mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
+                    </FormGroup>
+                    <FormGroup>
+                        <Select error={errors?.data?.female_breeder_id} value={female} onChange={handleFemaleChange} placeholder="Female Breeder" url="animal" params={{ sex: 'female', type: type.value }} mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>
+                    </FormGroup>
+                </>
+            )}
             <FormGroup>
-                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
+                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Update Animal</Button>  

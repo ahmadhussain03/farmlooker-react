@@ -96,7 +96,7 @@ const CreateAnimal = ({ user }) => {
     }
 
     const handleSexChange = e => {
-        setSex(e.value)
+        setSex(e)
         clearErrorMessage('sex')
     }
 
@@ -106,7 +106,7 @@ const CreateAnimal = ({ user }) => {
     }
 
     const handleAddAsChange = e => {
-        setAddAs(e.value)
+        setAddAs(e)
         clearErrorMessage('add_as')
     }
 
@@ -126,7 +126,7 @@ const CreateAnimal = ({ user }) => {
     }
 
     const handleDiseaseChange = e => {
-        setDisease(e.value)
+        setDisease(e)
         clearErrorMessage('disease')
     }
 
@@ -162,16 +162,15 @@ const CreateAnimal = ({ user }) => {
         
         setIsLoading(true)
         try {
-
             const response = await axios.post("animal", {
                 animal_id: animalId,
                 type_id: type?.value,
                 breed_id: breed?.value,
-                add_as: addAs,
-                sex,
+                add_as: addAs.value,
+                sex: sex.value,
                 dob,
-                disease,
-                purchase_date: purchaseDate ?? null,
+                disease: disease.value,
+                purchase_date: purchaseDate,
                 price: price ?? null,
                 previous_owner: previousOwner ?? null,
                 farm_id: farm?.value,
@@ -212,7 +211,7 @@ const CreateAnimal = ({ user }) => {
             <FormGroup>
                 <Select error={errors?.data?.disease} value={disease} onChange={handleDiseaseChange} placeholder="Disease" options={diseaseOptions}></Select>
             </FormGroup>
-            {addAs && addAs === 'purchased' && (
+            {addAs && addAs.value === 'purchased' && (
                 <>
                     <FormGroup>
                         <Input error={errors?.data?.purchase_date} value={purchaseDate} onChange={handlePurchaseDateChange} type="date" placeholder="Purchase Date"  />
@@ -225,7 +224,7 @@ const CreateAnimal = ({ user }) => {
                     </FormGroup>
                 </>
             )}
-            {addAs && addAs === 'calved' && (
+            {addAs && addAs.value === 'calved' && (
                 <>
                     <FormGroup>
                         <Select error={errors?.data?.male_breeder_id} value={male} onChange={handleMaleChange} placeholder="Male Breeder" url="animal" params={{ sex: 'male', type: type.value }} mapOptions={options => options.map(option => ({ value: option.id, label: option.animal_id }))} async={true}></Select>

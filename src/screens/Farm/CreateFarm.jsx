@@ -90,7 +90,7 @@ const CreateFarm = ({ setFarm }) => {
                 <Select error={errors?.data?.city_id} value={city} onChange={handleCityChange} placeholder="Cities" url={`${apiUrl}/cities/${state.value}`} mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
-                <Input error={errors?.data?.area_of_hector} value={area} onChange={handleAreaChange} type="text" placeholder="Hectar" className="py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none" />
+                <Input error={errors?.data?.area_of_hector} value={area} onChange={handleAreaChange} type="text" placeholder="Hectare" className="py-3 px-2 rounded-md w-full placeholder-primary-dark outline-none" />
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading}  type="submit">Create Farm</Button>  

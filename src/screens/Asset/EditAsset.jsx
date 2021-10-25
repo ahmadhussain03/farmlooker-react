@@ -76,7 +76,7 @@ const EditAsset = ({ user }) => {
         let response = await axios.get(`asset/${id}`)
         let asset = response.data.data
 
-        setFarm(asset.farm_id)
+        setFarm({value: asset.farm.id, label: asset.farm.name})
         setType(asset.type)
         setPrice(asset.price)
         setPurchaseDate(asset.purchase_date)
@@ -137,7 +137,7 @@ const EditAsset = ({ user }) => {
                 <Input error={errors?.data?.location} value={location} onChange={handleLocationChange} type="text" placeholder="Location"  />
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
+                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Input error={errors?.data?.image} onChange={handleImageChange} type="file" placeholder="Image"  />

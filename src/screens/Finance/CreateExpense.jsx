@@ -47,6 +47,7 @@ const Salaries = () => {
     const [workers, setWorkers] = useState([])
     const [worker, setWorker] = useState("")
     const [pay, setPay] = useState("")
+    const [dated, setDated] =  useState("")
     const [errors, setErrors] = useState({})
     const [loading, setLoading] = useState(false)
 
@@ -57,6 +58,11 @@ const Salaries = () => {
             setPay(workers[workerIndex].pay)
         }
         clearErrorMessage('worker')
+    }
+
+    const handleDatedChange = e => {
+        setDated(e.target.value)
+        clearErrorMessage('dated')
     }
 
     const clearErrorMessage = (field = null) => {
@@ -88,9 +94,11 @@ const Salaries = () => {
             
             const response = await axios.post("salary", {
                 worker: worker,
-                pay: pay
+                pay: pay,
+                dated
             })
             setWorker("")
+            setDated("")
             setLoading(false);
             setErrors({})
         } catch(e) {
@@ -104,6 +112,9 @@ const Salaries = () => {
             <Form errors={errors} isPadded={false} onSubmit={handleSalaryPaid}>
                 <FormGroup>
                     <Select error={errors?.data?.worker} value={worker} onChange={handleWorkerChange} placeholder="Worker" options={workers}></Select>
+                </FormGroup>
+                <FormGroup>
+                    <Input type="date" error={errors?.data?.dated} value={dated} onChange={handleDatedChange} placeholder="Date"></Input>
                 </FormGroup>
                 {worker && 
                     <FormGroup>
@@ -224,6 +235,7 @@ const Miscelleneous = () => {
     const [farm, setFarm] = useState("")
     const [reason, setReason] = useState("")
     const [amount, setAmount] = useState("")
+    const [dated, setDated] = useState("")
     const [errors, setErrors] = useState({})
     const [loading, setLoading] = useState(false)
 
@@ -235,6 +247,11 @@ const Miscelleneous = () => {
     const handleAmountChange = e => {
         setAmount(e.target.value)
         clearErrorMessage('amount')
+    }
+
+    const handleDatedChange = e => {
+        setDated(e.target.value)
+        clearErrorMessage('dated')
     }
 
     const handleFarmChange = e => {
@@ -263,10 +280,12 @@ const Miscelleneous = () => {
             const response = await axios.post("miscelleneous", {
                 reason,
                 amount,
-                farm: farm?.value
+                farm: farm?.value,
+                dated
             })
             setReason("")
             setAmount("")
+            setDated("")
             setFarm(null)
             setLoading(false);
             setErrors({})
@@ -284,6 +303,9 @@ const Miscelleneous = () => {
                 </FormGroup>
                 <FormGroup>
                     <Input type="number" error={errors?.data?.amount} value={amount} onChange={handleAmountChange} placeholder="Amount"></Input>
+                </FormGroup>
+                <FormGroup>
+                    <Input type="date" error={errors?.data?.dated} value={dated} onChange={handleDatedChange} placeholder="Date"></Input>
                 </FormGroup>
                 <FormGroup>
                     <Select error={errors?.data?.farm} value={farm} onChange={handleFarmChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>

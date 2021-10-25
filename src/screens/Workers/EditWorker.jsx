@@ -89,7 +89,7 @@ const EditWorker = ({ user }) => {
         setPassport(worker.id_or_passport)
         setPay(worker.pay)
         setJoiningDate(worker.joining_date)
-        setFarm(worker.farm_id)
+        setFarm({value: worker.farm.id, label: worker.farm.name})
     }, [id])
 
     useEffect(() => {
@@ -147,7 +147,7 @@ const EditWorker = ({ user }) => {
                 <Input error={errors?.data?.id_or_passport} value={passport} onChange={handlePassportChange} type="text" placeholder="ID/Passport"  />
             </FormGroup>
             <FormGroup>
-                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" options={farmOptions}></Select>
+                <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Update Worker</Button>  

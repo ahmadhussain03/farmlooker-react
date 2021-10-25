@@ -18,7 +18,7 @@ const styles = {
 
 }
 
-const Select2 = ({ value, onChange, placeholder, error, onFocus, options = [], async = false, url = '', params = {}, mapOptions = (val) => val  }) => {
+const Select2 = ({ value, onChange, placeholder, error, onFocus, options = [], async = false, url = '', params = {}, mapOptions = (val) => val, defaultInputValue = ''  }) => {
 
     const loadOptions =  async (search, loadedOptions, { page }) => {
 
@@ -55,7 +55,7 @@ const Select2 = ({ value, onChange, placeholder, error, onFocus, options = [], a
                     />
                 :
                 <Select 
-                    defaultValue={value}
+                    value={value}
                     options={options.map(opt => ({ value: opt.value, label: opt.text }))}
                     onChange={onChange}
                     onFocus={onFocus}

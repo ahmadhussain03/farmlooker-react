@@ -27,7 +27,7 @@ const columns = [
     {data: 'id_or_passport', name: 'id_or_passport'},
     {data: 'joining_date', name: 'joining_date'},
     {data: 'duty', name: 'duty'},
-    {data: 'farm.location', name: 'farm.location'},
+    {data: 'farm.name', name: 'farm.name'},
     {   name: 'action', 
         render: () => {
             return `<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
