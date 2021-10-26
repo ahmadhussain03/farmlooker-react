@@ -34,15 +34,15 @@ const HomeTradingAnimal = () => {
             <ListContainer>
                 {tradingAnimals.map(animal => (
                     <CardItem 
-                    key={animal.id} 
-                    image={animal.image} 
-                    location={animal.location} 
-                    username={animal.user.fullName}
-                    dated={animal.dated}
-                    price={animal.price}
-                    dob={animal.dob}
-                    type={animal.type}
-                    phone={animal.phone}
+                        key={animal.id} 
+                        image={animal.image} 
+                        location={animal.location} 
+                        username={animal.user.fullName}
+                        dated={animal.dated}
+                        price={animal.price}
+                        dob={animal.dob}
+                        type={animal.type}
+                        phone={animal.phone}
                     />
                 ))}
             </ListContainer>

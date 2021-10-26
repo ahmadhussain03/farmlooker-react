@@ -7,6 +7,7 @@ import Input from './../../components/main/form/Input';
 import Select from '../../components/main/form/Select';
 import Button from '../../components/auth/form/Button';
 import axios from '../../utils/axios';
+import Datatable from '../../components/main/Datatable';
 
 const AnimalSold = () => {
 
@@ -173,6 +174,20 @@ const Others = ({ farms }) => {
     )
 }
 
+const columnNames = [
+    "Amount",
+    "Farm",
+    "Type",
+    "Dated"
+]
+
+const columns = [
+    {data: 'amount', name: 'amount'},
+    {data: 'farm.name', name: 'farm.name'},
+    {data: 'income_type', name: 'income_type'},
+    {data: 'dated', name: 'dated'},
+]
+
 const CreateIncome = ({ user }) => {
 
     const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.name})) : []
@@ -186,6 +201,9 @@ const CreateIncome = ({ user }) => {
                 <Accordion title="Others" > 
                     <Others farms={farmOptions} />
                 </Accordion>
+            </div>
+            <div className="w-full flex flex-col space-y-2">
+                <Datatable listeners={[]} url="income?client=datatable" columns={columns} columnNames={columnNames} />
             </div>
         </Container>
     )

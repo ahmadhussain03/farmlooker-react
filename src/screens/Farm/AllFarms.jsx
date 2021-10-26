@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 const columnNames = [
     "Name",
     "City",
-    "Area In Hector"
+    "Hectare"
 ]
 
 const columns = [

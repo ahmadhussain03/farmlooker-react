@@ -27,6 +27,8 @@ const NewMain = () => {
     const [liveAdsCount, setLiveAdsCount] = useState(0)
     const [expense, setExpense] = useState(0)
     const [income, setIncome] = useState(0)
+    const [currentMonthIncome, setCurrentMonthIncome] = useState(0)
+    const [currentMonthExpense, setCurrentMonthExpense] = useState(0)
     const [animalExpense, setAnimalExpense] = useState(0)
     const [orderFeedExpense, setOrderFeedExpense] = useState(0)
     const [miscelleneous, setMiscelleneous] = useState(0)
@@ -73,6 +75,8 @@ const NewMain = () => {
     const getExpenseTotal = useCallback(async () => {
         
         let response = await axios.get("home/expense/summary")
+
+        setCurrentMonthExpense(response.data.data.current_month_expense)
         setExpense(response.data.data.total_expense)
         setAnimalExpense(response.data.data.animal_expense)
         setSalaries(response.data.data.salaries)
@@ -83,6 +87,7 @@ const NewMain = () => {
     const getIncomeTotal = useCallback(async () => {
         
         let response = await axios.get("home/income/summary")
+        setCurrentMonthIncome(response.data.data.current_month_income)
         setIncome(response.data.data.total_income)
         setAnimalSold(response.data.data.animal_sold)
         setOtherIncome(response.data.data.other_income)
@@ -146,7 +151,7 @@ const NewMain = () => {
                                 <div className="flex flex-row space-x-2 justify-center items-center">
                                     <div className="flex flex-col justify-center text-gray-100">
                                         <h2 className="flex-1 font-semibold text-left">Income</h2>
-                                        <h1 className="text-2xl font-bold pt-6">{income}</h1>
+                                        <h1 className="text-2xl font-bold pt-6">{currentMonthIncome}</h1>
                                         <small className="pt-1">Per/Month</small>
                                     </div>
                                     <div className="self-center flex-1">
@@ -159,7 +164,7 @@ const NewMain = () => {
                                 <div className="flex flex-row space-x-2 justify-center items-center">
                                     <div className="flex flex-col justify-center text-gray-100">
                                         <h2 className="flex-1 font-semibold text-left">Expense</h2>
-                                        <h1 className="text-2xl font-bold pt-6">{expense}</h1>
+                                        <h1 className="text-2xl font-bold pt-6">{currentMonthExpense}</h1>
                                         <small className="pt-1">Per/Month</small>
                                     </div>
                                     <div className="self-center flex-1">

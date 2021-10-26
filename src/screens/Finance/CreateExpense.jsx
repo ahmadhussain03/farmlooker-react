@@ -7,6 +7,8 @@ import Input from '../../components/main/form/Input'
 import Select from '../../components/main/form/Select'
 import axios from '../../utils/axios'
 import ArrowUp from './../../components/icons/ArrowUp';
+import Datatable from '../../components/main/Datatable';
+
 import { connect } from 'react-redux'
 
 export const Accordion = ({ title = '', children }) => {
@@ -318,6 +320,20 @@ const Miscelleneous = () => {
     )
 }
 
+const columnNames = [
+    "Amount",
+    "Farm",
+    "Type",
+    "Dated"
+]
+
+const columns = [
+    {data: 'amount', name: 'amount'},
+    {data: 'farm.name', name: 'farm.name'},
+    {data: 'expense_type', name: 'expense_type'},
+    {data: 'dated', name: 'dated'},
+]
+
 const CreateExpense = ({ user }) => {
 
     const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.name})) : []
@@ -335,6 +351,9 @@ const CreateExpense = ({ user }) => {
                 <Accordion title="Miscelleneous" > 
                     <Miscelleneous farms={farmOptions} />
                 </Accordion>
+            </div>
+            <div className="w-full flex flex-col space-y-2">
+                <Datatable listeners={[]} url="expense?client=datatable" columns={columns} columnNames={columnNames} />
             </div>
        </Container>
     )
