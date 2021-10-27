@@ -1,7 +1,8 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import {useHistory} from 'react-router-dom'
 import { connect } from 'react-redux'
+import {useDropzone} from 'react-dropzone'
 
 import Button from '../../components/auth/form/Button'
 import Form from '../../components/main/form/Form'
@@ -18,7 +19,7 @@ const CreateTradingAnimal = ({ user }) => {
     const [dated, setDated] = useState("")
     const [dob, setDob] = useState("")
     const [phone, setPhone] = useState("")
-    const [image, setImage] = useState({})
+    const [images, setImages] = useState([])
 
     const [errors, setErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
@@ -55,14 +56,6 @@ const CreateTradingAnimal = ({ user }) => {
         clearErrorMessage('dob')
     }
 
-    const handleImageChange = e => {
-        setImage({           
-            picturePreview: URL.createObjectURL(e.target.files[0]),
-            pictureAsFile: e.target.files[0],
-        });
-        clearErrorMessage('image')
-    }
-
     const clearErrorMessage = (field = null) => {
         if(errors && errors.message){
             errors.message = ""
@@ -80,7 +73,10 @@ const CreateTradingAnimal = ({ user }) => {
 
         const formData = new FormData();
 
-        formData.append("image", image.pictureAsFile)
+        images.forEach(image => {
+            formData.append("images[]", image.pictureAsFile)
+        })
+
         formData.append("type", type)
         formData.append("price", price)
         formData.append("location", location)
@@ -91,11 +87,13 @@ const CreateTradingAnimal = ({ user }) => {
         setIsLoading(true)
         try {
             
-            await axios.post("trading_animal", formData, {
+            const response = await axios.post("trading_animal", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
             })
+
+            console.log(response.data)
 
             setIsLoading(false);
             history.push('/dashboard/my-trading-animal')
@@ -104,6 +102,18 @@ const CreateTradingAnimal = ({ user }) => {
             setErrors(e.response.data)
         }
     }
+
+    const onDrop = useCallback(acceptedFiles => {
+        clearErrorMessage('images')
+
+        acceptedFiles.forEach(file => {
+            setImages(images => {
+                return [...images, { picturePreview: URL.createObjectURL(file), pictureAsFile: file }]
+            })
+        })
+      }, [])
+
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
 
     return (
@@ -127,7 +137,24 @@ const CreateTradingAnimal = ({ user }) => {
                 <Input error={errors?.data?.phone} value={phone} onChange={handlePhoneChange} type="text" placeholder="Phone"  />
             </FormGroup>
             <FormGroup>
-                <Input error={errors?.data?.image} onChange={handleImageChange} type="file" placeholder="Image"  />
+                <div className="flex flex-col w-full">
+                    <div {...getRootProps()} className={`shadow bg-white w-full py-3 cursor-pointer px-2 rounded-md placeholder-primary-dark outline-none border border-transparent focus:border-primary ${errors?.data?.images && errors?.data?.images?.length > 0 ? 'border-red-500' : ''}`}>
+                        <input {...getInputProps()} />
+                        {images.length > 0 &&
+                            <div className="flex flex-row flex-wrap justify-center items-center">
+                                {images.map(image => (
+                                    <div className="w-1/3 px-2 py-1">
+                                        <img className="rounded-md shadow-md w-full object-cover border border-gray-500 p-2" src={image.picturePreview} />
+                                    </div>
+                                ))}
+                            </div>
+                        }
+                        <p className="text-gray-600 text-center font-semibold">Drag 'n' drop some Images here, or click to Select Images</p>
+                    </div>
+                    {errors?.data?.images && errors?.data?.images.length > 0 &&
+                        <span className="text-xs text-red-500 pt-1">{errors?.data?.images[0]}</span>
+                    }
+                </div>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Create Trading Animal</Button>  

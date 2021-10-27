@@ -6,7 +6,7 @@ import Tree from 'react-d3-tree';
 import axios from '../../utils/axios';
 
   function getNode(node){
-    let nodeData = {name: node.animal_id, children: getChildren(node), attributes: { Type: node.type, Breed: node.breed }}
+    let nodeData = {name: node.animal_id, children: getChildren(node), attributes: { Type: node.type.type, Breed: node.breed.breed }}
 
     return nodeData
   }
@@ -16,11 +16,11 @@ import axios from '../../utils/axios';
     let children = [];
 
     if(node.male_parent_tree){
-        children.push({name: node.male_parent_tree.animal_id, children: getChildren(node.male_parent_tree), attributes: { Type: node.male_parent_tree.type, Breed: node.male_parent_tree.breed }})
+        children.push({name: node.male_parent_tree.animal_id, children: getChildren(node.male_parent_tree), attributes: { Type: node.male_parent_tree.type.type, Breed: node.male_parent_tree.breed.breed }})
     }
 
     if(node.female_parent_tree){
-        children.push({name: node.female_parent_tree.animal_id, children: getChildren(node.female_parent_tree), attributes: { Type: node.male_parent_tree.type, Breed: node.male_parent_tree.breed }})
+        children.push({name: node.female_parent_tree.animal_id, children: getChildren(node.female_parent_tree), attributes: { Type: node.male_parent_tree.type.type, Breed: node.male_parent_tree.breed.breed }})
     }
 
     return children
@@ -34,7 +34,6 @@ const AnimalTree = () => {
 
     const getTree = useCallback(async () => {
         let response = await axios.get(`animal/${id}/tree`);
-
         setTree(getNode(response.data.data))
     }, [id])
 

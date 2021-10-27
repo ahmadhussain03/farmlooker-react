@@ -1,7 +1,9 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import {useHistory} from 'react-router-dom'
 import { connect } from 'react-redux'
+import {useDropzone} from 'react-dropzone'
+
 
 import Button from '../../components/auth/form/Button'
 import Form from '../../components/main/form/Form'
@@ -19,6 +21,7 @@ const CreateRentalEquipment = ({ user }) => {
     const [dated, setDated] = useState("")
     const [phone, setPhone] = useState("")
     const [image, setImage] = useState({})
+    const [images, setImages] = useState([])
 
     const [errors, setErrors] = useState({})
     const [isLoading, setIsLoading] = useState(false)
@@ -80,7 +83,10 @@ const CreateRentalEquipment = ({ user }) => {
 
         const formData = new FormData();
 
-        formData.append("image", image.pictureAsFile)
+        images.forEach(image => {
+            formData.append("images[]", image.pictureAsFile)
+        })
+
         formData.append("name", name)
         formData.append("model", model)
         formData.append("rent", rent)
@@ -105,6 +111,17 @@ const CreateRentalEquipment = ({ user }) => {
         }
     }
 
+    const onDrop = useCallback(acceptedFiles => {
+        clearErrorMessage('images')
+
+        acceptedFiles.forEach(file => {
+            setImages(images => {
+                return [...images, { picturePreview: URL.createObjectURL(file), pictureAsFile: file }]
+            })
+        })
+      }, [])
+
+    const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
     return (
         <Form onSubmit={handleCreateRentalEquipment} formHeading="Add Rental Equipment" errors={errors}>
@@ -127,7 +144,24 @@ const CreateRentalEquipment = ({ user }) => {
                 <Input error={errors?.data?.phone} value={phone} onChange={handlePhoneChange} type="text" placeholder="Phone"  />
             </FormGroup>
             <FormGroup>
-                <Input error={errors?.data?.image} onChange={handleImageChange} type="file" placeholder="Image"  />
+                <div className="flex flex-col w-full">
+                    <div {...getRootProps()} className={`shadow bg-white w-full py-3 cursor-pointer px-2 rounded-md placeholder-primary-dark outline-none border border-transparent focus:border-primary ${errors?.data?.images && errors?.data?.images?.length > 0 ? 'border-red-500' : ''}`}>
+                        <input {...getInputProps()} />
+                        {images.length > 0 &&
+                            <div className="flex flex-row flex-wrap justify-center items-center">
+                                {images.map(image => (
+                                    <div className="w-1/3 px-2 py-1">
+                                        <img className="rounded-md shadow-md w-full object-cover border border-gray-500 p-2" src={image.picturePreview} />
+                                    </div>
+                                ))}
+                            </div>
+                        }
+                        <p className="text-gray-600 text-center font-semibold">Drag 'n' drop some Images here, or click to Select Images</p>
+                    </div>
+                    {errors?.data?.images && errors?.data?.images.length > 0 &&
+                        <span className="text-xs text-red-500 pt-1">{errors?.data?.images[0]}</span>
+                    }
+                </div>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Create Rental Equipment</Button>  

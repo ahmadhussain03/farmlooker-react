@@ -38,7 +38,7 @@ const HomeRentalEquipment = () => {
                     model={equipment.model}
                     location={equipment.location}
                     rent={equipment.rent}
-                    image={equipment.image}
+                    images={equipment.images}
                     username={equipment.user.fullName}
                     dated={equipment.dated}
                     phone={equipment.phone}

@@ -1,13 +1,23 @@
 import React, { useState } from 'react'
-
-import 'react-responsive-modal/styles.css';
+import ImageGallery from 'react-image-gallery';
 import { Modal } from 'react-responsive-modal';
 
-const RentalModelItem = ({ image, location, name, model, username, dated, rent, phone }) => {
+import "react-image-gallery/styles/css/image-gallery.css";
+import 'react-responsive-modal/styles.css';
+
+const RentalModelItem = ({ images, location, name, model, username, dated, rent, phone }) => {
+
+    const gallery = images.map(image => ({
+        original: image.image,
+        thumbnail: image.image
+    }))
+    
     return (
         <div className="w-full p-2 flex">
             <div className="flex flex-1 flex-col">
-                <img className="w-full h-auto rounded-none object-cover object-center" src={image} alt="" width="384" height="512" />
+                <div className="w-full">
+                    <ImageGallery thumbnailPosition="right" showPlayButton={false} additionalClass="p-4" items={gallery} />
+                </div>
                 <div className="flex flex-col md:flex-row pt-6 p-8 text-left md:space-y-0 space-y-2 flex-1 md:flex-wrap flex-nowrap">
                     <div className="md:w-1/2 w-full md:pt-4">
                         <p className="text-xs text-gray-600 tracking-widest uppercase">Name</p>
@@ -56,7 +66,7 @@ const RentalModelItem = ({ image, location, name, model, username, dated, rent, 
     )
 }
 
-const RentalCardItem = ({ image, location, name, model, username, dated, rent, phone }) => {
+const RentalCardItem = ({ images, location, name, model, username, dated, rent, phone }) => {
 
     const [open, setOpen] = useState(false);
 
@@ -66,8 +76,9 @@ const RentalCardItem = ({ image, location, name, model, username, dated, rent, p
     return (
         <div className="lg:w-1/3 w-full px-4 py-2 flex">
             <div className="flex flex-1 bg-gray-100 rounded-xl p-0 shadow-lg">
-                <img className="w-1/3 h-auto rounded-md shadow-lg transform -translate-x-5 -translate-y-2 object-cover object-center" src={image} alt="" width="384" height="512" />
-                {/* <img className="w-1/3 h-auto rounded-none object-cover object-center" src={image} alt="" width="384" height="512" /> */}
+                { images && images.length > 0 &&
+                    <img className="w-1/3 h-auto rounded-md shadow-lg transform -translate-x-5 -translate-y-2 object-cover object-center" src={images[0].image} alt="" width="384" height="512" />
+                }
                 <div className="flex flex-col md:flex-row pt-6 p-8 text-left md:space-y-0 space-y-2 flex-1 md:flex-wrap flex-nowrap">
                     <div className="md:w-1/2 w-full md:pt-4">
                         <p className="text-xs text-gray-600 tracking-widest uppercase">Name</p>
@@ -113,7 +124,7 @@ const RentalCardItem = ({ image, location, name, model, username, dated, rent, p
                      model={model}
                      location={location}
                      rent={rent}
-                     image={image}
+                     images={images}
                      username={username}
                      dated={dated}
                      phone={phone}

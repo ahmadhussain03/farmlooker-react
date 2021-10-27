@@ -1,3 +1,7 @@
+import cookie from "js-cookie";
+
+let token = cookie.get("token")
+
 const authReducer = (state = {}, actions) => {
     switch (actions.type) {
       case "SET_LOGIN":
@@ -19,7 +23,7 @@ const authReducer = (state = {}, actions) => {
   };
 
 export const intialState = {
-    loggedIn: false,
+    loggedIn: token ? true : false,
     user: {}
 }
   

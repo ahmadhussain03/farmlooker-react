@@ -18,7 +18,6 @@ const HomeTradingAnimal = () => {
 
     const getTradingAnimals = useCallback(async () => {
         let response = await axios.get("home/trading_animal")
-        console.log(response.data.data.data)
         setTradingAnimals(response.data.data.data)
     }, [])
 
@@ -35,7 +34,7 @@ const HomeTradingAnimal = () => {
                 {tradingAnimals.map(animal => (
                     <CardItem 
                         key={animal.id} 
-                        image={animal.image} 
+                        images={animal.images} 
                         location={animal.location} 
                         username={animal.user.fullName}
                         dated={animal.dated}
