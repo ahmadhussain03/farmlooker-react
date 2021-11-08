@@ -72,7 +72,10 @@ const Login = ({setLogin}) => {
                     <Error message={errors.message}></Error>
                 }
                 <InputField labelText="Email" inputType="email" placeholder="Email" onChange={(e) => handleEmailChange(e)} error={errors?.data?.email}></InputField>   
-                <InputField labelText="Password" inputType="password" placeholder="Password" error={errors?.data?.password} onChange={(e) => handlePasswordChange(e)}></InputField>   
+                <InputField labelText="Password" inputType="password" placeholder="Password" error={errors?.data?.password} onChange={(e) => handlePasswordChange(e)}></InputField> 
+                <div className="text-sm text-right text-gray-800">
+                    <a href="/forgot-password" className="text-primary">Forget Password?</a>
+                </div>  
                 <div className="pt-2">
                     <Button disabled={isLoading} type="submit">Login</Button>  
                 </div>

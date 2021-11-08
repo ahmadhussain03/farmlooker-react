@@ -7,7 +7,7 @@ import GuestRoute from "./components/routes/GuestRoute";
 
 import SignUp from './screens/SignUp';
 import Login from "./screens/Login";
-import Dashboard from "./screens/Dashboard";
+import Dashboard from "./screens/Dashbo\ard";
 import VerifyEmail from './screens/VerifyEmail';
 import VerifiedRoute from './components/routes/VerifiedRoute';
 

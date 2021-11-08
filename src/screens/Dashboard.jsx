@@ -83,7 +83,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                         exit={{x: -500, opacity: 0}}
                         transition={{duration: 0.3}}
                         
-                        className="md:w-1/6 bg-gradient-to-r from-primary to-primary-200 pt-8 border-none overflow-y-auto" style={{minHeight: "calc(100vh - 4rem)"}}>
+                        className="md:w-1/6 bg-primary-side pt-8 border-none overflow-y-auto" style={{minHeight: "calc(100vh - 4rem)"}}>
                             <SideBar></SideBar>
                         </motion.div>
                 }
