@@ -7,7 +7,6 @@ import Input from '../../components/main/form/Input'
 import Select from '../../components/main/form/Select'
 import axios from '../../utils/axios'
 import ArrowUp from './../../components/icons/ArrowUp';
-import Datatable from '../../components/main/Datatable';
 
 import { connect } from 'react-redux'
 import Datatable2 from '../../components/main/Datatable2'
@@ -322,10 +321,10 @@ const Miscelleneous = () => {
 }
 
 const columns = [
-    {data: 'amount', label: 'Amount'},
-    {data: 'farm.name', label: 'Farm'},
-    {data: 'expenseable_type', label: 'Expense Type'},
-    {data: 'dated', label: 'dated'}
+    {data: 'amount', label: 'Amount', orderable: false},
+    {data: 'farm.name', label: 'Farm', orderable: false},
+    {data: 'expenseable_type', label: 'Expense Type', orderable: false},
+    {data: 'dated', label: 'dated', orderable: false}
 ]
 
 const CreateExpense = ({ user }) => {
@@ -348,7 +347,6 @@ const CreateExpense = ({ user }) => {
             </div>
             <div className="w-full flex flex-col space-y-2">
                 <Datatable2 url="expense" columns={columns} />
-                {/* <Datatable listeners={[]} url="expense?client=datatable" columns={columns} columnNames={columnNames} /> */}
             </div>
        </Container>
     )

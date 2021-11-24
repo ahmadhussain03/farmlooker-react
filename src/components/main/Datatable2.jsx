@@ -30,7 +30,7 @@ const Loading = () => {
     )
 }
 
-const DatatableOptions = ({ perPage, handlePerPageChange, handleSearchChange }) => {
+const DatatableOptions = ({ perPage, handlePerPageChange, handleSearchChange, SelectedAction }) => {
     return (
         <div className="py-2 flex flex-row items-center justify-between">
             <div>
@@ -43,6 +43,7 @@ const DatatableOptions = ({ perPage, handlePerPageChange, handleSearchChange }) 
                     </select>
                 </div>
             </div>
+            {SelectedAction ? SelectedAction() : null}
             <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700">Search</label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -59,7 +60,7 @@ const Paginator = ({ paginator: pagination, pageChanged }) => {
     useEffect(() => {
         const setPaginationPages = () => {
             let pages = []
-            const { last_page, current_page, from, to } = pagination
+            const { last_page, current_page, to } = pagination
             if (!to) return []
             let fromPage = current_page - OFFSET
             if (fromPage < 1) fromPage = 1
@@ -135,8 +136,9 @@ const resolve = (path, obj) => {
     }, obj)
 }
   
-const Datatable2 = ({ url, columns }) => {
+const Datatable2 = ({ url, columns, isSelectable = false, SelectedAction = null }) => {
 
+    const sortIndex = columns.findIndex(col => col?.orderable !== false)
     const [data, setData] = useState([])
     const [paginator, setPaginator] = useState({
         from: 1,
@@ -147,7 +149,7 @@ const Datatable2 = ({ url, columns }) => {
     })
     const [loading, setLoading] = useState(true)
 
-    const [sortField, setSortField] = useState(columns[0].data)
+    const [sortField, setSortField] = useState(columns[sortIndex].data)
     const [sortOrder, setSortOrder] = useState("asc")
     const [currentPage, setCurrentPage] = useState(1)
     const [perPage, setPerPage] = useState(10)
@@ -165,8 +167,7 @@ const Datatable2 = ({ url, columns }) => {
         try {
             setLoading(true)
             const response = await axios.get(url, { params })
-            console.log(response.data.data)
-            setData(response.data.data.data)
+            setData(response.data.data.data.map(item => ({...item, isSelected: false})))
             setPaginator({
                 from: response.data.data.from,
                 to: response.data.data.to,
@@ -213,18 +214,38 @@ const Datatable2 = ({ url, columns }) => {
         }
     }
 
+    const handleSelectAll = (e) => {
+        let isChecked = e.target.checked
+
+        const selectedData = data.map(item => {
+            return {...item, isSelected: isChecked }
+        })
+
+        setData(selectedData)
+    }
+
+    const handleSelected = (item, index, isChecked) => {
+        data.splice(index, 1, {...item, isSelected: isChecked})
+        setData(data.map(l => Object.assign({}, l)))
+    }
+
     return (
       <div className="flex flex-col w-full">
-        <DatatableOptions handlePerPageChange={handlePerPageChange} perPage={perPage} handleSearchChange={handleSearchChange} />
+        <DatatableOptions handlePerPageChange={handlePerPageChange} perPage={perPage} handleSearchChange={handleSearchChange}  SelectedAction={isSelectable && data.filter(d => d.isSelected).length > 0 ? () => <SelectedAction selectedItems={data.filter(d => d.isSelected)} reload={getData} /> : null}  />
         <div className="-my-2 overflow-x-auto">
-            <div className="py-2 align-middle inline-block w-full">
+            <div className="pt-2 align-middle inline-block w-full">
                 <div className="shadow border-b border-gray-200 sm:rounded-lg">
                     <table className="w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                         <tr>
+                            {isSelectable && (
+                                <th scope="col" className="px-3 py-1">
+                                    <input type="checkbox" disabled={data.length === 0} checked={data.length > 0 && data.filter(d => d.isSelected).length === data.length ? true : false} onChange={e => handleSelectAll(e)} />
+                                </th>
+                            )}
                             {columns.map(col => (
                                 <th
-                                onClick={e => col?.orderable && col.orderable === false ? () => {} : handleSort(col.data)}
+                                onClick={e => col?.orderable === false ? () => {} : handleSort(col.data)}
                                 key={col.label}
                                 scope="col"
                                 className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
@@ -232,7 +253,7 @@ const Datatable2 = ({ url, columns }) => {
                                 <span className="flex flex-row items-center justify-center">
                                     <span>{col.label}</span>
 
-                                    {sortField === col.data ? (
+                                    {sortField === col.data && col?.orderable !== false ? (
                                         <span className="pl-1">
                                             {sortOrder === 'asc' ? (
                                                 <ArrowDown width={16} height={16} />
@@ -249,14 +270,14 @@ const Datatable2 = ({ url, columns }) => {
                         <tbody className="bg-white text-center divide-y divide-gray-200">
                             {loading ? (
                                 <tr>
-                                    <td colSpan={columns.length}>
+                                    <td colSpan={columns.length + 1}>
                                     <Loading />
                                     </td> 
                                 </tr>
                             ) : (
                                 data.length === 0 ? (
                                     <tr>
-                                        <td colSpan={columns.length}>
+                                        <td colSpan={columns.length + 1}>
                                             <div className="flex justify-center items-center py-5">
                                                 <p className="tracking-wider text-primary-900 font-semibold text-xl">No Record Found!</p>
                                             </div>
@@ -265,6 +286,11 @@ const Datatable2 = ({ url, columns }) => {
                                 ) : (
                                     data.map((item, index) => (
                                         <tr key={index}>
+                                            {isSelectable && (
+                                                <td className="px-4 py-2">
+                                                    <input type="checkbox" checked={item.isSelected} onChange={e => handleSelected(item, index, e.target.checked)} />
+                                                </td>
+                                            )}
                                             {columns.map(col => (
                                                 col?.renderer ? (
                                                     <td key={col.label} className="px-6 py-4 whitespace-nowrap"><col.renderer item={item} reload={getData} /></td>
@@ -274,36 +300,6 @@ const Datatable2 = ({ url, columns }) => {
                                     ))
                                 )  
                             )}
-                        {/* {people.map((person) => (
-                            <tr key={person.email}>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="flex items-center">
-                                <div className="flex-shrink-0 h-10 w-10">
-                                    <img className="h-10 w-10 rounded-full" src={person.image} alt="" />
-                                </div>
-                                <div className="ml-4">
-                                    <div className="text-sm font-medium text-gray-900">{person.name}</div>
-                                    <div className="text-sm text-gray-500">{person.email}</div>
-                                </div>
-                                </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{person.title}</div>
-                                <div className="text-sm text-gray-500">{person.department}</div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
-                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Active
-                                </span>
-                            </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{person.role}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                                <a href="#" className="text-indigo-600 hover:text-indigo-900">
-                                Edit
-                                </a>
-                            </td>
-                            </tr>
-                        ))} */}
                         </tbody>
                     </table>
                 </div>

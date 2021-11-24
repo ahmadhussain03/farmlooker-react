@@ -8,43 +8,8 @@ import Datatable from '../../components/main/Datatable'
 
 import axios from '../../utils/axios'
 import Datatable2 from '../../components/main/Datatable2'
-
-
-const columnNames = [
-    "Animal ID",
-    "Animal Type",
-    "Animal Breed",
-    "AUID",
-    "Disease",
-    "Sex",
-    "DOB",
-    "Add As",
-    "Farm",
-    "Action"
-]
-
-const columns2 = [
-    {data: 'animal_id', name: 'animal_id'},
-    {data: 'type.type', name: 'type.type'},
-    {data: 'breed.breed', name: 'breed.breed'},
-    {data: 'auid', name: 'auid'},
-    {data: 'disease', name: 'disease'},
-    {data: 'sex', name: 'sex'},
-    {data: 'dob', name: 'dob'},
-    {data: 'add_as', name: 'add_as'},
-    {data: 'farm.name', name: 'farm.name'},
-    {   name: 'action', 
-        render: () => {
-            return `
-                <a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
-                <a href='#' class='border rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
-                <a href='#' class='border rounded shadow border-green-600 p-1 text-green-600 tree'>Tree</a>
-            `
-        }, 
-        searchable: false,
-        orderable: false
-    }
-]
+import TrashIcon from '../../components/icons/TrashIcon'
+import { useState } from 'react';
 
 const columns = [
     {data: 'animal_id', label: 'Animal ID'},
@@ -65,6 +30,32 @@ const columns = [
         orderable: false
     }
 ]
+
+const SelectedAction = ({ selectedItems, reload }) => {
+
+    const [loading, setLoading] = useState(false)
+
+    const handleDelete = async () => {
+        try {
+
+            setLoading(true)
+            const ids = selectedItems.map(item => item.id)
+            await axios.post(`animal`, { animals: ids, "_method": "DELETE" })
+            reload()
+           } catch(e){
+                setLoading(false)
+                console.error(e)
+           } finally {
+               setLoading(false)
+           }
+    }
+
+    return (
+        <>
+            <button onClick={e => handleDelete()} disabled={loading} className="cursor-pointer disabled:opacity-50 rounded shadow-md text-sm bg-red-600 px-3 py-2 font-semibold text-white"><span className="flex flex-row justify-center items-center space-x-1"><span> <TrashIcon height={16} width={16} /> </span><span>{!loading ? 'Delete Selected' : 'Deleting...'}</span></span></button>
+        </>
+    )
+}
 
 const Action = ({ item, reload }) => {
 
@@ -106,8 +97,7 @@ function AllAnimals() {
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-animal')}>Create Animal</Button>
             </SimpleInput>
-            <Datatable2 url="animal" columns={columns} />
-            {/* <Datatable listeners={listeners} url="animal?client=datatable" columns={columns} columnNames={columnNames} /> */}
+            <Datatable2 url="animal" columns={columns} isSelectable={true} SelectedAction={SelectedAction} />
         </Container>
     )
 }

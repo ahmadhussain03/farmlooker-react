@@ -7,7 +7,6 @@ import Input from './../../components/main/form/Input';
 import Select from '../../components/main/form/Select';
 import Button from '../../components/auth/form/Button';
 import axios from '../../utils/axios';
-import Datatable from '../../components/main/Datatable';
 import Datatable2 from '../../components/main/Datatable2';
 
 const AnimalSold = () => {
@@ -176,10 +175,10 @@ const Others = ({ farms }) => {
 }
 
 const columns = [
-    {data: 'amount', label: 'Amount'},
-    {data: 'farm.name', label: 'Farm'},
-    {data: 'incomeable_type', label: 'Income Type'},
-    {data: 'dated', label: 'Dated'}
+    {data: 'amount', label: 'Amount', orderable: false},
+    {data: 'farm.name', label: 'Farm', orderable: false},
+    {data: 'incomeable_type', label: 'Income Type', orderable: false},
+    {data: 'dated', label: 'Dated', orderable: false}
 ]
 
 const CreateIncome = ({ user }) => {
@@ -198,7 +197,6 @@ const CreateIncome = ({ user }) => {
             </div>
             <div className="w-full flex flex-col space-y-2">
                 <Datatable2 url="income" columns={columns} />
-                {/* <Datatable listeners={[]} url="income?client=datatable" columns={columns} columnNames={columnNames} /> */}
             </div>
         </Container>
     )

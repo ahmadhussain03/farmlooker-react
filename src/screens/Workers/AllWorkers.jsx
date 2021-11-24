@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import Button from '../../components/auth/form/Button'
 import Container from '../../components/main/Container'
 import SimpleInput from '../../components/main/form/SimpleInput'
-import Datatable from '../../components/main/Datatable'
 import axios from '../../utils/axios'
 import Datatable2 from '../../components/main/Datatable2'
+import TrashIcon from '../../components/icons/TrashIcon'
 
 const Action = ({ item, reload }) => {
 
@@ -33,8 +33,35 @@ const Action = ({ item, reload }) => {
     )
 }
 
+
+const SelectedAction = ({ selectedItems, reload }) => {
+
+    const [loading, setLoading] = useState(false)
+
+    const handleDelete = async () => {
+        try {
+
+            setLoading(true)
+            const ids = selectedItems.map(item => item.id)
+            await axios.post(`worker`, { workers: ids, "_method": "DELETE" })
+            reload()
+           } catch(e){
+                setLoading(false)
+                console.error(e)
+           } finally {
+               setLoading(false)
+           }
+    }
+
+    return (
+        <>
+            <button onClick={e => handleDelete()} disabled={loading} className="cursor-pointer disabled:opacity-50 rounded shadow-md text-sm bg-red-600 px-3 py-2 font-semibold text-white"><span className="flex flex-row justify-center items-center space-x-1"><span> <TrashIcon height={16} width={16} /> </span><span>{!loading ? 'Delete Selected' : 'Deleting...'}</span></span></button>
+        </>
+    )
+}
+
 const columns = [
-    {data: 'name', label: 'Name', orderable: false},
+    {data: 'name', label: 'Name'},
     {data: 'phone_no', label: 'Phone No'},
     {data: 'address', label: 'Address'},
     {data: 'pay', label: 'Pay'},
@@ -59,7 +86,7 @@ function AllWorkers() {
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-worker')}>Create Worker</Button>
             </SimpleInput>
-            <Datatable2 url="worker" columns={columns} />
+            <Datatable2 url="worker" columns={columns} isSelectable={true} SelectedAction={SelectedAction} />
         </Container>
     )
 }
