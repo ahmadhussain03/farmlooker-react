@@ -89,7 +89,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                 }
                 </AnimatePresence>
                 { ((isMobile && !isOpen) || !isMobile) &&
-                    <div className="flex-1 py-10">
+                    <div className="xs:flex-1 md:w-5/6 py-10">
                         <AnimatePresence exitBeforeEnter initial={false}>
                             <Switch location={location} key={location.key}>
                                 <FarmRoute exact path={`${path}`} component={NewMain}></FarmRoute>

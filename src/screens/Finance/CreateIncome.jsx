@@ -8,6 +8,7 @@ import Select from '../../components/main/form/Select';
 import Button from '../../components/auth/form/Button';
 import axios from '../../utils/axios';
 import Datatable from '../../components/main/Datatable';
+import Datatable2 from '../../components/main/Datatable2';
 
 const AnimalSold = () => {
 
@@ -174,18 +175,11 @@ const Others = ({ farms }) => {
     )
 }
 
-const columnNames = [
-    "Amount",
-    "Farm",
-    "Type",
-    "Dated"
-]
-
 const columns = [
-    {data: 'amount', name: 'amount'},
-    {data: 'farm.name', name: 'farm.name'},
-    {data: 'income_type', name: 'income_type'},
-    {data: 'dated', name: 'dated'},
+    {data: 'amount', label: 'Amount'},
+    {data: 'farm.name', label: 'Farm'},
+    {data: 'incomeable_type', label: 'Income Type'},
+    {data: 'dated', label: 'Dated'}
 ]
 
 const CreateIncome = ({ user }) => {
@@ -203,7 +197,8 @@ const CreateIncome = ({ user }) => {
                 </Accordion>
             </div>
             <div className="w-full flex flex-col space-y-2">
-                <Datatable listeners={[]} url="income?client=datatable" columns={columns} columnNames={columnNames} />
+                <Datatable2 url="income" columns={columns} />
+                {/* <Datatable listeners={[]} url="income?client=datatable" columns={columns} columnNames={columnNames} /> */}
             </div>
         </Container>
     )

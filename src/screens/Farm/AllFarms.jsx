@@ -3,19 +3,13 @@ import React from 'react'
 import Button from '../../components/auth/form/Button'
 import Container from '../../components/main/Container'
 import SimpleInput from '../../components/main/form/SimpleInput'
-import Datatable from '../../components/main/Datatable'
 import { useHistory } from 'react-router-dom';
-
-const columnNames = [
-    "Name",
-    "City",
-    "Hectare"
-]
+import Datatable2 from '../../components/main/Datatable2'
 
 const columns = [
-    {data: 'name', name: 'name'},
-    {data: 'city.name', name: 'city.name'},
-    {data: 'area_of_hector', name: 'area_of_hector'},
+    {data: 'name', label: 'Name'},
+    {data: 'city.name', label: 'City'},
+    {data: 'area_of_hector', label: 'Hectare'}
 ]
 
 function AllFarms() {
@@ -27,7 +21,7 @@ function AllFarms() {
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-farm')}>Create Farm</Button>
             </SimpleInput>
-            <Datatable listeners={[]} url="farm?client=datatable" columns={columns} columnNames={columnNames} />
+            <Datatable2 url="farm" columns={columns} />
         </Container>
     )
 }

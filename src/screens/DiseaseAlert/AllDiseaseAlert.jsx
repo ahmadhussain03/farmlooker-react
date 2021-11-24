@@ -6,23 +6,34 @@ import Container from '../../components/main/Container'
 import SimpleInput from '../../components/main/form/SimpleInput'
 import Datatable from '../../components/main/Datatable'
 import axios from '../../utils/axios'
+import Datatable2 from '../../components/main/Datatable2'
 
-const columnNames = [
-    "Animal ID",
-    "Description",
-    "Symptoms",
-    "Action"
-]
+const Action = ({ item, reload }) => {
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`disease_alert/${item.id}`)
+            reload()
+           } catch(e){
+            throw new Error(e)
+           }
+    }
+
+    return (
+        <div className="flex flex-row space-x-1 items-center justify-center">
+            <a onClick={e => handleDelete()} className='border cursor-pointer rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
+        </div>
+    )
+}
 
 const columns = [
-    {data: 'animal_id', name: 'animals.animal_id'},
-    {data: 'description', name: 'description'},
-    {data: 'symptoms', name: 'symptoms'},
-    {   name: 'action', 
-        render: () => {
-            return `<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>`
+    {data: 'animal.animal_id', label: 'Animal ID'},
+    {data: 'description', label: 'Description'},
+    {data: 'symptoms', label: 'Symptoms'},
+    {   label: 'action', 
+        renderer: (props) => {
+            return (<Action {...props} />)
         }, 
-        searchable: false,
         orderable: false
     }
 ]
@@ -30,25 +41,13 @@ const columns = [
 function AllDiseaseAlert() {
 
     const history = useHistory()
-    const listeners = [
-        { 
-            key: '.delete',
-            listener: async (id) => {
-            try {
-                await axios.delete(`disease_alert/${id}`)
-            } catch(e){
-                throw new Error(e)
-            }
-            }
-        }
-    ]
 
     return (
         <Container title="Disease Alerts">
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-disease-alert')}>Create Disease Alert</Button>
             </SimpleInput>
-            <Datatable listeners={listeners} url="disease_alert?client=datatable" columns={columns} columnNames={columnNames} />
+            <Datatable2 url="disease_alert" columns={columns} />
         </Container>
     )
 }

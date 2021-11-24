@@ -1,39 +1,75 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import ImageGallery from 'react-image-gallery';
+import Modal from 'react-responsive-modal';
 
 import Button from '../../components/auth/form/Button'
 import Container from '../../components/main/Container'
 import SimpleInput from '../../components/main/form/SimpleInput'
-import Datatable from '../../components/main/Datatable'
 import axios from '../../utils/axios'
+import Datatable2 from '../../components/main/Datatable2'
 
-const columnNames = [
-    "Image",
-    "Name",
-    "Model",
-    "Rent",
-    "Location",
-    "dated",
-    "Phone",
-    "Action"
-]
+const Action = ({ item, reload }) => {
+
+    const history = useHistory()
+
+    const handleEdit = () => {
+        history.push(`edit-rental-equipment/${item.id}`)
+    }
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`rental_equipment/${item.id}`)
+            reload()
+           } catch(e){
+            throw new Error(e)
+           }
+    }
+
+    return (
+        <div className="flex flex-row space-x-1 items-center justify-center">
+            <a onClick={e => handleDelete()} className='border cursor-pointer rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
+            <a onClick={e => handleEdit()} className='border cursor-pointer rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
+        </div>
+    )
+}
+
+const ImageGalleryModal = ({ item }) => {
+    
+    const [open, setOpen] = useState(false);
+
+    const onOpenModal = () => setOpen(true);
+    const onCloseModal = () => setOpen(false);
+
+    const gallery = item.images.map(image => ({
+        original: image.image,
+        thumbnail: image.image
+    }))
+
+    return (
+        <>
+            <button className="px-3 py-2 tracking-tighter text-white text-xs bg-indigo-600 rounded-md" onClick={onOpenModal}>View Images</button>
+            <Modal open={open} onClose={onCloseModal} center>
+                <div className="w-full">
+                    <ImageGallery lazyLoad={true} useBrowserFullscreen={true} thumbnailPosition="right" showPlayButton={false} additionalClass="p-4" items={gallery} />
+                </div>
+            </Modal>
+        </>
+    )
+
+}
 
 const columns = [
-    {data: 'image', name: 'image'},
-    {data: 'name', name: 'name'},
-    {data: 'model', name: 'model'},
-    {data: 'rent', name: 'rent'},
-    {data: 'location', name: 'location'},
-    {data: 'dated', name: 'dated'},
-    {data: 'phone', name: 'phone'},
+    {data: 'image', label: 'Image', renderer: (props) => (<ImageGalleryModal {...props} />)},
+    {data: 'name', label: 'Name'},
+    {data: 'model', label: 'Model'},
+    {data: 'rent', label: 'Rent'},
+    {data: 'location', label: 'Location'},
+    {data: 'dated', label: 'Dated'},
+    {data: 'phone', label: 'Phone'},
     {   
-        name: 'action', 
-        render: () => {
-            return `<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
-               <a href='#' class='border rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
-            `
-        }, 
-        searchable: false,
+        label: 'action', 
+        renderer: (props) => (<Action {...props} />), 
         orderable: false
     }
 ]
@@ -42,31 +78,12 @@ function AllRentalEquipment() {
 
     const history = useHistory()
 
-    const listeners = [
-        { 
-            key: '.delete',
-            listener: async (id) => {
-               try {
-                await axios.delete(`rental_equipment/${id}`)
-               } catch(e){
-                throw new Error(e)
-               }
-            }
-        },
-        {
-            key: '.edit',
-            listener: async (id) => {
-                return history.push(`edit-rental-equipment/${id}`)
-            }
-        }
-    ]
-
     return (
         <Container title="Rental Equipments">
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-rental-equipment')}>Create Rental Equipment</Button>
             </SimpleInput>
-            <Datatable listeners={listeners} url="rental_equipment?client=datatable" columns={columns} columnNames={columnNames} />
+            <Datatable2 url="rental_equipment" columns={columns} />
         </Container>
     )
 }

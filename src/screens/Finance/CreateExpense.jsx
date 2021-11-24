@@ -10,6 +10,7 @@ import ArrowUp from './../../components/icons/ArrowUp';
 import Datatable from '../../components/main/Datatable';
 
 import { connect } from 'react-redux'
+import Datatable2 from '../../components/main/Datatable2'
 
 export const Accordion = ({ title = '', children }) => {
 
@@ -320,18 +321,11 @@ const Miscelleneous = () => {
     )
 }
 
-const columnNames = [
-    "Amount",
-    "Farm",
-    "Type",
-    "Dated"
-]
-
 const columns = [
-    {data: 'amount', name: 'amount'},
-    {data: 'farm.name', name: 'farm.name'},
-    {data: 'expense_type', name: 'expense_type'},
-    {data: 'dated', name: 'dated'},
+    {data: 'amount', label: 'Amount'},
+    {data: 'farm.name', label: 'Farm'},
+    {data: 'expenseable_type', label: 'Expense Type'},
+    {data: 'dated', label: 'dated'}
 ]
 
 const CreateExpense = ({ user }) => {
@@ -353,7 +347,8 @@ const CreateExpense = ({ user }) => {
                 </Accordion>
             </div>
             <div className="w-full flex flex-col space-y-2">
-                <Datatable listeners={[]} url="expense?client=datatable" columns={columns} columnNames={columnNames} />
+                <Datatable2 url="expense" columns={columns} />
+                {/* <Datatable listeners={[]} url="expense?client=datatable" columns={columns} columnNames={columnNames} /> */}
             </div>
        </Container>
     )

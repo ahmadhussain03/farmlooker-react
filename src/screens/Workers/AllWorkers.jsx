@@ -6,34 +6,46 @@ import Container from '../../components/main/Container'
 import SimpleInput from '../../components/main/form/SimpleInput'
 import Datatable from '../../components/main/Datatable'
 import axios from '../../utils/axios'
+import Datatable2 from '../../components/main/Datatable2'
 
-const columnNames = [
-    "Name",
-    "Phone No",
-    "Address",
-    "Pay",
-    "ID/Passport",
-    "Joining Date",
-    "Duty",
-    "Farm",
-    "Action"
-]
+const Action = ({ item, reload }) => {
+
+    const history = useHistory()
+
+    const handleEdit = () => {
+        history.push(`edit-worker/${item.id}`)
+    }
+
+    const handleDelete = async () => {
+        try {
+            await axios.delete(`worker/${item.id}`)
+            reload()
+           } catch(e){
+            throw new Error(e)
+           }
+    }
+
+    return (
+        <div className="flex flex-row space-x-1 items-center justify-center">
+            <a onClick={e => handleDelete()} className='border cursor-pointer rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
+            <a onClick={e => handleEdit()} className='border cursor-pointer rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
+        </div>
+    )
+}
 
 const columns = [
-    {data: 'workerName', name: 'workerName', orderable: false},
-    {data: 'phone_no', name: 'phone_no'},
-    {data: 'address', name: 'address'},
-    {data: 'pay', name: 'pay'},
-    {data: 'id_or_passport', name: 'id_or_passport'},
-    {data: 'joining_date', name: 'joining_date'},
-    {data: 'duty', name: 'duty'},
-    {data: 'farm.name', name: 'farm.name'},
-    {   name: 'action', 
-        render: () => {
-            return `<a href='#' class='border rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
-            <a href='#' class='border rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>`
+    {data: 'name', label: 'Name', orderable: false},
+    {data: 'phone_no', label: 'Phone No'},
+    {data: 'address', label: 'Address'},
+    {data: 'pay', label: 'Pay'},
+    {data: 'id_or_passport', label: 'ID/Passport'},
+    {data: 'joining_date', label: 'Joining Date'},
+    {data: 'duty', label: 'Duty'},
+    {data: 'farm.name', label: 'Farm'},
+    {   label: 'Action', 
+        renderer: (props) => {
+            return (<Action {...props} />)
         }, 
-        searchable: false,
         orderable: false
     }
 ]
@@ -42,31 +54,12 @@ function AllWorkers() {
 
     const history = useHistory()
 
-    const listeners = [
-        { 
-            key: '.delete',
-            listener: async (id) => {
-               try {
-                await axios.delete(`worker/${id}`)
-               } catch(e){
-                throw new Error(e)
-               }
-            }
-        },
-        {
-            key: '.edit',
-            listener: async (id) => {
-                return history.push(`edit-worker/${id}`)
-            }
-        }
-    ]
-
     return (
         <Container title="Workers">
             <SimpleInput icon placeholder="Search">
                 <Button onClick={() => history.push('create-worker')}>Create Worker</Button>
             </SimpleInput>
-            <Datatable listeners={listeners} url="worker?client=datatable" columns={columns} columnNames={columnNames} />
+            <Datatable2 url="worker" columns={columns} />
         </Container>
     )
 }
