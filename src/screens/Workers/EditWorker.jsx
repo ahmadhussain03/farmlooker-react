@@ -121,8 +121,6 @@ const EditWorker = ({ user }) => {
         }
     }
 
-    const farmOptions = user.farms && user.farms.length ? user.farms.map(farm => ({value: farm.id, text: farm.location})) : []
-
     return (
         <Form onSubmit={handleUpdateWorker} formHeading="Edit Worker" errors={errors}>
             <FormGroup>

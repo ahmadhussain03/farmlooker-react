@@ -149,7 +149,7 @@ const Datatable2 = ({ url, columns, isSelectable = false, SelectedAction = null 
     })
     const [loading, setLoading] = useState(true)
 
-    const [sortField, setSortField] = useState(columns[sortIndex].data)
+    const [sortField, setSortField] = useState(sortIndex !== -1 ? columns[sortIndex].data : '')
     const [sortOrder, setSortOrder] = useState("asc")
     const [currentPage, setCurrentPage] = useState(1)
     const [perPage, setPerPage] = useState(10)

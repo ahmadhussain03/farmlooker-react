@@ -63,6 +63,7 @@ const SideBar = ({ setLogout, user }) => {
                         <SideBarItem icon={<AlertIcon className="h-8 w-8" />} text="Disease Alert" to={`${url}/disease-alert`} ></SideBarItem>
                         <SideBarItem icon={<WorkerIcon className="h-8 w-8" />} text="Worker" to={`${url}/worker`} ></SideBarItem>
                         <SideBarItem icon={<AssetIcon className="h-8 w-8" />} text="Asset" to={`${url}/asset`} ></SideBarItem>
+                        <SideBarItem icon={<WorkerIcon className="h-8 w-8" />} text="Manager" to={`${url}/manager`} ></SideBarItem>
                         <SideBarItem icon={<AnimalIcon className="h-8 w-8" />} text="Trading Animal" to={`${url}/trading-animal`} ></SideBarItem>
                         <SideBarItem icon={<CartIcon className="h-8 w-8" />} text="Rental Equipment" to={`${url}/rental-equipment`} ></SideBarItem>
                     </>

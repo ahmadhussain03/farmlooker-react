@@ -48,6 +48,9 @@ import AllFarms from "./Farm/AllFarms";
 import CreateExpense from "./Finance/CreateExpense";
 import Finance from "./Finance/Finance";
 import CreateIncome from './Finance/CreateIncome';
+import EditManager from './Manager/EditManager';
+import AllManager from './Manager/AllManager';
+import CreateManager from './Manager/CreateManager';
 
 
 const Dashboard = ({ user, isOpen, setClose }) => {
@@ -119,12 +122,15 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                         <FarmRoute path={`${path}/create-vaccine-record`} component={CreateVaccineRecord}></FarmRoute>
                                         <FarmRoute path={`${path}/create-disease-alert`} component={CreateDiseaseAlert}></FarmRoute>
                                         <FarmRoute path={`${path}/create-worker`} component={CreateWorker}></FarmRoute>
+                                        <FarmRoute path={`${path}/create-manager`} component={CreateManager}></FarmRoute>
                                         <FarmRoute path={`${path}/create-asset`} component={CreateAsset}></FarmRoute>
                                         <FarmRoute path={`${path}/create-trading-animal`} component={CreateTradingAnimal}></FarmRoute>
                                         <FarmRoute path={`${path}/create-rental-equipment`} component={CreateRentalEquipment}></FarmRoute>
                                         <FarmRoute path={`${path}/finance`} component={Finance}></FarmRoute>
                                         <FarmRoute path={`${path}/create-expense`} component={CreateExpense}></FarmRoute>
                                         <FarmRoute path={`${path}/create-income`} component={CreateIncome}></FarmRoute>
+                                        <FarmRoute path={`${path}/edit-manager/:id`} component={EditManager}></FarmRoute>
+                                        <FarmRoute path={`${path}/manager`} component={AllManager}></FarmRoute>
                                     </>
                                 }
                             </Switch>

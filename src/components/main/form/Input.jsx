@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 
 
-const Input = ({ type, value, onChange, placeholder, error, onFocus, onBlur }) => {
+const Input = ({ type = 'text', value, onChange, placeholder, error, onFocus, onBlur }) => {
 
     let InputType = type;
 
