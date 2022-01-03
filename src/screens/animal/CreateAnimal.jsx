@@ -62,6 +62,7 @@ const CreateAnimal = ({ user }) => {
     const [animalId, setAnimalId] = useState("")
     const [type, setType] = useState("")
     const [breed, setBreed] = useState("")
+    const [herd, setHerd] = useState("")
     const [addAs, setAddAs] = useState("")
     const [male, setMale] = useState("")
     const [female, setFemale] = useState("")
@@ -88,6 +89,11 @@ const CreateAnimal = ({ user }) => {
         setMale(null)
         setFemale(null)
         clearErrorMessage('type')
+    }
+
+    const handleHerdChange = e => {
+        setHerd(e)
+        clearErrorMessage('herd_id')
     }
 
     const handleDobChange = e => {
@@ -175,7 +181,8 @@ const CreateAnimal = ({ user }) => {
                 previous_owner: previousOwner ?? null,
                 farm_id: farm?.value,
                 male_breeder_id: male?.value ?? null,
-                female_breeder_id: female?.value ?? null
+                female_breeder_id: female?.value ?? null,
+                herd_id: herd?.value ?? null
             })
 
             setIsLoading(false);
@@ -236,6 +243,9 @@ const CreateAnimal = ({ user }) => {
             )}
             <FormGroup>
                 <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
+            </FormGroup>
+            <FormGroup>
+                <Select error={errors?.data?.herd_id} value={herd} onChange={handleHerdChange} placeholder="Herd" url={`herd`} params={{farm: farm?.value ?? 0}} mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Create Animal</Button>  

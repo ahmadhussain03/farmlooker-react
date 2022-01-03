@@ -212,43 +212,43 @@ const NewMain = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex-1 p-4 rounded-2xl bg-black-primary shadow-md text-gray-100">
-                        <div className="flex md:flex-row flex-col space-x-5">
-                            <div className="flex-1 flex-col space-y-3 md:border-r md:border-b-0 border-b md:pb-0 pb-5 border-gray-100 flex items-center">
-                                <h1 className="text-2xl font-bold flex-1 text-center flex flex-col space-y-2">
-                                    <span className="font-normal">{expense}</span>
-                                    Expense Summary
-                                </h1>
-                                <div className="flex-1 flex flex-col space-y-1 text-custom-primary">
-                                    <div className="flex justify-between px-2 w-full">
-                                        Animal Purchase <span className="pl-2">{animalExpense}</span>
-                                    </div>
-                                    <div className="flex justify-between px-2">
-                                        Feed Purchase <span className="pl-2">{orderFeedExpense}</span>
-                                    </div>
-                                    <div className="flex justify-between px-2">
-                                        Salaries <span className="pl-2">{salaries}</span>
-                                    </div>
-                                    <div className="flex justify-between px-2">
-                                        Miscelleneous <span className="pl-2">{miscelleneous}</span>
-                                    </div>
+                    <div className="flex md:flex-row flex-col md:space-x-3 md:space-y-0 space-y-3 text-gray-100">
+                        <div className="flex-1 relative bg-black-primary p-6 rounded-2xl shadow-md" onClick={e => history.push('dashboard/animal')}>
+                            <h1 className="text-2xl font-bold flex-1 text-center flex flex-col space-y-2">
+                                <span className="font-normal">{expense}</span>
+                                Expense Summary
+                            </h1>
+                            <div className="flex-1 flex flex-col space-y-1 text-custom-primary">
+                                <div className="flex justify-between px-2 w-full">
+                                    Animal Purchase <span className="pl-2">{animalExpense}</span>
                                 </div>
-                            </div>
-                            <div className="flex-1 flex-col space-y-3 flex items-center">
-                                <h1 className="text-2xl font-bold flex-1 text-center flex flex-col space-y-2">
-                                    <span className="font-normal">{income}</span>
-                                    Income Summary
-                                </h1>
-                                <div className="flex-1 flex flex-col space-y-1 text-custom-primary">
-                                    <div className="flex justify-between px-2 w-full">
-                                        Animal Sold <span className="pl-2">{animalSold}</span>
-                                    </div>
-                                    <div className="flex justify-between px-2">
-                                        Other Income <span className="pl-2">{otherIncome}</span>
-                                    </div>
+                                <div className="flex justify-between px-2">
+                                    Feed Purchase <span className="pl-2">{orderFeedExpense}</span>
+                                </div>
+                                <div className="flex justify-between px-2">
+                                    Salaries <span className="pl-2">{salaries}</span>
+                                </div>
+                                <div className="flex justify-between px-2">
+                                    Miscelleneous <span className="pl-2">{miscelleneous}</span>
                                 </div>
                             </div>
                         </div>
+                        <div className="flex-1 relative bg-black-primary p-6 rounded-2xl shadow-md" onClick={e => history.push('dashboard/animal')}>
+                            <h1 className="text-2xl font-bold flex-1 text-center flex flex-col space-y-2">
+                            <span className="font-normal">{income}</span>
+                                Income Summary
+                            </h1>
+                            <div className="flex-1 flex flex-col space-y-1 text-custom-primary">
+                                <div className="flex justify-between px-2 w-full">
+                                    Animal Sold <span className="pl-2">{animalSold}</span>
+                                </div>
+                                <div className="flex justify-between px-2">
+                                    Other Income <span className="pl-2">{otherIncome}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex-1 p-4 rounded-2xl bg-black-primary shadow-md text-gray-100">
                         <div className="flex">
                             <ExpenseIncomeChart />
                         </div>

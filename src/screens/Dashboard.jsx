@@ -51,6 +51,9 @@ import CreateIncome from './Finance/CreateIncome';
 import EditManager from './Manager/EditManager';
 import AllManager from './Manager/AllManager';
 import CreateManager from './Manager/CreateManager';
+import AllHerds from "./Herd/AllHerds";
+import CreateHerd from "./Herd/CreateHerd";
+import EditHerd from "./Herd/EditHerd";
 
 
 const Dashboard = ({ user, isOpen, setClose }) => {
@@ -92,7 +95,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                 }
                 </AnimatePresence>
                 { ((isMobile && !isOpen) || !isMobile) &&
-                    <div className="xs:flex-1 md:w-5/6 py-10">
+                    <div className="py-10 flex-auto">
                         <AnimatePresence exitBeforeEnter initial={false}>
                             <Switch location={location} key={location.key}>
                                 <FarmRoute exact path={`${path}`} component={NewMain}></FarmRoute>
@@ -105,6 +108,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                         <FarmRoute path={`${path}/animal`} component={AllAnimals}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-animal/:id`} component={EditAnimal}></FarmRoute>
                                         <FarmRoute path={`${path}/tree-animal/:id`} component={AnimalTree}></FarmRoute>
+                                        <FarmRoute path={`${path}/herd`} component={AllHerds}></FarmRoute>
                                         <FarmRoute path={`${path}/vaccine-record`} component={AllVaccineRecord}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-vaccine-record/:id`} component={EditVaccineRecord}></FarmRoute>
                                         <FarmRoute path={`${path}/disease-alert`} component={AllDiseaseAlert}></FarmRoute>
@@ -119,6 +123,8 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                         <FarmRoute path={`${path}/rental-equipment`} component={HomeRentalEquipment}></FarmRoute>
                                         <FarmRoute path={`${path}/edit-rental-equipment/:id`} component={EditRentalEquipment}></FarmRoute>
                                         <FarmRoute path={`${path}/create-animal`} component={CreateAnimal}></FarmRoute>
+                                        <FarmRoute path={`${path}/create-herd`} component={CreateHerd}></FarmRoute>
+                                        <FarmRoute path={`${path}/edit-herd/:id`} component={EditHerd}></FarmRoute>
                                         <FarmRoute path={`${path}/create-vaccine-record`} component={CreateVaccineRecord}></FarmRoute>
                                         <FarmRoute path={`${path}/create-disease-alert`} component={CreateDiseaseAlert}></FarmRoute>
                                         <FarmRoute path={`${path}/create-worker`} component={CreateWorker}></FarmRoute>

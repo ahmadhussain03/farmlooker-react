@@ -51,6 +51,7 @@ const Main = () => {
         farmRequestSource.current = axiosInstance.CancelToken.source()
 
         let response = await axios.get("farm")
+        console.log(response.data.data)
         setFarmCount(response.data.data.total)
     }, [])
 

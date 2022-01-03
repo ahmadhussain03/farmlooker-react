@@ -30,6 +30,7 @@ const EditAnimal = ({ user }) => {
 
     const [animalId, setAnimalId] = useState("")
     const [type, setType] = useState("")
+    const [herd, setHerd] = useState("")
     const [breed, setBreed] = useState("")
     const [addAs, setAddAs] = useState("")
     const [sex, setSex] = useState("")
@@ -61,6 +62,7 @@ const EditAnimal = ({ user }) => {
             setDob(animal.dob)
             setDisease({value: animal.disease, label: diseaseOptions.filter(opt => opt.value === animal.disease)[0].text})
             setFarm({ value: animal.farm.id, label: animal.farm.name })
+            setHerd({ value: animal.herd.id, label: animal.herd.name })
             setPrice(animal.price)
             setPreviousOwner(animal.previous_owner)
             setPurchaseDate(animal.purchase_date ?? '')
@@ -111,6 +113,11 @@ const EditAnimal = ({ user }) => {
     const handleMaleChange = e => {
         setMale(e)
         clearErrorMessage('male_breeder_id')
+    }
+
+    const handleHerdChange = e => {
+        setHerd(e)
+        clearErrorMessage('herd_id')
     }
     
     const handleFemaleChange = e => {
@@ -174,7 +181,8 @@ const EditAnimal = ({ user }) => {
                 previous_owner: previousOwner ?? null,
                 farm_id: farm.value,
                 male_breeder_id: male?.value ?? null,
-                female_breeder_id: female?.value ?? null
+                female_breeder_id: female?.value ?? null,
+                herd_id: herd?.value ?? null
             })
             setFarm(response.data.data)
             setIsLoading(false);
@@ -236,6 +244,9 @@ const EditAnimal = ({ user }) => {
             )}
             <FormGroup>
                 <Select error={errors?.data?.farm_id} value={farm} onChange={handleFarmIdChange} placeholder="Farm" url='farm' mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
+            </FormGroup>
+            <FormGroup>
+                <Select error={errors?.data?.herd_id} value={herd} onChange={handleHerdChange} placeholder="Herd" url={`herd`} params={{farm: farm?.value ?? 0}} mapOptions={options => options.map(option => ({ value: option.id, label: option.name }))} async={true}></Select>
             </FormGroup>
             <FormGroup>
                 <Button disabled={isLoading} type="submit">Update Animal</Button>  

@@ -11,16 +11,8 @@ import TrashIcon from '../../components/icons/TrashIcon'
 import { useState } from 'react';
 
 const columns = [
-    {data: 'animal_id', label: 'Animal ID'},
-    {data: 'type.type', label: 'Type'},
-    {data: 'breed.breed', label: 'Breed'},
-    {data: 'auid', label: 'AUID'},
-    {data: 'disease', label: 'Disease'},
-    {data: 'sex', label: 'Sex'},
-    {data: 'dob', label: 'DOB'},
-    {data: 'add_as', label: 'Add As'},
+    {data: 'name', label: 'Name'},
     {data: 'farm.name', label: 'Farm'},
-    {data: 'herd.name', label: 'Herd'},
     {   label: 'action', 
         renderer: (props) => {
             return (
@@ -40,7 +32,7 @@ const SelectedAction = ({ selectedItems, reload }) => {
 
             setLoading(true)
             const ids = selectedItems.map(item => item.id)
-            await axios.post(`animal`, { animals: ids, "_method": "DELETE" })
+            await axios.post(`herd`, { herds: ids, "_method": "DELETE" })
             reload()
            } catch(e){
                 setLoading(false)
@@ -62,16 +54,12 @@ const Action = ({ item, reload }) => {
     const history = useHistory()
 
     const handleEdit = () => {
-        history.push(`edit-animal/${item.id}`)
-    }
-
-    const handleTree = () => {
-        history.push(`tree-animal/${item.id}`)
+        history.push(`edit-herd/${item.id}`)
     }
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`animal/${item.id}`)
+            await axios.delete(`herd/${item.id}`)
             reload()
            } catch(e){
             throw new Error(e)
@@ -80,26 +68,25 @@ const Action = ({ item, reload }) => {
 
     return (
         <div className="flex flex-row space-x-1 items-center justify-center">
-            <a onClick={e => handleDelete()} className='border cursor-pointer rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</a>
-            <a onClick={e => handleEdit()} className='border cursor-pointer rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</a>
-            <a onClick={e => handleTree()} className='border cursor-pointer rounded shadow border-green-600 p-1 text-green-600 tree'>Tree</a>
+            <button onClick={e => handleDelete()} className='border cursor-pointer rounded shadow border-red-600 p-1 text-red-600 delete'>Delete</button>
+            <button onClick={e => handleEdit()} className='border cursor-pointer rounded shadow border-yellow-600 p-1 text-yellow-600 edit'>Edit</button>
         </div>
     )
 }
 
 
-function AllAnimals() {
+function AllHerds() {
 
     const history = useHistory()
 
     return (
-        <Container title="Animals">
+        <Container title="Herds">
             <SimpleInput icon placeholder="Search">
-                <Button onClick={() => history.push('create-animal')}>Create Animal</Button>
+                <Button onClick={() => history.push('create-herd')}>Create Herd</Button>
             </SimpleInput>
-            <Datatable2 url="animal" columns={columns} isSelectable={true} SelectedAction={SelectedAction} />
+            <Datatable2 url="herd" columns={columns} isSelectable={true} SelectedAction={SelectedAction} />
         </Container>
     )
 }
 
-export default AllAnimals
+export default AllHerds

@@ -32,7 +32,8 @@ const Loading = () => {
 
 const DatatableOptions = ({ perPage, handlePerPageChange, handleSearchChange, SelectedAction }) => {
     return (
-        <div className="py-2 flex flex-row items-center justify-between">
+        <>
+        <div className="py-1 flex flex-row items-center justify-between">
             <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700">Per Page</label>
                 <div className="mt-1 rounded-md shadow-sm">
@@ -43,7 +44,6 @@ const DatatableOptions = ({ perPage, handlePerPageChange, handleSearchChange, Se
                     </select>
                 </div>
             </div>
-            {SelectedAction ? SelectedAction() : null}
             <div>
                 <label htmlFor="price" className="block text-sm font-medium text-gray-700">Search</label>
                 <div className="mt-1 relative rounded-md shadow-sm">
@@ -51,6 +51,10 @@ const DatatableOptions = ({ perPage, handlePerPageChange, handleSearchChange, Se
                 </div>
             </div>
         </div>
+        {SelectedAction ? (<div className="py-1 flex flex-row items-center justify-center">
+                {SelectedAction()}
+        </div>) : null}
+        </>
     )
 }
 
@@ -182,7 +186,7 @@ const Datatable2 = ({ url, columns, isSelectable = false, SelectedAction = null 
         } finally {
             setLoading(false)
         }
-    }, [sortField, sortOrder, currentPage, perPage, search])
+    }, [sortField, sortOrder, currentPage, perPage, search, url])
 
     useEffect(() => {
 

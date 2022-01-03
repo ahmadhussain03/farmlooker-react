@@ -57,6 +57,7 @@ const SideBar = ({ setLogout, user }) => {
                 { user?.farms?.length > 0 &&
                     <>
                         <SideBarItem icon={<FarmIcon className="h-8 w-8" />} text="Farm" to={`${url}/farm`} ></SideBarItem>
+                        <SideBarItem icon={<FarmIcon className="h-8 w-8" />} text="Herd" to={`${url}/herd`} ></SideBarItem>
                         <SideBarItem icon={<AnimalIcon className="h-8 w-8" />} text="Animal" to={`${url}/animal`} ></SideBarItem>
                         <SideBarItem icon={<AssetIcon className="h-8 w-8" />} text="Finance" to={`${url}/finance`} ></SideBarItem>
                         <SideBarItem icon={<CartIcon className="h-8 w-8" />} text="Vaccine Record" to={`${url}/vaccine-record`} ></SideBarItem>
