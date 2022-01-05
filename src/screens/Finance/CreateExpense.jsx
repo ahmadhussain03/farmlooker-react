@@ -321,10 +321,10 @@ const Miscelleneous = () => {
 }
 
 const columns = [
-    {data: 'amount', label: 'Amount', orderable: false},
-    {data: 'farm.name', label: 'Farm', orderable: false},
-    {data: 'expenseable_type', label: 'Expense Type', orderable: false},
-    {data: 'dated', label: 'dated', orderable: false}
+    {data: 'dated', label: 'dated'},
+    {data: 'amount', label: 'Amount'},
+    {data: 'farm.name', label: 'Farm'},
+    {data: 'expenseable_type', label: 'Expense Type'},
 ]
 
 const CreateExpense = ({ user }) => {

@@ -175,10 +175,10 @@ const Others = ({ farms }) => {
 }
 
 const columns = [
-    {data: 'amount', label: 'Amount', orderable: false},
-    {data: 'farm.name', label: 'Farm', orderable: false},
-    {data: 'incomeable_type', label: 'Income Type', orderable: false},
-    {data: 'dated', label: 'Dated', orderable: false}
+    {data: 'dated', label: 'Dated'},
+    {data: 'amount', label: 'Amount'},
+    {data: 'farm.name', label: 'Farm'},
+    {data: 'incomeable_type', label: 'Income Type'}
 ]
 
 const CreateIncome = ({ user }) => {
