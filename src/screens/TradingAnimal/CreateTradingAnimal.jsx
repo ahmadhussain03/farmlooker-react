@@ -93,8 +93,6 @@ const CreateTradingAnimal = ({ user }) => {
                 }
             })
 
-            console.log(response.data)
-
             setIsLoading(false);
             history.push('/dashboard/my-trading-animal')
         } catch(e) {
@@ -144,7 +142,7 @@ const CreateTradingAnimal = ({ user }) => {
                             <div className="flex flex-row flex-wrap justify-center items-center">
                                 {images.map(image => (
                                     <div className="w-1/3 px-2 py-1">
-                                        <img className="rounded-md shadow-md w-full object-cover border border-gray-500 p-2" src={image.picturePreview} />
+                                        <img className="rounded-md shadow-md w-full object-cover border border-gray-500 p-2" src={image.picturePreview} alt="preview" />
                                     </div>
                                 ))}
                             </div>

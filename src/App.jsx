@@ -11,15 +11,21 @@ import Dashboard from "./screens/Dashbo\ard";
 import VerifyEmail from './screens/VerifyEmail';
 import VerifiedRoute from './components/routes/VerifiedRoute';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
 
   return (    
-      <Switch>
-        <GuestRoute exact path="/" component={SignUp}></GuestRoute>
-        <GuestRoute exact path="/login" component={Login}></GuestRoute>
-        <AuthRoute exact path="/verify-email" component={VerifyEmail}></AuthRoute>
-        <VerifiedRoute path="/dashboard" component={Dashboard}></VerifiedRoute>
-      </Switch>
+      <>
+        <Switch>
+          <GuestRoute exact path="/" component={SignUp}></GuestRoute>
+          <GuestRoute exact path="/login" component={Login}></GuestRoute>
+          <AuthRoute exact path="/verify-email" component={VerifyEmail}></AuthRoute>
+          <VerifiedRoute path="/dashboard" component={Dashboard}></VerifiedRoute>
+        </Switch>
+        <ToastContainer />
+      </>
   );
 }
 

@@ -1,13 +1,10 @@
-import { Link, useHistory, useRouteMatch } from "react-router-dom"
-import cookie from 'js-cookie'
+import { Link, useRouteMatch } from "react-router-dom"
 import { connect } from 'react-redux'
-
-import axios from '../../utils/axios'
 
 import HomeIcon from "../icons/HomeIcon"
 import FarmIcon from "../icons/FarmIcon"
 import AnimalIcon from "../icons/AnimalIcon"
-import HelpIcon from "../icons/HelpIcon"
+// import HelpIcon from "../icons/HelpIcon"
 import CartIcon from "../icons/CartIcon"
 import WorkerIcon from '../icons/WorkerIcon'
 import AlertIcon from '../icons/AlertIcon'
@@ -24,25 +21,9 @@ const SideBarItem = ({ text, to, danger, children, icon = null }) => {
 }
 
 
-const SideBar = ({ setLogout, user }) => {
-
-    const history = useHistory()
+const SideBar = ({ user }) => {
 
     let { url } = useRouteMatch();
-
-    const handleLogout = async e => {
-        e.preventDefault()
-
-        try {
-            await axios.post("/logout")
-        } catch(e){
-            console.error(e)
-        } finally {
-            cookie.remove("token")
-            setLogout()
-            history.push('/login')
-        }
-    }
 
     return (
         <nav className="px-2 text-md font-semibold mx-auto text-center">
@@ -70,19 +51,10 @@ const SideBar = ({ setLogout, user }) => {
                     </>
 
                 }
-                <SideBarItem>
-                    <a onClick={(e) => handleLogout(e)} href="/logout" className="flex flex-row space-x-5 items-center justify-left flex-1 p-2"><span><HelpIcon className="h-8 w-8" /></span> <span>Logout</span></a>
-                </SideBarItem>
             </ul>
         </nav>
     )
 }
-
-const mapDispatchToProps = dispatch => {
-    return {
-      setLogout: (user) => dispatch({ type: "SET_LOGOUT" })
-    };
-};
 
 const mapStateToProps = state => {
     return {
@@ -90,4 +62,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SideBar)
+export default connect(mapStateToProps, null)(SideBar)
