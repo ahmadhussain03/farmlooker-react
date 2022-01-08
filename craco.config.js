@@ -7,4 +7,10 @@ module.exports = {
         ],
       },
     },
-  }
+    rules: [
+      {
+        test: /\.(png|jpg)$/,
+        loader: 'url-loader'
+      },
+    ]
+}
