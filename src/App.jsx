@@ -16,7 +16,7 @@ const App = () => {
   return (    
       <Switch>
         {/* <GuestRoute exact path="/" component={Landing}></GuestRoute> */}
-        <GuestRoute exact path="/sign-up" component={SignUp}></GuestRoute>
+        <GuestRoute exact path="/" component={SignUp}></GuestRoute>
         <GuestRoute exact path="/login" component={Login}></GuestRoute>
         <AuthRoute exact path="/verify-email" component={VerifyEmail}></AuthRoute>
         <VerifiedRoute path="/dashboard" component={Dashboard}></VerifiedRoute>

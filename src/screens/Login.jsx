@@ -80,7 +80,7 @@ const Login = ({setLogin}) => {
                     <Button disabled={isLoading} type="submit">Login</Button>  
                 </div>
                 <div className="text-sm text-center text-gray-800">
-                    Don't have an account? <Link to="/sign-up" className="text-primary">Sign Up</Link>
+                    Don't have an account? <Link to="/" className="text-primary">Sign Up</Link>
                 </div>
             </AuthForm>
         </AuthContainer>
