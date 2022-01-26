@@ -25,7 +25,7 @@ const render = () => {
    );
 }
 
-render()
+// render()
 
 if(token){
   axios.get('user').then((response) => {
