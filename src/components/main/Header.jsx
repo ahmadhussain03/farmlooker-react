@@ -8,7 +8,7 @@ import CrossIcon from '../icons/CrossIcon'
 
 import { AnimatePresence } from 'framer-motion'
 
-const Header = ({ isOpen, setClose, setOpen }) => {
+const Header = ({ isOpen, setClose, setOpen, showSideBarOption = true }) => {
 
     const handleToggleMenu = (e) => {
         e.preventDefault()
@@ -26,11 +26,11 @@ const Header = ({ isOpen, setClose, setOpen }) => {
     
     return (
         <header className="w-full h-16 px-5 py-2 border-b-2 border-primary-dark bg-gray-100 flex flex-row items-center space-x-5">
-            <button className="cursor-pointer" onClick={(e) => handleToggleMenu(e)}>
+            {showSideBarOption && (<button className="cursor-pointer" onClick={(e) => handleToggleMenu(e)}>
                 <AnimatePresence exitBeforeEnter initial={false}>
                     {isOpen ? <CrossIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
                 </AnimatePresence>
-            </button>
+            </button>)}
             <img src={logo} alt="farm background" className="h-full"></img>
         </header>
     );

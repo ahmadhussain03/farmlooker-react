@@ -56,9 +56,8 @@ const Login = ({setLogin}) => {
             setLogin(response.data.data.user)
             cookie.set("token", response.data.data.token)
 
-            history.push('/dashboard')
+            history.push('/plans')
         } catch(e) {
-            console.log(e)
             setErrors(e.response.data)
             setIsLoading(false)
         }
