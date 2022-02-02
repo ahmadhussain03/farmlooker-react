@@ -22,8 +22,6 @@ const Select2 = ({ value, onChange, placeholder, error, onFocus, options = [], a
 
     const loadOptions =  async (search, loadedOptions, { page }) => {
 
-        console.log(url)
-
         const response = await axios.get(url, {
             params: { search: search, page: page, ...params }
         });

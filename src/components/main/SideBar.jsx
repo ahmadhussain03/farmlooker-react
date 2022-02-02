@@ -48,6 +48,7 @@ const SideBar = ({ setLogout, user }) => {
         <nav className="px-2 text-md font-semibold mx-auto text-center">
             <ul className="flex flex-col space-y-2">
                 <SideBarItem icon={<HomeIcon className="h-8 w-8" />} text="Dashboard" to={url} ></SideBarItem>
+                <SideBarItem icon={<HomeIcon className="h-8 w-8" />} text="Subscriptions" to={`${url}/subscriptions`} ></SideBarItem>
                 {user?.farms?.length === 0 &&
                     <>
                         <SideBarItem icon={<FarmIcon className="h-8 w-8" />} text="Farm" to={`${url}/create-farm`} ></SideBarItem>

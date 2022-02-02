@@ -11,10 +11,11 @@ import GuestRoute from "./components/routes/GuestRoute";
 import Login from "./screens/Login";
 import Plans from "./screens/Plans";
 import SignUp from './screens/SignUp';
+import Subscribe from "./screens/Subscribe";
 import Dashboard from "./screens/Dashboard";
 import VerifyEmail from './screens/VerifyEmail';
-import VerifiedRoute from './components/routes/VerifiedRoute';
-import Subscribe from "./screens/Subscribe";
+import SubscribedRoute from "./components/routes/SubscribedRoute";
+import NotSubscribedRoute from "./components/routes/NotSubscribedRoute";
 
 const App = () => {
 
@@ -25,9 +26,9 @@ const App = () => {
           <GuestRoute exact path="/" component={SignUp}></GuestRoute>
           <GuestRoute exact path="/login" component={Login}></GuestRoute>
           <AuthRoute exact path="/verify-email" component={VerifyEmail}></AuthRoute>
-          <VerifiedRoute path="/dashboard" component={Dashboard}></VerifiedRoute>
-          <VerifiedRoute path="/plans" component={Plans}></VerifiedRoute>
-          <VerifiedRoute path="/subscribe" component={Subscribe}></VerifiedRoute>
+          <SubscribedRoute path="/dashboard" component={Dashboard}></SubscribedRoute>
+          <NotSubscribedRoute path="/plans" component={Plans}></NotSubscribedRoute>
+          <NotSubscribedRoute path="/subscribe" component={Subscribe}></NotSubscribedRoute>
         </Switch>
         <ToastContainer />
       </>

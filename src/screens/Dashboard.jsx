@@ -54,6 +54,7 @@ import CreateManager from './Manager/CreateManager';
 import AllHerds from "./Herd/AllHerds";
 import CreateHerd from "./Herd/CreateHerd";
 import EditHerd from "./Herd/EditHerd";
+import AllSubscriptions from "./Subscription/AllSubscriptions";
 
 
 const Dashboard = ({ user, isOpen, setClose }) => {
@@ -101,6 +102,7 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                 <FarmRoute exact path={`${path}`} component={NewMain}></FarmRoute>
                                 <FarmRoute exact path={`${path}/summary/:type`} component={Summary}></FarmRoute>
                                 <AuthRoute exact path={`${path}/create-farm`} component={CreateFarm}></AuthRoute>
+                                <AuthRoute exact path={`${path}/subscriptions`} component={AllSubscriptions}></AuthRoute>
                                 
                                 { user?.farms?.length > 0 &&
                                     <>

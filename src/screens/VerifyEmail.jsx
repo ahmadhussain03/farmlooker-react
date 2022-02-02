@@ -48,7 +48,7 @@ const VerifyEmail = ({ setLogin, setLogout }) => {
             const response = await axios.post("email/verify", {code})
             setLogin(response.data.data)
 
-            history.push('/dashboard')
+            history.push('/plans')
         } catch(e) {
             setErrors(e.response.data)
             setIsLoading(false)
