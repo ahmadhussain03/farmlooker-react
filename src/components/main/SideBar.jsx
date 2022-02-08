@@ -17,7 +17,7 @@ const SideBarItem = ({ text, to, danger, children, icon = null }) => {
     return (
         <li className={`border-b transition p-0 text-gray-100 cursor-pointer flex pb-2`}>
             { children ? children :
-              <Link to={to} className="flex flex-row space-x-5 items-center justify-left flex-1 p-2">{icon ? <span>{icon}</span> : null}<span>{text}</span></Link>
+              <Link to={to} className="flex flex-row space-x-5 items-center justify-left flex-1 p-2">{icon ? <span>{icon}</span> : null}<span className="text-left">{text}</span></Link>
             }
         </li>
     )

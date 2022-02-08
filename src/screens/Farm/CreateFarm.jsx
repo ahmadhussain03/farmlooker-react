@@ -64,7 +64,7 @@ const CreateFarm = ({ setFarm }) => {
         setIsLoading(true)
         try {
             
-            const response = await axios.post("farm", {name, city_id: city?.value, area_of_hector: area})
+            const response = await axios.post("farm", {name, city_id: city?.value, area_of_hector: area, geometry: JSON.stringify({name})})
             setFarm(response.data.data)
             setIsLoading(false);
 

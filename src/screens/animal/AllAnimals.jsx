@@ -14,7 +14,6 @@ const columns = [
     {data: 'animal_id', label: 'Animal ID'},
     {data: 'type.type', label: 'Type'},
     {data: 'breed.breed', label: 'Breed'},
-    {data: 'auid', label: 'AUID'},
     {data: 'disease', label: 'Disease'},
     {data: 'sex', label: 'Sex'},
     {data: 'dob', label: 'DOB'},

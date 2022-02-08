@@ -80,23 +80,17 @@ const Dashboard = ({ user, isOpen, setClose }) => {
             <Header></Header>
             
             <div className="flex md:flex-row flex-col">
-                <AnimatePresence exitBeforeEnter>
+                {/* <AnimatePresence exitBeforeEnter> */}
                 {isOpen &&
-                        <motion.div 
+                        <div
                         
-                        initial={{x: -500, opacity: 0}}
-                        animate={{x: 0, opacity: 1}}
-                        exit={{x: -500, opacity: 0}}
-                        transition={{duration: 0.3}}
-                        
-                        className="md:w-1/6 bg-primary-side pt-8 border-none overflow-y-auto" style={{minHeight: "calc(100vh - 4rem)"}}>
+                        className="lg:w-1/6 w-full bg-primary-side pt-8 border-none overflow-y-auto" style={{minHeight: "calc(100vh - 4rem)"}}>
                             <SideBar></SideBar>
-                        </motion.div>
+                        </div>
                 }
-                </AnimatePresence>
+                {/* </AnimatePresence> */}
                 { ((isMobile && !isOpen) || !isMobile) &&
                     <div className="py-10 flex-auto">
-                        <AnimatePresence exitBeforeEnter initial={false}>
                             <Switch location={location} key={location.key}>
                                 <FarmRoute exact path={`${path}`} component={NewMain}></FarmRoute>
                                 <FarmRoute exact path={`${path}/summary/:type`} component={Summary}></FarmRoute>
@@ -140,7 +134,6 @@ const Dashboard = ({ user, isOpen, setClose }) => {
                                     </>
                                 }
                             </Switch>
-                        </AnimatePresence>
                     </div>
                 }
             </div>
