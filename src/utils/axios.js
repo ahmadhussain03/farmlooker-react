@@ -1,7 +1,7 @@
 import axios from "axios";
 import cookie from 'js-cookie';
 
-let baseUrl = "http://www.farmlooker.com/api";
+let baseUrl = "http://www.ranch-ai.com/api";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     baseUrl = "http://farmlooker.test/api";
