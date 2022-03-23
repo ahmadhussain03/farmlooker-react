@@ -37,10 +37,12 @@ const NewMain = () => {
     const [otherIncome, setOtherIncome] = useState(0)
     const [currentDate, setCurrentDate] = useState("")
     const [weather, setWeather] = useState({})
+    const [devices, setDevices] = useState([])
 
     const summaryRequestSource = useRef(null)
     const farmRequestSource = useRef(null)
     const animalRequestSource = useRef(null)
+    const deviceRequestSource = useRef(null)
 
     const history = useHistory()
 
@@ -105,6 +107,13 @@ const NewMain = () => {
         }
     }, [])
 
+    const getDevices = useCallback(async () => {
+        deviceRequestSource.current = axiosInstance.CancelToken.source()
+
+        let response = await axios.get("device")
+        setDevices(response.data.data)
+    }, [])
+
 
       useEffect(() => {
         getAnimalCount()
@@ -113,11 +122,13 @@ const NewMain = () => {
         getExpenseTotal()
         getWeather()
         getIncomeTotal()
+        getDevices()
 
         return () => {
             summaryRequestSource.current.cancel("Cancelling request")
             farmRequestSource.current.cancel("Cancelling request")
             animalRequestSource.current.cancel("Cancelling request")
+            deviceRequestSource.current.cancel("Cancelling request")
         }
       }, []);
 
