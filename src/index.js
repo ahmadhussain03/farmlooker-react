@@ -10,6 +10,8 @@ import {
   BrowserRouter as Router
 } from "react-router-dom";
 
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 let token = cookie.get("token")
 
 const render = () => {
@@ -24,8 +26,6 @@ const render = () => {
      document.getElementById('root')
    );
 }
-
-// render()
 
 if(token){
   axios.get('user').then((response) => {

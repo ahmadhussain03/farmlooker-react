@@ -9,6 +9,7 @@ import LocationIcon from '../../components/icons/LocationIcon';
 import ExpenseChart from '../../components/charts/ExpenseChart';
 import IncomeChart from './../../components/charts/IncomeChart';
 import ExpenseIncomeChart from '../../components/charts/ExpenseIncomeChart';
+import Map from '../../components/main/Map';
 
 
 const NewMain = () => {
@@ -332,6 +333,9 @@ const NewMain = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="max-w-full my-3">
+                <Map devices={devices} /> 
             </div>
         </div>
     )
